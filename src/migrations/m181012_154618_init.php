@@ -37,7 +37,7 @@ class m181012_154618_init extends Migration
             'seo_description' => $this->string()->null()->comment('Description META'),
             'seo_title' => $this->string()->null()->comment('Page title'),
             'price' => $this->float()->null()->comment('Price'),
-            'price_discunt' => $this->float()->null()->comment('Discount price'),
+            'price_discount' => $this->float()->null()->comment('Discount price'),
             'availible' => $this->string()->null()->comment('Available quantity'),
             'status' => $this->integer()->notNull()->defaultValue(0)->comment('Item status')
         ], $tableOptions);
@@ -101,13 +101,23 @@ class m181012_154618_init extends Migration
             'title' => $this->string()->notNull()->comment('Parameter title'),
             'unit' => $this->string()->null()->comment('Parameter unit of measure'),
             'type_id' => $this->integer()->notNull()->defaultValue(0)->comment('Parameter type'),
-            'category_id' => $this->integer()->notNull()->defaultValue(0)->comment('Category link'),
         ], $tableOptions);
 
-        $this->createIndex('idx-ec_item_param-type_id', '{{%ec_item_param}}', 'type_id');
-        $this->createIndex('idx-ec_item_param-category_id', '{{%ec_item_param}}', 'category_id');
 
-        $this->addForeignKey('fk-ec_item_param-category', '{{%ec_item_param}}', 'category_id', '{{%ec_category}}', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('idx-ec_item_param-type_id', '{{%ec_item_param}}', 'type_id');
+
+
+        //param-category
+        $this->createTable('{{%ec_param_category}}', [
+            'param_id' => $this->integer()->notNull()->comment('Param link'),
+            'category_id' => $this->integer()->notNull()->comment('Category link'),
+        ], $tableOptions);
+
+        $this->createIndex('idx-ec_param_category-status', '{{%ec_param_category}}', ['param_id', 'category_id']);
+        $this->addForeignKey('fk-ec_param_category-param', '{{%ec_param_category}}', 'param_id', '{{%ec_item_param}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-ec_param_category-category', '{{%ec_param_category}}', 'category_id', '{{%ec_category}}', 'id', 'CASCADE', 'CASCADE');
+
+
 
         //item param values
         $this->createTable('{{%ec_item_param_value}}', [
@@ -133,9 +143,12 @@ class m181012_154618_init extends Migration
      */
     public function safeDown()
     {
-        echo "m181012_154618_init cannot be reverted.\n";
-
-        return false;
+        $this->dropTable('{{%ec_item_param_value}}');
+        $this->dropTable('{{%ec_item_param}}');
+        $this->dropTable('{{%ec_order_item}}');
+        $this->dropTable('{{%ec_item_category}}');
+        $this->dropTable('{{%ec_order}}');
+        $this->dropTable('{{%ec_category}}');
     }
 
 }

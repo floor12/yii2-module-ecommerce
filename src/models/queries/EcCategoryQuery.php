@@ -9,10 +9,17 @@ namespace floor12\ecommerce\models\queries;
  */
 class EcCategoryQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    /**
+     * @return array
+     */
+    public function dropbdown()
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this
+            ->select('title')
+            ->indexBy('id')
+            ->orderBy('title')
+            ->column();
+    }
 
     /**
      * {@inheritdoc}

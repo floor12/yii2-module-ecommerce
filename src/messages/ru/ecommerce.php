@@ -1,0 +1,57 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: floor12
+ * Date: 13/10/2018
+ * Time: 10:03
+ */
+
+return [
+    'Shop' => 'Магазин',
+    'Ready to order' => 'Готов к заказу',
+    'Create order' => 'Добавить заказ',
+    'Create item' => 'Добавить товар',
+    'Create parameter' => 'Добавить атрибут',
+    'Parameter updating' => 'Редактирование атрибута',
+    'Create item' => 'Добавить товар',
+    'Item updating' => 'Редактирование товара',
+    'Create category' => 'Добавить категорию',
+    'Items' => 'Товары',
+    'Item parameters' => 'Атрибуты товаров',
+    'Categories' => 'Категории',
+    'Orders' => 'Заказы',
+    'Category title' => 'Название категории',
+    'Parent category' => 'Родительская категория',
+    'Total items' => 'Товаров',
+    'Total params' => 'Атрибутов',
+    'Children' => 'Подкатегорий',
+    'none' => 'нет',
+    'Category updating' => 'Обновление категории',
+    'Category is saved.' => 'Категория сохранена',
+    'Category is deleted.' => 'Категория удалена',
+    'Parameter is saved.' => 'Параметр сохранен',
+    'Parameter is deleted.' => 'Параметр удален',
+    'Item is saved.' => 'Товар сохранен',
+    'Item is deleted.' => 'Товар удален',
+    'Create' => 'Создать',
+    'Cancel' => 'Отмена',
+    'Update' => 'Обновить',
+    'Parameter title' => 'Название атрибута',
+    'Linked categories' => 'Связанные категории',
+    'Categories total' => 'Связанных категорий',
+    'List' => 'Список',
+    'String' => 'Строка',
+    'Parameter type' => 'Тип атрибута',
+    'Parameter unit of measure' => 'Единица измерения атрибута',
+    'Item title' => 'Название товара',
+    'Item images' => 'Изображения товаров',
+    'Price' => 'Цена',
+    'Discount price' => 'Цена со скидкой',
+    'Page title' => 'Заголовок страницы',
+    'Description META' => 'META description',
+    'Item description' => 'Описание товара',
+    'Save' => 'Сохранить',
+    '' => '',
+    '' => '',
+    '' => '',
+];

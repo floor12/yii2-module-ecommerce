@@ -2,6 +2,9 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\models\queries\EcItemQuery;
+use floor12\files\components\FileBehaviour;
+use voskobovich\linker\LinkerBehavior;
 use Yii;
 
 /**
@@ -14,13 +17,14 @@ use Yii;
  * @property string $seo_description Description META
  * @property string $seo_title Page title
  * @property double $price Price
- * @property double $price_discunt Discount price
+ * @property double $price_discount Discount price
  * @property string $availible Available quantity
  * @property int $status Item status
  *
- * @property EcItemCategory[] $ecItemCategories
  * @property EcItemParamValue[] $ecItemParamValues
  * @property EcOrderItem[] $ecOrderItems
+ * @property EcCategory[] $categories
+ * @property array $category_ids
  */
 class EcItem extends \yii\db\ActiveRecord
 {
@@ -39,9 +43,11 @@ class EcItem extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['price', 'price_discunt'], 'number'],
+            [['price', 'price_discount'], 'number'],
             [['status'], 'integer'],
             [['title', 'subtitle', 'description', 'seo_description', 'seo_title', 'availible'], 'string', 'max' => 255],
+            [['category_ids'], 'each', 'rule' => ['integer']],
+            ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']],
         ];
     }
 
@@ -58,9 +64,11 @@ class EcItem extends \yii\db\ActiveRecord
             'seo_description' => Yii::t('app.f12.ecommerce', 'Description META'),
             'seo_title' => Yii::t('app.f12.ecommerce', 'Page title'),
             'price' => Yii::t('app.f12.ecommerce', 'Price'),
-            'price_discunt' => Yii::t('app.f12.ecommerce', 'Discount price'),
+            'price_discount' => Yii::t('app.f12.ecommerce', 'Discount price'),
             'availible' => Yii::t('app.f12.ecommerce', 'Available quantity'),
             'status' => Yii::t('app.f12.ecommerce', 'Item status'),
+            'category_ids' => Yii::t('app.f12.ecommerce', 'Linked categories'),
+            'images' => Yii::t('app.f12.ecommerce', 'Item images'),
         ];
     }
 
@@ -89,11 +97,40 @@ class EcItem extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategories()
+    {
+        return $this->hasMany(EcCategory::className(), ['id' => 'category_id'])
+            ->viaTable('{{ec_item_category}}', ['item_id' => 'id'])
+            ->inverseOf('items');
+    }
+
+    /**
      * {@inheritdoc}
      * @return \floor12\ecommerce\models\queries\EcItemQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\EcItemQuery(get_called_class());
+        return new EcItemQuery(get_called_class());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'files' => [
+                'class' => FileBehaviour::class,
+                'attributes' => ['images']
+            ],
+            'ManyToManyBehavior' => [
+                'class' => LinkerBehavior::class,
+                'relations' => [
+                    'category_ids' => 'categories',
+                ],
+            ],
+        ];
     }
 }

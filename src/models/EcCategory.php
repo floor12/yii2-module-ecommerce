@@ -2,6 +2,8 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\models\queries\EcCatego;
+use floor12\ecommerce\models\queries\EcCategoryQuery;
 use Yii;
 
 /**
@@ -13,7 +15,7 @@ use Yii;
  * @property int $status Category status
  *
  * @property EcItemCategory[] $ecItemCategories
- * @property EcItemParam[] $ecItemParams
+ * @property EcItemParam[] $params
  */
 class EcCategory extends \yii\db\ActiveRecord
 {
@@ -47,31 +49,71 @@ class EcCategory extends \yii\db\ActiveRecord
             'title' => Yii::t('app.f12.ecommerce', 'Category title'),
             'parent_id' => Yii::t('app.f12.ecommerce', 'Parent category'),
             'status' => Yii::t('app.f12.ecommerce', 'Category status'),
+            'items_total' => Yii::t('app.f12.ecommerce', 'Total items'),
+            'params_total' => Yii::t('app.f12.ecommerce', 'Total params'),
+            'children_total' => Yii::t('app.f12.ecommerce', 'Children'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcItemCategories()
+    public function getItems()
     {
-        return $this->hasMany(EcItemCategory::className(), ['category_id' => 'id']);
+        return $this->hasMany(EcItem::className(), ['id' => 'item_id'])
+            ->viaTable('{{%ec_item_category}}', ['category_id' => 'id'])
+            ->inverseOf('categories');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcItemParams()
+    public function getParams()
     {
-        return $this->hasMany(EcItemParam::className(), ['category_id' => 'id']);
+        return $this->hasMany(EcItemParam::className(), ['id' => 'param_id'])
+            ->viaTable('{{%ec_param_category}}', ['category_id' => 'id'])
+            ->inverseOf('categories');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChildren()
+    {
+        return $this->hasMany(self::className(), ['parent_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\EcCategoryQuery the active query used by this AR class.
+     * @return EcCatego
+     * Query the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\EcCategoryQuery(get_called_class());
+        return new EcCategoryQuery(get_called_class());
+    }
+
+    /**
+     * @return int
+     */
+    public function getItems_total()
+    {
+        return (int)$this->getItems()->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function getParams_total()
+    {
+        return (int)$this->getParams()->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function getChildren_total()
+    {
+        return (int)$this->getChildren()->count();
     }
 }

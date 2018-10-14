@@ -1,0 +1,11 @@
+a.btn-ecommerce-add {
+    float: right;
+    margin-top: -35px;
+}
+
+span.tag {
+    background-color: #dedede;
+    padding: 2px 5px;
+    font-size: 80%;
+    border-radius: 3px;
+}
