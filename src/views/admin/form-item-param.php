@@ -11,10 +11,11 @@
  *
  */
 
+use floor12\ecommerce\models\EcItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
+use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
 $form = ActiveForm::begin([
     'options' => ['class' => 'modaledit-form'],
@@ -34,14 +35,26 @@ $form = ActiveForm::begin([
     if ($model->params) foreach ($model->params as $key => $param) {
 
         if ($param['type_id'] == ParamType::STRING)
-            echo $form->field($model, "params_values[{$key}]")
-                ->label($model->params[$key]['label'])
-                ->textInput(['value' => $model->params[$key]['value']]);
+            echo $form->field($model, "params_values[{$key}]",
+                empty($param['unit']) ? [] : ['addon' => ['append' => ['content' => $param['unit']]]]
+            )
+                ->label($model->params[$key]['label']);
         else
-            echo $form->field($model, "params_values[{$key}]")
+            echo $form->field($model, "params_values[{$key}]",
+                empty($param['unit']) ? [] : ['addon' => ['append' => ['content' => $param['unit']]]]
+            )
                 ->label($model->params[$key]['label'])
                 ->widget(Select2::class, [
-                    'value' => $model->params[$key]['value']
+                    'data' => EcItemParamValue::find()
+                        ->select('value')
+                        ->indexBy('value')
+                        ->where(['param_id' => $key])
+                        ->orderBy('value')
+                        ->column(),
+                    'pluginOptions' => [
+                        'placeholder' => '',
+                        'tags' => true
+                    ]
                 ]);
     }
     ?>

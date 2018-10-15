@@ -32,7 +32,7 @@ class EcItemParamValue extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value', 'unit', 'param_id', 'item_id'], 'required'],
+            [['value', 'param_id', 'item_id'], 'required'],
             [['param_id', 'item_id'], 'integer'],
             [['value', 'unit'], 'string', 'max' => 255],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => EcItem::className(), 'targetAttribute' => ['item_id' => 'id']],

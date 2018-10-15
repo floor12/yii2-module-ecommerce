@@ -42,8 +42,17 @@ echo GridView::widget([
     'columns' => [
         'id',
         'title',
-        'price:currency',
-        'price_discount:currency',
+        [
+            'attribute' => 'price',
+            'content' => function (EcItem $model) {
+                return Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency);
+            },
+        ], [
+            'attribute' => 'price_discount',
+            'content' => function (EcItem $model) {
+                return Yii::$app->formatter->asCurrency($model->price_discount, Yii::$app->getModule('shop')->currency);
+            },
+        ],
         [
             'header' => Yii::t('app.f12.ecommerce', 'Linked categories'),
             'content' => function (EcItem $model) {
@@ -52,7 +61,7 @@ echo GridView::widget([
                 }, $model->categories));
             },
         ],
-
+        'availible',
         [
             'contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
             'content' => function (EcItem $model) {

@@ -13,9 +13,9 @@
 
 use floor12\files\components\FileInputWidget;
 use floor12\pages\components\Summernote;
+use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
 $form = ActiveForm::begin([
     'options' => ['class' => 'modaledit-form'],
@@ -51,10 +51,13 @@ $form = ActiveForm::begin([
 
     <div class="row">
         <div class="col-md-3">
-            <?= $form->field($model, 'price') ?>
+            <?= $form->field($model, 'price', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'price_discount') ?>
+            <?= $form->field($model, 'price_discount', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'availible') ?>
         </div>
     </div>
 

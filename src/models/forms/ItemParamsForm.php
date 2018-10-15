@@ -12,6 +12,7 @@ namespace floor12\ecommerce\models\forms;
 use floor12\ecommerce\models\EcItem;
 use floor12\ecommerce\models\EcItemParamValue;
 use http\Exception\InvalidArgumentException;
+use yii\base\ErrorException;
 use yii\base\Model;
 
 class ItemParamsForm extends Model
@@ -39,13 +40,24 @@ class ItemParamsForm extends Model
 
     /**
      * @inheritdoc
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            ['params_values', 'each', 'rule' => ['string']]
+        ];
+    }
+
+    /**
+     * @inheritdoc
      */
     public function init()
     {
         if ($this->_item->categories)
             foreach ($this->_item->categories as $category) {
                 foreach ($category->params as $parameter)
-                    $this->category_params[] = $parameter;
+                    $this->category_params[$parameter->id] = $parameter;
             }
 
         if ($this->category_params)
@@ -54,11 +66,34 @@ class ItemParamsForm extends Model
                     'label' => $category_param->title,
                     'unit' => $category_param->unit,
                     'type_id' => $category_param->type_id,
-                    'value' => EcItemParamValue::findOne([
-                        'param_id' => $category_param->id,
-                        'item_id' => $this->_item->id
-                    ])
+                    'value' => EcItemParamValue::find()
+                        ->where([
+                            'param_id' => $category_param->id,
+                            'item_id' => $this->_item->id
+                        ])
+                        ->select('value')
+                        ->scalar()
                 ];
+                $this->params_values[$key] = $this->params[$key]['value'];
             }
+    }
+
+    public function saveParams()
+    {
+        EcItemParamValue::deleteAll(['item_id' => $this->_item->id]);
+        if ($this->params_values)
+            foreach ($this->params_values as $param_id => $params_value) {
+                if (empty($params_value))
+                    continue;
+                $paramModel = new EcItemParamValue([
+                    'item_id' => $this->_item->id,
+                    'param_id' => $param_id,
+                    'value' => $params_value,
+                    'unit' => $this->params[$param_id]['unit']
+                ]);
+                if (!$paramModel->save())
+                    throw new ErrorException("Error while saving param: " . print_r($paramModel->errors, true));
+            }
+        return true;
     }
 }

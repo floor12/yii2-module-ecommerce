@@ -51,7 +51,7 @@ return [
     'Description META' => 'META description',
     'Item description' => 'Описание товара',
     'Save' => 'Сохранить',
-    '' => '',
-    '' => '',
+    'Available quantity' => 'Доступно на складе',
+    'Item parameters are saved.' => 'Атрибуты товара сохранены.',
     '' => '',
 ];

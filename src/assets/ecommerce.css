@@ -7,5 +7,6 @@ span.tag {
     background-color: #dedede;
     padding: 2px 5px;
     font-size: 80%;
+    margin: 2px;
     border-radius: 3px;
 }

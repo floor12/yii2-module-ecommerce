@@ -18,6 +18,7 @@ use floor12\ecommerce\models\filters\ParamFilter;
 use floor12\ecommerce\models\forms\ItemParamsForm;
 use floor12\editmodal\DeleteAction;
 use floor12\editmodal\EditModalAction;
+use floor12\editmodal\ModalWindow;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -98,6 +99,11 @@ class AdminController extends Controller
         return $this->render('param', ['model' => $model]);
     }
 
+    /** Updating item parameters
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionItemParams($id)
     {
         $item = EcItem::findOne((int)$id);
@@ -105,6 +111,14 @@ class AdminController extends Controller
             throw new NotFoundHttpException('Item is not found.');
 
         $model = new ItemParamsForm($item);
+        if (Yii::$app->request->isPost &&
+            $model->load(Yii::$app->request->post()) &&
+            $model->saveParams()) {
+            return Yii::createObject(ModalWindow::class, [])
+                ->info(Yii::t('app.f12.ecommerce', 'Item parameters are saved.'), ModalWindow::TYPE_OK)
+                ->hide()
+                ->run();
+        }
 
         return $this->renderAjax('form-item-param', ['model' => $model]);
     }
