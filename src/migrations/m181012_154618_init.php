@@ -44,7 +44,7 @@ class m181012_154618_init extends Migration
 
         $this->createIndex('idx-ec_item-status', '{{%ec_item}}', 'status');
         $this->createIndex('idx-ec_item-price', '{{%ec_item}}', 'price');
-        $this->createIndex('idx-ec_item-price_discunt', '{{%ec_item}}', 'price_discunt');
+        $this->createIndex('idx-ec_item-price_discount', '{{%ec_item}}', 'price_discount');
         $this->createIndex('idx-ec_item-availible', '{{%ec_item}}', 'availible');
 
         //item-category link
@@ -118,12 +118,11 @@ class m181012_154618_init extends Migration
         $this->addForeignKey('fk-ec_param_category-category', '{{%ec_param_category}}', 'category_id', '{{%ec_category}}', 'id', 'CASCADE', 'CASCADE');
 
 
-
         //item param values
         $this->createTable('{{%ec_item_param_value}}', [
             'id' => $this->primaryKey(),
             'value' => $this->string()->notNull()->comment('Parameter value'),
-            'unit' => $this->string()->notNull()->comment('Parameter unit of measure'),
+            'unit' => $this->string()->null()->comment('Parameter unit of measure'),
             'param_id' => $this->integer()->notNull()->comment('Parameter id'),
             'item_id' => $this->integer()->notNull()->comment('Item id'),
         ], $tableOptions);

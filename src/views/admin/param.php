@@ -21,6 +21,9 @@ use yii\widgets\Pjax;
 
 EcommerceAsset::register($this);
 
+$this->title = Yii::t('app.f12.ecommerce', 'Item parameters');
+
+
 echo Html::tag('h1', Yii::t('app.f12.ecommerce', 'Shop'));
 
 echo TabWidget::widget();
@@ -42,6 +45,7 @@ echo GridView::widget([
         'id',
         'title',
         'categories_total',
+        'unit',
         ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
             'content' => function (EcItemParam $model) {
                 return

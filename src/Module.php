@@ -25,6 +25,16 @@ class Module extends \yii\base\Module
      */
     public $editRole = '@';
 
+    /** Валюта магазига
+     * @var string
+     */
+    public $currency = 'RUB';
+
+    /** Знак валюты
+     * @var string
+     */
+    public $currencyLabel = '₽';
+
     /**
      * @inheritdoc
      */
