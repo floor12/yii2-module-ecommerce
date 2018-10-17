@@ -14,7 +14,8 @@ use Yii;
  * @property int $parent_id Parent category
  * @property int $status Category status
  *
- * @property EcItemCategory[] $ecItemCategories
+ * @property EcItemCategory[] $children
+ * @property EcItemCategory $parent
  * @property EcItemParam[] $params
  */
 class EcCategory extends \yii\db\ActiveRecord
@@ -60,7 +61,7 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(EcItem::className(), ['id' => 'item_id'])
+        return $this->hasMany(EcItem::class, ['id' => 'item_id'])
             ->viaTable('{{%ec_item_category}}', ['category_id' => 'id'])
             ->inverseOf('categories');
     }
@@ -70,7 +71,7 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public function getParams()
     {
-        return $this->hasMany(EcItemParam::className(), ['id' => 'param_id'])
+        return $this->hasMany(EcItemParam::class, ['id' => 'param_id'])
             ->viaTable('{{%ec_param_category}}', ['category_id' => 'id'])
             ->inverseOf('categories');
     }
@@ -80,7 +81,15 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public function getChildren()
     {
-        return $this->hasMany(self::className(), ['parent_id' => 'id']);
+        return $this->hasMany(self::class, ['parent_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
     }
 
     /**

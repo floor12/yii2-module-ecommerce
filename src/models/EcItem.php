@@ -102,8 +102,8 @@ class EcItem extends \yii\db\ActiveRecord
     public function getCategories()
     {
         return $this->hasMany(EcCategory::className(), ['id' => 'category_id'])
-            ->viaTable('{{ec_item_category}}', ['item_id' => 'id'])
-            ->inverseOf('items');
+            ->viaTable('{{ec_item_category}}', ['item_id' => 'id']);
+            //->inverseOf('items');
     }
 
     /**
