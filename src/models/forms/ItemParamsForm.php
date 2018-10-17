@@ -9,6 +9,7 @@
 namespace floor12\ecommerce\models\forms;
 
 
+use floor12\ecommerce\models\EcCategory;
 use floor12\ecommerce\models\EcItem;
 use floor12\ecommerce\models\EcItemParamValue;
 use http\Exception\InvalidArgumentException;
@@ -22,6 +23,7 @@ class ItemParamsForm extends Model
     public $params_values = [];
 
     private $_item;
+    private $_categories;
 
 
     /**
@@ -49,16 +51,29 @@ class ItemParamsForm extends Model
         ];
     }
 
+    private function addCategory(EcCategory $category)
+    {
+        $this->_categories[] = $category;
+        if ($category->parent)
+            $this->addCategory($category->parent);
+    }
+
     /**
      * @inheritdoc
      */
     public function init()
     {
         if ($this->_item->categories)
-            foreach ($this->_item->categories as $category) {
-                foreach ($category->params as $parameter)
-                    $this->category_params[$parameter->id] = $parameter;
+            foreach ($this->_item->categories as $category)
+                $this->addCategory($category);
+
+        if ($this->_categories)
+            foreach ($this->_categories as $category) {
+                if ($category->params)
+                    foreach ($category->params as $parameter)
+                        $this->category_params[$parameter->id] = $parameter;
             }
+
 
         if ($this->category_params)
             foreach ($this->category_params as $key => $category_param) {
