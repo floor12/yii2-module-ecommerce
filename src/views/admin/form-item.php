@@ -50,14 +50,17 @@ $form = ActiveForm::begin([
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'price', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'price_discount', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'availible') ?>
+        </div>
+        <div class="col-md-5">
+            <?= $form->field($model, 'external_id') ?>
         </div>
     </div>
 

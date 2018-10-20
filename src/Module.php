@@ -35,6 +35,16 @@ class Module extends \yii\base\Module
      */
     public $currencyLabel = '₽';
 
+    /** Кол-во товаров на странице
+     * @var integer
+     */
+    public $itemPerPage = 6;
+
+
+    public $viewIndex = '@vendor/floor12/yii2-module-ecommerce/src/views/category/index';
+    public $viewIndexListItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/_index';
+    public $viewView = '@vendor/floor12/yii2-module-ecommerce/src/views/category/view';
+
     /**
      * @inheritdoc
      */

@@ -137,6 +137,7 @@ class AdminController extends Controller
                 'message' => Yii::t('app.f12.ecommerce', 'Category is saved.'),
                 'viewParams' => [
                     'categories' => EcCategory::find()->dropbdown(),
+                    'params' => EcItemParam::find()->dropbdown(),
                 ],
             ],
             'category-delete' => [

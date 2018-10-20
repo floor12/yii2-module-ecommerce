@@ -12,6 +12,7 @@
  */
 
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -35,6 +36,20 @@ $form = ActiveForm::begin([
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'parent_id')->dropDownList($categories, ['prompt' => Yii::t('app.f12.ecommerce', 'none')]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'external_id') ?>
+        </div>
+
+        <div class="col-md-6">
+            <?= $form->field($model, 'param_ids')->widget(Select2::class, [
+                'data' => $params,
+                'language' => 'ru',
+                'options' => ['multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]) ?>
         </div>
     </div>
 

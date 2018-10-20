@@ -4,6 +4,7 @@ namespace floor12\ecommerce\models;
 
 use floor12\ecommerce\models\queries\EcCatego;
 use floor12\ecommerce\models\queries\EcCategoryQuery;
+use voskobovich\linker\LinkerBehavior;
 use Yii;
 
 /**
@@ -13,6 +14,7 @@ use Yii;
  * @property string $title Category title
  * @property int $parent_id Parent category
  * @property int $status Category status
+ * @property string $external_id External id
  *
  * @property EcItemCategory[] $children
  * @property EcItemCategory $parent
@@ -36,7 +38,8 @@ class EcCategory extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['parent_id', 'status'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['title', 'external_id'], 'string', 'max' => 255],
+            ['param_ids', 'each', 'rule' => ['integer']]
         ];
     }
 
@@ -53,6 +56,8 @@ class EcCategory extends \yii\db\ActiveRecord
             'items_total' => Yii::t('app.f12.ecommerce', 'Total items'),
             'params_total' => Yii::t('app.f12.ecommerce', 'Total params'),
             'children_total' => Yii::t('app.f12.ecommerce', 'Children'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
+            'param_ids' => Yii::t('app.f12.ecommerce', 'Linked parameters'),
         ];
     }
 
@@ -124,5 +129,20 @@ class EcCategory extends \yii\db\ActiveRecord
     public function getChildren_total()
     {
         return (int)$this->getChildren()->count();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'ManyToManyBehavior' => [
+                'class' => LinkerBehavior::class,
+                'relations' => [
+                    'param_ids' => 'params',
+                ],
+            ],
+        ];
     }
 }

@@ -10,3 +10,53 @@ span.tag {
     margin: 2px;
     border-radius: 3px;
 }
+
+div.f12-ec-items div.row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+div.f12-ec-items div.row div.col-md-4 {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+div.f12-ec-item {
+    margin-bottom: 10px;
+}
+
+a.f12-ec-item-info {
+    background-color: #dedfd961;
+    padding: 4px 6px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+a.f12-ec-item-info:hover {
+    text-decoration: none;
+    color: black;
+}
+
+div.f12-ec-item-title {
+    font-weight: 500;
+    color: black;
+}
+
+div.f12-ec-item-price {
+    flex: 1;
+    text-align: right;
+}
+
+div.f12-ec-item-price price {
+    display: block;
+}
+
+div.f12-ec-item-price price.discount {
+    color: red;
+    font-weight: 500;
+}
+
+div.f12-ec-item-price price.striked {
+    text-decoration: line-through;
+}

@@ -14,6 +14,7 @@ use Yii;
  * @property int $delivered Delivered
  * @property double $total Total cost
  * @property int $status Order status
+ * @property string $external_id External id
  * @property int $delivery_status Delivery status
  *
  * @property EcOrderItem[] $ecOrderItems
@@ -35,6 +36,7 @@ class EcOrder extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'created', 'updated'], 'required'],
+            ['external_id', 'string'],
             [['user_id', 'created', 'updated', 'delivered', 'status', 'delivery_status'], 'integer'],
             [['total'], 'number'],
         ];
@@ -54,6 +56,7 @@ class EcOrder extends \yii\db\ActiveRecord
             'total' => Yii::t('app.f12.ecommerce', 'Total cost'),
             'status' => Yii::t('app.f12.ecommerce', 'Order status'),
             'delivery_status' => Yii::t('app.f12.ecommerce', 'Delivery status'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
         ];
     }
 

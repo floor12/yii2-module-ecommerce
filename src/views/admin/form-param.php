@@ -47,6 +47,11 @@ $form = ActiveForm::begin([
                     'allowClear' => true
                 ],
             ]) ?>
+
+            <?= $form->field($model, 'external_id') ?>
+
+            <?= $form->field($model, 'hide')->checkbox() ?>
+
         </div>
     </div>
 </div>

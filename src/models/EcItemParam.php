@@ -2,9 +2,9 @@
 
 namespace floor12\ecommerce\models;
 
-use Yii;
-use \floor12\ecommerce\models\queries\EcItemParamQuery;
+use floor12\ecommerce\models\queries\EcItemParamQuery;
 use voskobovich\linker\LinkerBehavior;
+use Yii;
 
 /**
  * This is the model class for table "ec_item_param".
@@ -14,6 +14,8 @@ use voskobovich\linker\LinkerBehavior;
  * @property string $unit Parameter unit of measure
  * @property int $type_id Parameter type
  * @property int $category_id Category link
+ * @property string $external_id External id
+ * @property string $hide Hide on website
  *
  * @property EcCategory $category
  * @property EcItemParamValue[] $ecItemParamValues
@@ -35,7 +37,8 @@ class EcItemParam extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['type_id'], 'integer'],
+            [['type_id', 'hide'], 'integer'],
+            ['external_id', 'string'],
             [['title', 'unit'], 'string', 'max' => 255],
             [['category_ids'], 'each', 'rule' => ['integer']],
         ];
@@ -53,6 +56,8 @@ class EcItemParam extends \yii\db\ActiveRecord
             'type_id' => Yii::t('app.f12.ecommerce', 'Parameter type'),
             'category_ids' => Yii::t('app.f12.ecommerce', 'Linked categories'),
             'categories_total' => Yii::t('app.f12.ecommerce', 'Categories total'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
+            'hide' => Yii::t('app.f12.ecommerce', 'Hide on website'),
         ];
     }
 
