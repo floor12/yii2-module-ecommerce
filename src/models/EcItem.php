@@ -9,6 +9,7 @@ use floor12\pages\PageObjectInterface;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "ec_item".
@@ -147,6 +148,12 @@ class EcItem extends ActiveRecord implements PageObjectInterface
      */
     public function getUrl(): string
     {
-        return "/shop/catalog/{$this->id}.html";
+        return Url::toRoute(['/shop/category/item', 'id' => $this->id]);
+    }
+
+
+    public function getImages()
+    {
+        return $this->hasMany(File::class, ['object_id' => 'id'])->andWhere(['class' => self::class]);
     }
 }

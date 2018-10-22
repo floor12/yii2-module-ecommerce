@@ -9,10 +9,15 @@ namespace floor12\ecommerce\models\queries;
  */
 class EcItemParamValueQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+
+    /**
+     * @param integer $param_id
+     * @return EcItemParamValueQuery
+     */
+    public function param(int $param_id)
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere(['param_id' => $param_id]);
+    }
 
     /**
      * {@inheritdoc}

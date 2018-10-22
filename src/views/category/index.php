@@ -10,7 +10,9 @@
  *
  */
 
-use yii\widgets\ActiveForm;
+use floor12\ecommerce\components\ParameterInput;
+use kartik\form\ActiveForm;
+use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
@@ -19,14 +21,25 @@ use yii\widgets\Pjax;
 <h1><?= $model->category_title ?></h1>
 
 <?php $form = ActiveForm::begin([
-    'method' => 'GET'
+    'method' => 'GET',
+    'id' => 'f12-eccomerce-item-filter',
+    'options' => ['data-container' => '#items'],
 ]);
 ?>
 
 <div class="item-filter">
-
+    <div class="">
+        <?php
+        foreach ($model->params as $parameter)
+            echo Html::tag('div', ParameterInput::widget([
+                'category' => $model->getCategory(),
+                'parameter' => $parameter,
+                'form' => $form,
+                'filter' => $model
+            ]), ['class' => ''])
+        ?>
+    </div>
 </div>
-
 <?php ActiveForm::end() ?>
 
 

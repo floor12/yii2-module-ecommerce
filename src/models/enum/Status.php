@@ -10,14 +10,14 @@ namespace floor12\ecommerce\models\enum;
 
 use yii2mod\enum\helpers\BaseEnum;
 
-class ParamType extends BaseEnum
+class Status extends BaseEnum
 {
-    const CHECKBOX = 1;
-    const SLIDER = 0;
+    const ACTIVE = 0;
+    const DISABLED = 1;
 
     static public $list = [
-        self::CHECKBOX => 'Checkboxes',
-        self::SLIDER => 'Slider',
+        self::ACTIVE => 'Active',
+        self::DISABLED => 'Disabled',
     ];
 
     public static $messageCategory = 'app.f12.ecommerce';

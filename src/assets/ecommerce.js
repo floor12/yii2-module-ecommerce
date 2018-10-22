@@ -13,3 +13,32 @@ function initItemsIndexSwiper() {
         });
     }, 500);
 }
+
+
+timeout = setTimeout(function () {
+});
+
+$(document).on('change', '#f12-eccomerce-item-filter', function () {
+    submitForm($(this));
+})
+
+$(document).on('keyup', '#f12-eccomerce-item-filter', function () {
+    clearInterval(timeout);
+    form = $(this);
+    timeout = setTimeout(function () {
+        submitForm(form);
+    }, 1000);
+})
+
+function submitForm(form) {
+    method = form.attr('method');
+    action = form.attr('action');
+    container = form.data('container');
+    $.pjax.reload({
+        url: action,
+        method: method,
+        container: container,
+        data: form.serialize()
+    })
+
+}

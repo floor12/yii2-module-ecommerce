@@ -34,7 +34,7 @@ $form = ActiveForm::begin([
 
     if ($model->params) foreach ($model->params as $key => $param) {
 
-        if ($param['type_id'] == ParamType::STRING)
+        if ($param['type_id'] == ParamType::SLIDER)
             echo $form->field($model, "params_values[{$key}]",
                 empty($param['unit']) ? [] : ['addon' => ['append' => ['content' => $param['unit']]]]
             )

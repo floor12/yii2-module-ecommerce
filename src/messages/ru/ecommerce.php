@@ -39,8 +39,8 @@ return [
     'Parameter title' => 'Название атрибута',
     'Linked categories' => 'Связанные категории',
     'Categories total' => 'Связанных категорий',
-    'List' => 'Список',
-    'String' => 'Строка',
+    'Checkboxes' => 'Чекбоксы',
+    'Slider' => 'Слайдер',
     'Parameter type' => 'Тип атрибута',
     'Parameter unit of measure' => 'Единица измерения атрибута',
     'Item title' => 'Название товара',
@@ -56,5 +56,6 @@ return [
     'External indificator' => 'Внешний ключ (1С и пр.)',
     'Hide on website' => 'Не показывать на сайте',
     'Linked parameters' => 'Связанные атрибуты',
+    'Item is not found.' => 'Товар не найден.',
     '' => '',
 ];

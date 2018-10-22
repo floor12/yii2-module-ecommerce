@@ -41,9 +41,12 @@ class Module extends \yii\base\Module
     public $itemPerPage = 6;
 
 
+    /** View paths
+     * @var string
+     */
     public $viewIndex = '@vendor/floor12/yii2-module-ecommerce/src/views/category/index';
     public $viewIndexListItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/_index';
-    public $viewView = '@vendor/floor12/yii2-module-ecommerce/src/views/category/view';
+    public $viewItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/item';
 
     /**
      * @inheritdoc
