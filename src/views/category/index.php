@@ -15,6 +15,7 @@ use kartik\form\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use yii2mod\slider\IonSlider;
 
 ?>
 
@@ -28,18 +29,57 @@ use yii\widgets\Pjax;
 ?>
 
 <div class="item-filter">
-    <div class="">
-        <?php
-        foreach ($model->params as $parameter)
-            echo Html::tag('div', ParameterInput::widget([
+
+    <div class="item-filter-sliders <?= (sizeof($model->slider_params) % 2 == 0) ? 'item-filter-sliders-wide' : NULL ?>">
+
+        <?= Html::tag('div', $form
+            ->field($model, "price")
+            ->widget(IonSlider::class, [
+                'pluginOptions' => [
+                    'keyboard' => false,
+                    'postfix' => ' ' . Yii::$app->getModule('shop')->currencyLabel,
+                    'min' => $model->price_min,
+                    'max' => $model->price_max,
+                    'grid' => true,
+                    'force_edges' => true,
+                    'type' => 'double',
+                    'step' => 1,
+                ]
+            ])
+            ->label(Yii::t('app.f12.ecommerce', 'Price')), ['class' => 'f12-ecommerce-slider-block']);
+        ?>
+
+        <?php foreach ($model->slider_params as $parameter)
+            echo ParameterInput::widget([
                 'category' => $model->getCategory(),
                 'parameter' => $parameter,
                 'form' => $form,
                 'filter' => $model
-            ]), ['class' => ''])
-        ?>
+            ]) ?>
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="item-filter-checkboxes">
+        <?php foreach ($model->checkbox_params as $parameter)
+            echo ParameterInput::widget([
+                'category' => $model->getCategory(),
+                'parameter' => $parameter,
+                'form' => $form,
+                'filter' => $model
+            ]) ?>
+
+
+        <div data-toggle="buttons" class="pull-right">
+            <label class="btn btn-default btn-sm">
+                <input type="checkbox" autocomplete="off" <?= $model->discount ? "checked=checked" : NULL ?>
+                       name="ItemFrontendFilter[discount]"> <?= Yii::t('app.f12.ecommerce', 'only discounted goods') ?>
+            </label>
+        </div>
+
+        <div class="clearfix"></div>
     </div>
 </div>
+
 <?php ActiveForm::end() ?>
 
 

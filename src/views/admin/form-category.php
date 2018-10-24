@@ -51,6 +51,9 @@ $form = ActiveForm::begin([
                 ],
             ]) ?>
         </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'status')->checkbox() ?>
+        </div>
     </div>
 
 </div>

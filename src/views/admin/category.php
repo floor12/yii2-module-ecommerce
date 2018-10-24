@@ -12,6 +12,7 @@
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\EcCategory;
+use floor12\ecommerce\models\enum\Status;
 use floor12\editmodal\EditModalHelper;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
@@ -38,6 +39,10 @@ Pjax::begin(['id' => 'items']);
 echo GridView::widget([
     'dataProvider' => $model->dataProvider(),
     'tableOptions' => ['class' => 'table table-striped'],
+    'rowOptions' => function (EcCategory $model) {
+        if ($model->status == Status::DISABLED)
+            return ['class' => 'disabled'];
+    },
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
         'id',

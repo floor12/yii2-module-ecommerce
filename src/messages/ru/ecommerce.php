@@ -57,5 +57,7 @@ return [
     'Hide on website' => 'Не показывать на сайте',
     'Linked parameters' => 'Связанные атрибуты',
     'Item is not found.' => 'Товар не найден.',
+    'Disable category' => 'Выключить категорию',
+    'only discounted goods' => 'только товары со скидкой',
     '' => '',
 ];

@@ -2,6 +2,7 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\queries\EcCatego;
 use floor12\ecommerce\models\queries\EcCategoryQuery;
 use voskobovich\linker\LinkerBehavior;
@@ -16,9 +17,11 @@ use Yii;
  * @property int $status Category status
  * @property string $external_id External id
  *
- * @property EcItemCategory[] $children
- * @property EcItemCategory $parent
+ * @property EcCategory[] $children
+ * @property EcCategory $parent
  * @property EcItemParam[] $params
+ * @property EcItemParam[] $checkbox_params
+ * @property EcItemParam[] $slider_params
  */
 class EcCategory extends \yii\db\ActiveRecord
 {
@@ -52,7 +55,7 @@ class EcCategory extends \yii\db\ActiveRecord
             'id' => Yii::t('app.f12.ecommerce', 'ID'),
             'title' => Yii::t('app.f12.ecommerce', 'Category title'),
             'parent_id' => Yii::t('app.f12.ecommerce', 'Parent category'),
-            'status' => Yii::t('app.f12.ecommerce', 'Category status'),
+            'status' => Yii::t('app.f12.ecommerce', 'Disable category'),
             'items_total' => Yii::t('app.f12.ecommerce', 'Total items'),
             'params_total' => Yii::t('app.f12.ecommerce', 'Total params'),
             'children_total' => Yii::t('app.f12.ecommerce', 'Children'),
@@ -78,8 +81,26 @@ class EcCategory extends \yii\db\ActiveRecord
     {
         return $this->hasMany(EcItemParam::class, ['id' => 'param_id'])
             ->viaTable('{{%ec_param_category}}', ['category_id' => 'id'])
+            ->orderBy('type_id')
             ->inverseOf('categories');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCheckbox_params()
+    {
+        return $this->getParams()->andWhere(['type_id' => ParamType::CHECKBOX]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSlider_params()
+    {
+        return $this->getParams()->andWhere(['type_id' => ParamType::SLIDER]);
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

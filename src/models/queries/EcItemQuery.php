@@ -2,6 +2,9 @@
 
 namespace floor12\ecommerce\models\queries;
 
+use floor12\ecommerce\models\EcCategory;
+use floor12\ecommerce\models\enum\Status;
+
 /**
  * This is the ActiveQuery class for [[\floor12\ecommerce\models\EcItem]].
  *
@@ -9,10 +12,40 @@ namespace floor12\ecommerce\models\queries;
  */
 class EcItemQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+
+
+    private $_categories = [];
+
+    /**
+     * @return EcItemQuery
+     */
+    public function active()
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere(['status' => Status::ACTIVE]);
+    }
+
+    /**
+     * @param int $category_id
+     * @return EcItemQuery
+     */
+    public function category(EcCategory $category)
+    {
+        $this->addCategory([$category]);
+
+        $ids = array_map(function ($cat) {
+            return "'$cat->id'";
+        }, $this->_categories);
+        $cat_ids = implode(',', $ids);
+        return $this->andWhere("id IN (SELECT item_id FROM ec_item_category WHERE category_id IN ({$cat_ids}))");
+    }
+
+
+    private function addCategory(array $categories)
+    {
+        $this->_categories = array_merge($this->_categories, $categories);
+        foreach ($categories as $category)
+            $this->addCategory($category->children);
+    }
 
     /**
      * {@inheritdoc}

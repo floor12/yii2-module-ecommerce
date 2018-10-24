@@ -14,8 +14,9 @@ use floor12\ecommerce\models\EcItemParam;
 use floor12\ecommerce\models\EcItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
-use kartik\slider\Slider;
 use yii\base\Widget;
+use yii\helpers\Html;
+use yii2mod\slider\IonSlider;
 
 /**
  * Class ParameterInput
@@ -62,11 +63,11 @@ class ParameterInput extends Widget
             ->distinct()
             ->column();
 
-        return $this
+        return Html::tag('div', $this
             ->form
-            ->field($this->filter, "param_values[{$this->parameter->id}]")
-            ->checkboxButtonGroup($this->_values)
-            ->label($this->parameter->title);
+            ->field($this->filter, "param_values[{$this->parameter->id}]", ['addon' => ['prepend' => ['content' => $this->parameter->title]]])
+            ->checkboxButtonGroup($this->_values, ['class' => 'btn-group-sm'])
+            ->label(false), ['class' => 'f12-ecommerce-checkbox-block']);
     }
 
     /**
@@ -76,24 +77,30 @@ class ParameterInput extends Widget
     private function renderSlider()
     {
 
-        $this->_values = EcItemParamValue::find()
-            ->select('value')
-            ->indexBy('value')
+        $this->_values['min'] = EcItemParamValue::find()
             ->param($this->parameter->id)
-            ->distinct()
-            ->column();
+            ->min('value');
 
-        return $this
+        $this->_values['max'] = EcItemParamValue::find()
+            ->param($this->parameter->id)
+            ->max('value');
+
+        return Html::tag('div', $this
             ->form
             ->field($this->filter, "param_values[{$this->parameter->id}]")
-            ->widget(Slider::classname(), [
+            ->widget(IonSlider::class, [
                 'pluginOptions' => [
-                    'min' => 0,
-                    'max' => 20,
-                    'step' => 1
+                    'keyboard' => false,
+                    'force_edges' => true,
+                    'postfix' => ' ' . $this->parameter->unit,
+                    'min' => $this->_values['min'] ?: 0,
+                    'max' => $this->_values['max'] ?: 0,
+                    'grid' => true,
+                    'type' => 'double',
+                    'step' => 1,
                 ]
             ])
-            ->label($this->parameter->title);
+            ->label($this->parameter->title), ['class' => 'f12-ecommerce-slider-block']);
 
     }
 

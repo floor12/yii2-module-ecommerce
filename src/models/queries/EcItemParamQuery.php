@@ -9,6 +9,15 @@ namespace floor12\ecommerce\models\queries;
  */
 class EcItemParamQuery extends \yii\db\ActiveQuery
 {
+
+    /**
+     * @return EcItemParamQuery
+     */
+    public function active()
+    {
+        return $this->andWhere(['hide' => false]);
+    }
+
     /**
      * @return array
      */

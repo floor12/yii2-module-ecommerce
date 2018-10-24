@@ -25,6 +25,7 @@ use yii\helpers\Url;
  * @property string $availible Available quantity
  * @property string $external_id External id
  * @property int $status Item status
+ * @property int $parent_id Parent intem ID
  * @property string $url item view url
  *
  * @property EcItemParamValue[] $ecItemParamValues

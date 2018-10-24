@@ -40,6 +40,10 @@ Pjax::begin(['id' => 'items']);
 echo GridView::widget([
     'dataProvider' => $model->dataProvider(),
     'tableOptions' => ['class' => 'table table-striped'],
+    'rowOptions' => function (EcItemParam $model) {
+        if ($model->hide)
+            return ['class' => 'disabled'];
+    },
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
         'id',

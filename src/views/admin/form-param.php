@@ -50,7 +50,7 @@ $form = ActiveForm::begin([
 
             <?= $form->field($model, 'external_id') ?>
 
-            <?= $form->field($model, 'hide')->checkbox() ?>
+            <?= $form->field($model, 'hide')->checkbox(['style' => 'margin-top:35px']) ?>
 
         </div>
     </div>
