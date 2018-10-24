@@ -3,11 +3,11 @@
 namespace floor12\ecommerce\models\queries;
 
 /**
- * This is the ActiveQuery class for [[\floor12\ecommerce\models\EcCategory]].
+ * This is the ActiveQuery class for [[\floor12\ecommerce\models\Category]].
  *
- * @see \floor12\ecommerce\models\EcCategory
+ * @see \floor12\ecommerce\models\Category
  */
-class EcCategoryQuery extends \yii\db\ActiveQuery
+class CategoryQuery extends \yii\db\ActiveQuery
 {
     /**
      * @return array
@@ -23,7 +23,7 @@ class EcCategoryQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcCategory[]|array
+     * @return \floor12\ecommerce\models\Category[]|array
      */
     public function all($db = null)
     {
@@ -32,7 +32,7 @@ class EcCategoryQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcCategory|array|null
+     * @return \floor12\ecommerce\models\Category|array|null
      */
     public function one($db = null)
     {

@@ -10,10 +10,10 @@ namespace floor12\ecommerce\models\filters;
 
 
 use app\components\Pagination;
-use floor12\ecommerce\models\EcCategory;
-use floor12\ecommerce\models\EcItem;
-use floor12\ecommerce\models\EcItemParam;
-use floor12\ecommerce\models\EcItemParamValue;
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParam;
+use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
 use Yii;
 use yii\base\Model;
@@ -22,9 +22,9 @@ use yii\data\ActiveDataProvider;
 /**
  * Class ItemFrontendFilter
  * @package floor12\ecommerce\models\filters
- * @property EcItemParam[] $params
- * @property EcItemParam[] $chechbox_params
- * @property EcItemParam[] $slider_params
+ * @property ItemParam[] $params
+ * @property ItemParam[] $chechbox_params
+ * @property ItemParam[] $slider_params
  * @property integer $category_id
  * @property string $category_title
  * @property ar\ $param_values
@@ -50,13 +50,13 @@ class ItemFrontendFilter extends Model
     public function init()
     {
         if ($this->category_id) {
-            $this->_category = EcCategory::findOne((int)$this->category_id);
+            $this->_category = Category::findOne((int)$this->category_id);
             $this->category_title = $this->_category->title;
             $this->slider_params = $this->_category->getSlider_params()->active()->all();
             $this->checkbox_params = $this->_category->getCheckbox_params()->active()->all();
             $this->params = array_merge($this->slider_params, $this->checkbox_params);
-            $this->price_min = (int)EcItem::find()->active()->category($this->_category)->min('price');
-            $this->price_max = (int)EcItem::find()->active()->category($this->_category)->max('price');
+            $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
+            $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
         } else {
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
         }
@@ -74,7 +74,7 @@ class ItemFrontendFilter extends Model
     }
 
     /**
-     * @return EcCategory|null
+     * @return Category|null
      */
     public function getCategory()
     {
@@ -87,7 +87,7 @@ class ItemFrontendFilter extends Model
      */
     public function dataProvider()
     {
-        $query = EcItem::find()->with('images');
+        $query = Item::find()->with('images');
 
         if ($this->price) {
             list($price_min, $price_max) = explode(';', $this->price);
@@ -102,7 +102,7 @@ class ItemFrontendFilter extends Model
             if (!$param_value)
                 continue;
 
-            $parameter = EcItemParam::findOne($param_id);
+            $parameter = ItemParam::findOne($param_id);
 
             if ($parameter->type_id == ParamType::CHECKBOX) {
                 $param_value = array_map(
@@ -112,13 +112,13 @@ class ItemFrontendFilter extends Model
                     $param_value
                 );
                 $values = implode(',', $param_value);
-                $query->andWhere("id IN (SELECT item_id FROM " . EcItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
+                $query->andWhere("id IN (SELECT item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
             }
 
             if ($parameter->type_id == ParamType::SLIDER) {
                 list($min, $max) = explode(';', $param_value);
                 if ($min && $max)
-                    $query->andWhere("id IN (SELECT item_id FROM " . EcItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
+                    $query->andWhere("id IN (SELECT item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
             }
 
         }
@@ -136,7 +136,7 @@ class ItemFrontendFilter extends Model
 
     /**
      * @param int $param_id
-     * @return EcItemParam
+     * @return ItemParam
      */
     private function getParameter(int $param_id)
     {

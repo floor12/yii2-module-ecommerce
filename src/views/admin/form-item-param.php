@@ -11,7 +11,7 @@
  *
  */
 
-use floor12\ecommerce\models\EcItemParamValue;
+use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
@@ -45,7 +45,7 @@ $form = ActiveForm::begin([
             )
                 ->label($model->params[$key]['label'])
                 ->widget(Select2::class, [
-                    'data' => EcItemParamValue::find()
+                    'data' => ItemParamValue::find()
                         ->select('value')
                         ->indexBy('value')
                         ->where(['param_id' => $key])

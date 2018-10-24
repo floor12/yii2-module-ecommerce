@@ -9,9 +9,9 @@
 namespace floor12\ecommerce\models\forms;
 
 
-use floor12\ecommerce\models\EcCategory;
-use floor12\ecommerce\models\EcItem;
-use floor12\ecommerce\models\EcItemParamValue;
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParamValue;
 use http\Exception\InvalidArgumentException;
 use yii\base\ErrorException;
 use yii\base\Model;
@@ -28,9 +28,9 @@ class ItemParamsForm extends Model
 
     /**
      * ItemParamsForm constructor.
-     * @param EcItem $item
+     * @param Item $item
      */
-    public function __construct(EcItem $item)
+    public function __construct(Item $item)
     {
         if ($item->isNewRecord)
             throw new InvalidArgumentException('Item is new record.');
@@ -51,7 +51,7 @@ class ItemParamsForm extends Model
         ];
     }
 
-    private function addCategory(EcCategory $category)
+    private function addCategory(Category $category)
     {
         $this->_categories[] = $category;
         if ($category->parent)
@@ -81,7 +81,7 @@ class ItemParamsForm extends Model
                     'label' => $category_param->title,
                     'unit' => $category_param->unit,
                     'type_id' => $category_param->type_id,
-                    'value' => EcItemParamValue::find()
+                    'value' => ItemParamValue::find()
                         ->where([
                             'param_id' => $category_param->id,
                             'item_id' => $this->_item->id
@@ -95,12 +95,12 @@ class ItemParamsForm extends Model
 
     public function saveParams()
     {
-        EcItemParamValue::deleteAll(['item_id' => $this->_item->id]);
+        ItemParamValue::deleteAll(['item_id' => $this->_item->id]);
         if ($this->params_values)
             foreach ($this->params_values as $param_id => $params_value) {
                 if (empty($params_value))
                     continue;
-                $paramModel = new EcItemParamValue([
+                $paramModel = new ItemParamValue([
                     'item_id' => $this->_item->id,
                     'param_id' => $param_id,
                     'value' => $params_value,

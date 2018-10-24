@@ -9,8 +9,8 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\EcCategory;
-use floor12\ecommerce\models\queries\EcCategoryQuery;
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\queries\CategoryQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -19,7 +19,7 @@ use yii\data\ActiveDataProvider;
  * @package floor12\ecommerce\models\filters
  * @property string $filter
  * @property integer $status
- * @property EcCategoryQuery $_query
+ * @property CategoryQuery $_query
  */
 class CategoryFilter extends Model
 {
@@ -41,7 +41,7 @@ class CategoryFilter extends Model
 
     public function dataProvider()
     {
-        $this->_query = EcCategory::find()
+        $this->_query = Category::find()
             ->andFilterWhere(['=', 'status', $this->status]);
 
 

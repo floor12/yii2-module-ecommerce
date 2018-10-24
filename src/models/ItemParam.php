@@ -2,7 +2,7 @@
 
 namespace floor12\ecommerce\models;
 
-use floor12\ecommerce\models\queries\EcItemParamQuery;
+use floor12\ecommerce\models\queries\ItemParamQuery;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 
@@ -17,10 +17,10 @@ use Yii;
  * @property string $external_id External id
  * @property string $hide Hide on website
  *
- * @property EcCategory $category
- * @property EcItemParamValue[] $ecItemParamValues
+ * @property Category $category
+ * @property ItemParamValue[] $ecItemParamValues
  */
-class EcItemParam extends \yii\db\ActiveRecord
+class ItemParam extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -66,7 +66,7 @@ class EcItemParam extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(EcCategory::className(), ['id' => 'category_id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable('{{ec_param_category}}', ['param_id' => 'id'])
             ->inverseOf('params');
     }
@@ -76,16 +76,16 @@ class EcItemParam extends \yii\db\ActiveRecord
      */
     public function getEcItemParamValues()
     {
-        return $this->hasMany(EcItemParamValue::className(), ['param_id' => 'id']);
+        return $this->hasMany(ItemParamValue::className(), ['param_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return EcItemParamQuery the active query used by this AR class.
+     * @return ItemParamQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new EcItemParamQuery(get_called_class());
+        return new ItemParamQuery(get_called_class());
     }
 
     /**

@@ -11,7 +11,7 @@
 
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
-use floor12\ecommerce\models\EcItem;
+use floor12\ecommerce\models\Item;
 use floor12\editmodal\EditModalHelper;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
@@ -44,18 +44,18 @@ echo GridView::widget([
         'title',
         [
             'attribute' => 'price',
-            'content' => function (EcItem $model) {
+            'content' => function (Item $model) {
                 return Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency);
             },
         ], [
             'attribute' => 'price_discount',
-            'content' => function (EcItem $model) {
+            'content' => function (Item $model) {
                 return Yii::$app->formatter->asCurrency($model->price_discount, Yii::$app->getModule('shop')->currency);
             },
         ],
         [
             'header' => Yii::t('app.f12.ecommerce', 'Linked categories'),
-            'content' => function (EcItem $model) {
+            'content' => function (Item $model) {
                 return implode(array_map(function ($model) {
                     return Html::tag('span', $model->title, ['class' => 'tag']);
                 }, $model->categories));
@@ -64,7 +64,7 @@ echo GridView::widget([
         'availible',
         [
             'contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
-            'content' => function (EcItem $model) {
+            'content' => function (Item $model) {
                 return
                     Html::a(FontAwesome::icon('list'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/item-params', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
                     Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/item-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .

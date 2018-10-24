@@ -2,22 +2,22 @@
 
 namespace floor12\ecommerce\models\queries;
 
-use floor12\ecommerce\models\EcCategory;
+use floor12\ecommerce\models\Category;
 use floor12\ecommerce\models\enum\Status;
 
 /**
- * This is the ActiveQuery class for [[\floor12\ecommerce\models\EcItem]].
+ * This is the ActiveQuery class for [[\floor12\ecommerce\models\Item]].
  *
- * @see \floor12\ecommerce\models\EcItem
+ * @see \floor12\ecommerce\models\Item
  */
-class EcItemQuery extends \yii\db\ActiveQuery
+class ItemQuery extends \yii\db\ActiveQuery
 {
 
 
     private $_categories = [];
 
     /**
-     * @return EcItemQuery
+     * @return ItemQuery
      */
     public function active()
     {
@@ -26,9 +26,9 @@ class EcItemQuery extends \yii\db\ActiveQuery
 
     /**
      * @param int $category_id
-     * @return EcItemQuery
+     * @return ItemQuery
      */
-    public function category(EcCategory $category)
+    public function category(Category $category)
     {
         $this->addCategory([$category]);
 
@@ -49,7 +49,7 @@ class EcItemQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcItem[]|array
+     * @return \floor12\ecommerce\models\Item[]|array
      */
     public function all($db = null)
     {
@@ -58,7 +58,7 @@ class EcItemQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcItem|array|null
+     * @return \floor12\ecommerce\models\Item|array|null
      */
     public function one($db = null)
     {

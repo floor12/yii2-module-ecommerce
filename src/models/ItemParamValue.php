@@ -13,10 +13,10 @@ use Yii;
  * @property int $param_id Parameter id
  * @property int $item_id Item id
  *
- * @property EcItem $item
- * @property EcItemParam $param
+ * @property Item $item
+ * @property ItemParam $param
  */
-class EcItemParamValue extends \yii\db\ActiveRecord
+class ItemParamValue extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -35,8 +35,8 @@ class EcItemParamValue extends \yii\db\ActiveRecord
             [['value', 'param_id', 'item_id'], 'required'],
             [['param_id', 'item_id'], 'integer'],
             [['value', 'unit'], 'string', 'max' => 255],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => EcItem::className(), 'targetAttribute' => ['item_id' => 'id']],
-            [['param_id'], 'exist', 'skipOnError' => true, 'targetClass' => EcItemParam::className(), 'targetAttribute' => ['param_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['param_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemParam::className(), 'targetAttribute' => ['param_id' => 'id']],
         ];
     }
 
@@ -59,7 +59,7 @@ class EcItemParamValue extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(EcItem::className(), ['id' => 'item_id']);
+        return $this->hasOne(Item::className(), ['id' => 'item_id']);
     }
 
     /**
@@ -67,15 +67,15 @@ class EcItemParamValue extends \yii\db\ActiveRecord
      */
     public function getParam()
     {
-        return $this->hasOne(EcItemParam::className(), ['id' => 'param_id']);
+        return $this->hasOne(ItemParam::className(), ['id' => 'param_id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\EcItemParamValueQuery the active query used by this AR class.
+     * @return \floor12\ecommerce\models\queries\ItemParamValueQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\EcItemParamValueQuery(get_called_class());
+        return new \floor12\ecommerce\models\queries\ItemParamValueQuery(get_called_class());
     }
 }

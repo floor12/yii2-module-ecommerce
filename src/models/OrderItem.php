@@ -15,10 +15,10 @@ use Yii;
  * @property int $price Item price
  * @property int $order_status Order status
  *
- * @property EcItem $item
- * @property EcOrder $order
+ * @property Item $item
+ * @property Order $order
  */
-class EcOrderItem extends \yii\db\ActiveRecord
+class OrderItem extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,8 +36,8 @@ class EcOrderItem extends \yii\db\ActiveRecord
         return [
             [['user_id', 'item_id', 'created', 'order_id', 'price'], 'required'],
             [['user_id', 'item_id', 'created', 'order_id', 'price', 'order_status'], 'integer'],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => EcItem::className(), 'targetAttribute' => ['item_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => EcOrder::className(), 'targetAttribute' => ['order_id' => 'id']],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
         ];
     }
 
@@ -62,7 +62,7 @@ class EcOrderItem extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(EcItem::className(), ['id' => 'item_id']);
+        return $this->hasOne(Item::className(), ['id' => 'item_id']);
     }
 
     /**
@@ -70,15 +70,15 @@ class EcOrderItem extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(EcOrder::className(), ['id' => 'order_id']);
+        return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\EcOrderItemQuery the active query used by this AR class.
+     * @return \floor12\ecommerce\models\queries\OrderItemQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\EcOrderItemQuery(get_called_class());
+        return new \floor12\ecommerce\models\queries\OrderItemQuery(get_called_class());
     }
 }

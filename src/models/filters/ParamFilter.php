@@ -9,7 +9,7 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\EcItemParam;
+use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\queries\EcParamQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -41,7 +41,7 @@ class ParamFilter extends Model
 
     public function dataProvider()
     {
-        $this->_query = EcItemParam::find()
+        $this->_query = ItemParam::find()
             ->andFilterWhere(['=', 'status', $this->status]);
 
 

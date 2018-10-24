@@ -4,7 +4,7 @@ namespace floor12\ecommerce\models;
 
 use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\queries\EcCatego;
-use floor12\ecommerce\models\queries\EcCategoryQuery;
+use floor12\ecommerce\models\queries\CategoryQuery;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 
@@ -17,13 +17,13 @@ use Yii;
  * @property int $status Category status
  * @property string $external_id External id
  *
- * @property EcCategory[] $children
- * @property EcCategory $parent
- * @property EcItemParam[] $params
- * @property EcItemParam[] $checkbox_params
- * @property EcItemParam[] $slider_params
+ * @property Category[] $children
+ * @property Category $parent
+ * @property ItemParam[] $params
+ * @property ItemParam[] $checkbox_params
+ * @property ItemParam[] $slider_params
  */
-class EcCategory extends \yii\db\ActiveRecord
+class Category extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -69,7 +69,7 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(EcItem::class, ['id' => 'item_id'])
+        return $this->hasMany(Item::class, ['id' => 'item_id'])
             ->viaTable('{{%ec_item_category}}', ['category_id' => 'id'])
             ->inverseOf('categories');
     }
@@ -79,7 +79,7 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public function getParams()
     {
-        return $this->hasMany(EcItemParam::class, ['id' => 'param_id'])
+        return $this->hasMany(ItemParam::class, ['id' => 'param_id'])
             ->viaTable('{{%ec_param_category}}', ['category_id' => 'id'])
             ->orderBy('type_id')
             ->inverseOf('categories');
@@ -125,7 +125,7 @@ class EcCategory extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new EcCategoryQuery(get_called_class());
+        return new CategoryQuery(get_called_class());
     }
 
     /**

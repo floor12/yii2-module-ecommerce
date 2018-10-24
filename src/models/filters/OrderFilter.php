@@ -9,8 +9,8 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\EcOrder;
-use floor12\ecommerce\models\queries\EcOrderQuery;
+use floor12\ecommerce\models\Order;
+use floor12\ecommerce\models\queries\OrderQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -19,7 +19,7 @@ use yii\data\ActiveDataProvider;
  * @package floor12\ecommerce\models\filters
  * @property string $filter
  * @property integer $status
- * @property EcOrderQuery $_query
+ * @property OrderQuery $_query
  */
 class OrderFilter extends Model
 {
@@ -41,7 +41,7 @@ class OrderFilter extends Model
 
     public function dataProvider()
     {
-        $this->_query = EcOrder::find()
+        $this->_query = Order::find()
             ->andFilterWhere(['=', 'status', $this->status]);
 
 

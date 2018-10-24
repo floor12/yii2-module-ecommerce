@@ -3,16 +3,16 @@
 namespace floor12\ecommerce\models\queries;
 
 /**
- * This is the ActiveQuery class for [[\floor12\ecommerce\models\EcItemParamValue]].
+ * This is the ActiveQuery class for [[\floor12\ecommerce\models\ItemParamValue]].
  *
- * @see \floor12\ecommerce\models\EcItemParamValue
+ * @see \floor12\ecommerce\models\ItemParamValue
  */
-class EcItemParamValueQuery extends \yii\db\ActiveQuery
+class ItemParamValueQuery extends \yii\db\ActiveQuery
 {
 
     /**
      * @param integer $param_id
-     * @return EcItemParamValueQuery
+     * @return ItemParamValueQuery
      */
     public function param(int $param_id)
     {
@@ -21,7 +21,7 @@ class EcItemParamValueQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcItemParamValue[]|array
+     * @return \floor12\ecommerce\models\ItemParamValue[]|array
      */
     public function all($db = null)
     {
@@ -30,7 +30,7 @@ class EcItemParamValueQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcItemParamValue|array|null
+     * @return \floor12\ecommerce\models\ItemParamValue|array|null
      */
     public function one($db = null)
     {

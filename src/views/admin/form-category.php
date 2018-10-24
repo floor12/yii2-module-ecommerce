@@ -6,7 +6,7 @@
  * Time: 11:13
  *
  * @var $this \yii\web\View
- * @var $model \floor12\ecommerce\models\EcCategory
+ * @var $model \floor12\ecommerce\models\Category
  * @var $categories array
  *
  */

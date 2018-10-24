@@ -2,7 +2,7 @@
 
 namespace floor12\ecommerce\models;
 
-use floor12\ecommerce\models\queries\EcItemQuery;
+use floor12\ecommerce\models\queries\ItemQuery;
 use floor12\files\components\FileBehaviour;
 use floor12\files\models\File;
 use floor12\pages\PageObjectInterface;
@@ -28,13 +28,13 @@ use yii\helpers\Url;
  * @property int $parent_id Parent intem ID
  * @property string $url item view url
  *
- * @property EcItemParamValue[] $ecItemParamValues
- * @property EcOrderItem[] $ecOrderItems
- * @property EcCategory[] $categories
+ * @property ItemParamValue[] $ecItemParamValues
+ * @property OrderItem[] $ecOrderItems
+ * @property Category[] $categories
  * @property array $category_ids
  * @property File[] $images
  */
-class EcItem extends ActiveRecord implements PageObjectInterface
+class Item extends ActiveRecord implements PageObjectInterface
 {
     /**
      * {@inheritdoc}
@@ -95,7 +95,7 @@ class EcItem extends ActiveRecord implements PageObjectInterface
      */
     public function getEcItemParamValues()
     {
-        return $this->hasMany(EcItemParamValue::className(), ['item_id' => 'id']);
+        return $this->hasMany(ItemParamValue::className(), ['item_id' => 'id']);
     }
 
     /**
@@ -103,7 +103,7 @@ class EcItem extends ActiveRecord implements PageObjectInterface
      */
     public function getEcOrderItems()
     {
-        return $this->hasMany(EcOrderItem::className(), ['item_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['item_id' => 'id']);
     }
 
     /**
@@ -111,18 +111,18 @@ class EcItem extends ActiveRecord implements PageObjectInterface
      */
     public function getCategories()
     {
-        return $this->hasMany(EcCategory::className(), ['id' => 'category_id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable('{{ec_item_category}}', ['item_id' => 'id']);
         //->inverseOf('items');
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\EcItemQuery the active query used by this AR class.
+     * @return \floor12\ecommerce\models\queries\ItemQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new EcItemQuery(get_called_class());
+        return new ItemQuery(get_called_class());
     }
 
     /**

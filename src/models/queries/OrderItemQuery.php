@@ -3,11 +3,11 @@
 namespace floor12\ecommerce\models\queries;
 
 /**
- * This is the ActiveQuery class for [[\floor12\ecommerce\models\EcOrder]].
+ * This is the ActiveQuery class for [[\floor12\ecommerce\models\OrderItem]].
  *
- * @see \floor12\ecommerce\models\EcOrder
+ * @see \floor12\ecommerce\models\OrderItem
  */
-class EcOrderQuery extends \yii\db\ActiveQuery
+class OrderItemQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class EcOrderQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcOrder[]|array
+     * @return \floor12\ecommerce\models\OrderItem[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class EcOrderQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\EcOrder|array|null
+     * @return \floor12\ecommerce\models\OrderItem|array|null
      */
     public function one($db = null)
     {

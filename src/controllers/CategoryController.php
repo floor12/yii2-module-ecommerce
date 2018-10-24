@@ -9,7 +9,7 @@
 namespace floor12\ecommerce\controllers;
 
 
-use floor12\ecommerce\models\EcItem;
+use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\enum\Status;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
 use Yii;
@@ -48,7 +48,7 @@ class CategoryController extends Controller
     public function actionItem($id)
     {
 
-        $model = EcItem::findOne($id);
+        $model = Item::findOne($id);
 
         if (!$model)
             throw new NotFoundHttpException('Item is not found.');

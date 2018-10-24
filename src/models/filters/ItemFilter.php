@@ -9,7 +9,7 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\EcItem;
+use floor12\ecommerce\models\Item;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -40,7 +40,7 @@ class ItemFilter extends Model
 
     public function dataProvider()
     {
-        $this->_query = EcItem::find()->with('categories')
+        $this->_query = Item::find()->with('categories')
             ->andFilterWhere(['=', 'status', $this->status]);
 
 

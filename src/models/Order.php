@@ -17,9 +17,9 @@ use Yii;
  * @property string $external_id External id
  * @property int $delivery_status Delivery status
  *
- * @property EcOrderItem[] $ecOrderItems
+ * @property OrderItem[] $ecOrderItems
  */
-class EcOrder extends \yii\db\ActiveRecord
+class Order extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -65,15 +65,15 @@ class EcOrder extends \yii\db\ActiveRecord
      */
     public function getEcOrderItems()
     {
-        return $this->hasMany(EcOrderItem::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\EcOrderQuery the active query used by this AR class.
+     * @return \floor12\ecommerce\models\queries\OrderQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\EcOrderQuery(get_called_class());
+        return new \floor12\ecommerce\models\queries\OrderQuery(get_called_class());
     }
 }

@@ -9,9 +9,9 @@
 namespace floor12\ecommerce\components;
 
 
-use floor12\ecommerce\models\EcCategory;
-use floor12\ecommerce\models\EcItemParam;
-use floor12\ecommerce\models\EcItemParamValue;
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\ItemParam;
+use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
 use yii\base\Widget;
@@ -21,8 +21,8 @@ use yii2mod\slider\IonSlider;
 /**
  * Class ParameterInput
  * @package floor12\ecommerce\components
- * @property EcItemParam $parameter
- * @property EcCategory $category
+ * @property ItemParam $parameter
+ * @property Category $category
  * @property \kartik\form\ActiveForm $form
  * @property ItemFrontendFilter $filter
  */
@@ -56,7 +56,7 @@ class ParameterInput extends Widget
      */
     private function renderBtnGroup()
     {
-        $this->_values = EcItemParamValue::find()
+        $this->_values = ItemParamValue::find()
             ->select('value')
             ->indexBy('value')
             ->param($this->parameter->id)
@@ -77,11 +77,11 @@ class ParameterInput extends Widget
     private function renderSlider()
     {
 
-        $this->_values['min'] = EcItemParamValue::find()
+        $this->_values['min'] = ItemParamValue::find()
             ->param($this->parameter->id)
             ->min('value');
 
-        $this->_values['max'] = EcItemParamValue::find()
+        $this->_values['max'] = ItemParamValue::find()
             ->param($this->parameter->id)
             ->max('value');
 

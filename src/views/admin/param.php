@@ -11,7 +11,7 @@
 
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
-use floor12\ecommerce\models\EcItemParam;
+use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\EcParam;
 use floor12\editmodal\EditModalHelper;
 use rmrevin\yii\fontawesome\FontAwesome;
@@ -40,7 +40,7 @@ Pjax::begin(['id' => 'items']);
 echo GridView::widget([
     'dataProvider' => $model->dataProvider(),
     'tableOptions' => ['class' => 'table table-striped'],
-    'rowOptions' => function (EcItemParam $model) {
+    'rowOptions' => function (ItemParam $model) {
         if ($model->hide)
             return ['class' => 'disabled'];
     },
@@ -51,7 +51,7 @@ echo GridView::widget([
         'categories_total',
         'unit',
         ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
-            'content' => function (EcItemParam $model) {
+            'content' => function (ItemParam $model) {
                 return
                     Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/param-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
                     Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/param-delete', $model->id), 'class' => 'btn btn-default btn-sm']);

@@ -6,7 +6,7 @@
  * Time: 21:58
  *
  * @var $this \yii\web\View
- * @var $model \floor12\ecommerce\models\EcItem
+ * @var $model \floor12\ecommerce\models\Item
  *
  */
 

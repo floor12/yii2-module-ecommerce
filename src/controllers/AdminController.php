@@ -8,9 +8,9 @@
 
 namespace floor12\ecommerce\controllers;
 
-use floor12\ecommerce\models\EcCategory;
-use floor12\ecommerce\models\EcItem;
-use floor12\ecommerce\models\EcItemParam;
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\filters\CategoryFilter;
 use floor12\ecommerce\models\filters\ItemFilter;
 use floor12\ecommerce\models\filters\OrderFilter;
@@ -106,7 +106,7 @@ class AdminController extends Controller
      */
     public function actionItemParams($id)
     {
-        $item = EcItem::findOne((int)$id);
+        $item = Item::findOne((int)$id);
         if (!$item)
             throw new NotFoundHttpException('Item is not found.');
 
@@ -132,45 +132,45 @@ class AdminController extends Controller
         return [
             'category-form' => [
                 'class' => EditModalAction::class,
-                'model' => EcCategory::class,
+                'model' => Category::class,
                 'view' => 'form-category',
                 'message' => Yii::t('app.f12.ecommerce', 'Category is saved.'),
                 'viewParams' => [
-                    'categories' => EcCategory::find()->dropbdown(),
-                    'params' => EcItemParam::find()->dropbdown(),
+                    'categories' => Category::find()->dropbdown(),
+                    'params' => ItemParam::find()->dropbdown(),
                 ],
             ],
             'category-delete' => [
                 'class' => DeleteAction::class,
-                'model' => EcCategory::class,
+                'model' => Category::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Category is deleted.')
             ],
             'param-form' => [
                 'class' => EditModalAction::class,
-                'model' => EcItemParam::class,
+                'model' => ItemParam::class,
                 'view' => 'form-param',
                 'message' => Yii::t('app.f12.ecommerce', 'Parameter is saved.'),
                 'viewParams' => [
-                    'categories' => EcCategory::find()->dropbdown(),
+                    'categories' => Category::find()->dropbdown(),
                 ],
             ],
             'param-delete' => [
                 'class' => DeleteAction::class,
-                'model' => EcItemParam::class,
+                'model' => ItemParam::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Parameter is deleted.')
             ],
             'item-form' => [
                 'class' => EditModalAction::class,
-                'model' => EcItem::class,
+                'model' => Item::class,
                 'view' => 'form-item',
                 'message' => Yii::t('app.f12.ecommerce', 'Item is saved.'),
                 'viewParams' => [
-                    'categories' => EcCategory::find()->dropbdown(),
+                    'categories' => Category::find()->dropbdown(),
                 ],
             ],
             'item-delete' => [
                 'class' => DeleteAction::class,
-                'model' => EcItem::class,
+                'model' => Item::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is deleted.')
             ]
         ];
