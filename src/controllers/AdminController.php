@@ -8,17 +8,20 @@
 
 namespace floor12\ecommerce\controllers;
 
+use floor12\ecommerce\logic\ItemOptionCreate;
 use floor12\ecommerce\models\Category;
-use floor12\ecommerce\models\Item;
-use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\filters\CategoryFilter;
 use floor12\ecommerce\models\filters\ItemFilter;
 use floor12\ecommerce\models\filters\OrderFilter;
 use floor12\ecommerce\models\filters\ParamFilter;
 use floor12\ecommerce\models\forms\ItemParamsForm;
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParam;
+use floor12\ecommerce\models\Order;
 use floor12\editmodal\DeleteAction;
 use floor12\editmodal\EditModalAction;
 use floor12\editmodal\ModalWindow;
+use floor12\ecommerce\logic\ItemUpdate;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -116,10 +119,24 @@ class AdminController extends Controller
             $model->saveParams()) {
             return Yii::createObject(ModalWindow::class, [])
                 ->info(Yii::t('app.f12.ecommerce', 'Item parameters are saved.'), ModalWindow::TYPE_OK)
+                ->reloadContainer('#items')
                 ->hide()
                 ->run();
         }
 
+        return $this->renderAjax('form-item-param', ['model' => $model]);
+    }
+
+
+    /**
+     * @param $parent_id
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionItemOption($parent_id)
+    {
+        $item = Yii::createObject(ItemOptionCreate::class, [(int)$parent_id, Yii::$app->user->identity])->execute();
+        $model = new ItemParamsForm($item);
         return $this->renderAjax('form-item-param', ['model' => $model]);
     }
 
@@ -163,6 +180,7 @@ class AdminController extends Controller
                 'class' => EditModalAction::class,
                 'model' => Item::class,
                 'view' => 'form-item',
+                'logic' => ItemUpdate::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is saved.'),
                 'viewParams' => [
                     'categories' => Category::find()->dropbdown(),
@@ -172,6 +190,11 @@ class AdminController extends Controller
                 'class' => DeleteAction::class,
                 'model' => Item::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is deleted.')
+            ],
+            'order-delete' => [
+                'class' => DeleteAction::class,
+                'model' => Order::class,
+                'message' => Yii::t('app.f12.ecommerce', 'Order is deleted.')
             ]
         ];
     }

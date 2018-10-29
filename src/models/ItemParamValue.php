@@ -12,6 +12,7 @@ use Yii;
  * @property string $unit Parameter unit of measure
  * @property int $param_id Parameter id
  * @property int $item_id Item id
+ * @property int $parent_item_id Item id
  *
  * @property Item $item
  * @property ItemParam $param
@@ -35,7 +36,7 @@ class ItemParamValue extends \yii\db\ActiveRecord
             [['value', 'param_id', 'item_id'], 'required'],
             [['param_id', 'item_id'], 'integer'],
             [['value', 'unit'], 'string', 'max' => 255],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
+            [['item_id', 'parent_item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['param_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemParam::className(), 'targetAttribute' => ['param_id' => 'id']],
         ];
     }
@@ -51,6 +52,7 @@ class ItemParamValue extends \yii\db\ActiveRecord
             'unit' => Yii::t('app.f12.ecommerce', 'Parameter unit of measure'),
             'param_id' => Yii::t('app.f12.ecommerce', 'Parameter id'),
             'item_id' => Yii::t('app.f12.ecommerce', 'Item id'),
+            'parent_item_id' => Yii::t('app.f12.ecommerce', 'Item id'),
         ];
     }
 

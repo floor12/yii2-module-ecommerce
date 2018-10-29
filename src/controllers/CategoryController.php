@@ -9,9 +9,9 @@
 namespace floor12\ecommerce\controllers;
 
 
-use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\enum\Status;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
+use floor12\ecommerce\models\Item;
 use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -53,9 +53,20 @@ class CategoryController extends Controller
         if (!$model)
             throw new NotFoundHttpException('Item is not found.');
 
-
         if ($model->status == Status::DISABLED && !Yii::$app->getModule('shop')->adminMode())
             throw new ForbiddenHttpException('Item is disabled.');
+
+
+        Yii::$app->metamaster
+            ->setTitle($model->seo_title)
+            ->setType('product')
+            ->setDescription($model->seo_description);
+
+        if (isset($model->images[0]))
+            Yii::$app->metamaster->image = $model->images[0]->href;
+
+        Yii::$app->metamaster->register(Yii::$app->getView());
+
 
         return $this->render(Yii::$app->getModule('shop')->viewItem, ['model' => $model]);
     }

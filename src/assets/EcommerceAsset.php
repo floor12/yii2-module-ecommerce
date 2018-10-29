@@ -19,7 +19,10 @@ class EcommerceAsset extends AssetBundle
     ];
 
     public $js = [
-        'ecommerce.js'
+        'jquery.cookie.js',
+        'ecommerce.js',
+        'favorites.js',
+        'cart.js',
     ];
 
     public $depends = [

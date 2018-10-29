@@ -34,7 +34,7 @@ class TabWidget extends Widget
                 'href' => Url::toRoute(['category'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Item parameters'),
+                'name' => Yii::t('app.f12.ecommerce', 'Items parameters'),
                 'href' => Url::toRoute(['param'])
             ],
         ];

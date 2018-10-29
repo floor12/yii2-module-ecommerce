@@ -21,18 +21,21 @@ use yii\helpers\Url;
  * @property string $seo_description Description META
  * @property string $seo_title Page title
  * @property double $price Price
+ * @property double $price_current Price
  * @property double $price_discount Discount price
- * @property string $availible Available quantity
+ * @property integer $available Available quantity
  * @property string $external_id External id
  * @property int $status Item status
  * @property int $parent_id Parent intem ID
  * @property string $url item view url
  *
- * @property ItemParamValue[] $ecItemParamValues
- * @property OrderItem[] $ecOrderItems
+ * @property ItemParamValue[] $itemParamValues
+ * @property OrderItem[] $orderItems
  * @property Category[] $categories
  * @property array $category_ids
  * @property File[] $images
+ * @property self $parent
+ * @property self[] $options
  */
 class Item extends ActiveRecord implements PageObjectInterface
 {
@@ -52,9 +55,9 @@ class Item extends ActiveRecord implements PageObjectInterface
         return [
             [['title'], 'required'],
             [['price', 'price_discount'], 'number'],
-            [['status'], 'integer'],
+            [['status', 'available'], 'integer'],
             ['description', 'string'],
-            [['title', 'subtitle', 'seo_description', 'seo_title', 'availible', 'external_id'], 'string', 'max' => 255],
+            [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id'], 'string', 'max' => 255],
             [['category_ids'], 'each', 'rule' => ['integer']],
             ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']],
         ];
@@ -74,26 +77,19 @@ class Item extends ActiveRecord implements PageObjectInterface
             'seo_title' => Yii::t('app.f12.ecommerce', 'Page title'),
             'price' => Yii::t('app.f12.ecommerce', 'Price'),
             'price_discount' => Yii::t('app.f12.ecommerce', 'Discount price'),
-            'availible' => Yii::t('app.f12.ecommerce', 'Available quantity'),
-            'status' => Yii::t('app.f12.ecommerce', 'Item status'),
+            'available' => Yii::t('app.f12.ecommerce', 'Available quantity'),
+            'status' => Yii::t('app.f12.ecommerce', 'Disable item'),
             'category_ids' => Yii::t('app.f12.ecommerce', 'Linked categories'),
             'images' => Yii::t('app.f12.ecommerce', 'Item images'),
             'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEcItemCategories()
-    {
-        return $this->hasMany(EcItemCategory::className(), ['item_id' => 'id']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcItemParamValues()
+    public function getItemParamValues()
     {
         return $this->hasMany(ItemParamValue::className(), ['item_id' => 'id']);
     }
@@ -101,7 +97,7 @@ class Item extends ActiveRecord implements PageObjectInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcOrderItems()
+    public function getOrderItems()
     {
         return $this->hasMany(OrderItem::className(), ['item_id' => 'id']);
     }
@@ -113,7 +109,22 @@ class Item extends ActiveRecord implements PageObjectInterface
     {
         return $this->hasMany(Category::className(), ['id' => 'category_id'])
             ->viaTable('{{ec_item_category}}', ['item_id' => 'id']);
-        //->inverseOf('items');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOptions()
+    {
+        return $this->hasMany(self::className(), ['parent_id' => 'id']);
     }
 
     /**
@@ -152,9 +163,30 @@ class Item extends ActiveRecord implements PageObjectInterface
         return Url::toRoute(['/shop/category/item', 'id' => $this->id]);
     }
 
-
+    /** Этот метод мы добавляем исключительно чтобы иметь возможность делать жадную загрузку изображений
+     * @return \yii\db\ActiveQuery
+     */
     public function getImages()
     {
         return $this->hasMany(File::class, ['object_id' => 'id'])->andWhere(['class' => self::class]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        if ($this->options)
+            foreach ($this->options as $option)
+                $option->delete();
+        parent::afterDelete();
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice_current()
+    {
+        return $this->price_discount ?: $this->price;
     }
 }

@@ -12,7 +12,7 @@ class m181024_130000_later_items extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn("{{%ec_item}}", "parent_id", $this->string()->null()->comment('Parent item'));
+        $this->addColumn("{{%ec_item}}", "parent_id", $this->integer()->null()->comment('Parent item'));
         $this->createIndex('idx-ecec_item_order-parent_id', "{{%ec_item}}", "parent_id");
     }
 

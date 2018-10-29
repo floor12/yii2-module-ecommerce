@@ -11,12 +11,15 @@
 
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
+use floor12\ecommerce\models\enum\Status;
 use floor12\ecommerce\models\Item;
 use floor12\editmodal\EditModalHelper;
+use kartik\form\ActiveForm;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+
 
 EcommerceAsset::register($this);
 
@@ -33,11 +36,43 @@ echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Crea
 
 echo Html::tag('br');
 
+$form = ActiveForm::begin([
+    'method' => 'GET',
+    'id' => 'f12-eccomerce-item-filter',
+    'options' => ['data-container' => '#items'],
+]);
+?>
+
+    <div class="item-filter">
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'filter')
+                    ->label(false)
+                    ->textInput(['placeholder' => Yii::t('app.f12.ecommerce', 'filter items')]) ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'status')
+                    ->label(false)
+                    ->dropDownList(Status::listData(), ['prompt' => Yii::t('app.f12.ecommerce', 'any status')]) ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'hideOptions')->checkbox() ?>
+            </div>
+        </div>
+    </div>
+<?php
+
+ActiveForm::end();
+
 Pjax::begin(['id' => 'items']);
 
 echo GridView::widget([
     'dataProvider' => $model->dataProvider(),
     'tableOptions' => ['class' => 'table table-striped'],
+    'rowOptions' => function (Item $model) {
+        if ($model->status == Status::DISABLED)
+            return ['class' => 'disabled'];
+    },
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
         'id',
@@ -47,7 +82,8 @@ echo GridView::widget([
             'content' => function (Item $model) {
                 return Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency);
             },
-        ], [
+        ],
+        [
             'attribute' => 'price_discount',
             'content' => function (Item $model) {
                 return Yii::$app->formatter->asCurrency($model->price_discount, Yii::$app->getModule('shop')->currency);
@@ -61,14 +97,18 @@ echo GridView::widget([
                 }, $model->categories));
             },
         ],
-        'availible',
+        'available',
         [
             'contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
             'content' => function (Item $model) {
-                return
-                    Html::a(FontAwesome::icon('list'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/item-params', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                    Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/item-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                    Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/item-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                $html = '';
+                if (!$model->parent_id) {
+                    $html .= Html::a(FontAwesome::icon('plus'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Add option'), 'onclick' => EditModalHelper::showForm('shop/admin/item-option', ['parent_id' => $model->id]), 'class' => 'btn btn-default btn-sm']) . " ";
+                }
+                $html .= Html::a(FontAwesome::icon('list'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update params'), 'onclick' => EditModalHelper::showForm('shop/admin/item-params', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
+                $html .= Html::a(FontAwesome::icon('pencil'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update'), 'onclick' => EditModalHelper::showForm('shop/admin/item-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
+                $html .= Html::a(FontAwesome::icon('trash'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Delete'), 'onclick' => EditModalHelper::deleteItem('shop/admin/item-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                return $html;
             },
         ]
     ]

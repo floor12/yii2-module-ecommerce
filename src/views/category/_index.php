@@ -10,6 +10,7 @@
  *
  */
 
+use floor12\ecommerce\components\FavWidget;
 use floor12\news\SwiperAsset;
 
 SwiperAsset::register($this);
@@ -19,8 +20,8 @@ $this->registerJs('initItemsIndexSwiper()');
 
 <div class="col-md-4">
     <div class="f12-ec-item">
-
-        <div class="swiper-container swiper-full">
+        <?= FavWidget::widget(['id' => $model->id]) ?>
+        <div class="swiper-container swiper-list">
             <div class="swiper-wrapper">
                 <?php foreach ($model->images as $image) { ?>
                     <div class="swiper-slide"

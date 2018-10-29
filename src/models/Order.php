@@ -2,6 +2,9 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\models\enum\DeliveryType;
+use floor12\ecommerce\models\queries\OrderQuery;
+use floor12\phone\PhoneValidator;
 use Yii;
 
 /**
@@ -14,13 +17,26 @@ use Yii;
  * @property int $delivered Delivered
  * @property double $total Total cost
  * @property int $status Order status
- * @property string $external_id External id
  * @property int $delivery_status Delivery status
+ * @property string $external_id Extermnl indificator
+ * @property int $delivery_type_id Delivery type
+ * @property string $fullname Fullname
+ * @property string $phone Phone
+ * @property string $mail Email
+ * @property string $address Address
+ * @property string $comment Client comment
+ * @property string $comment_admin Admin comment
  *
- * @property OrderItem[] $ecOrderItems
+ * @property EcOrderItem[] $ecOrderItems
  */
 class Order extends \yii\db\ActiveRecord
 {
+
+    const SCENARIO_CHECKOUT = 'checkout';
+    const SCENARIO_ADMIN = 'admin';
+
+    public $cart;
+
     /**
      * {@inheritdoc}
      */
@@ -35,10 +51,19 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'created', 'updated'], 'required'],
-            ['external_id', 'string'],
-            [['user_id', 'created', 'updated', 'delivered', 'status', 'delivery_status'], 'integer'],
-            [['total'], 'number'],
+            [['address', 'fullname'], 'string', 'max' => 255],
+            [['delivery_type_id'], 'integer'],
+            ['phone', PhoneValidator::class],
+            ['email', 'email'],
+
+            [['fullname', 'delivery_type_id', 'email', 'phone'], 'required', 'on' => self::SCENARIO_CHECKOUT],
+            [['address'], 'required', 'on' => self::SCENARIO_CHECKOUT, 'when' => function (self $model) {
+                return $model->delivery_type_id != DeliveryType::PICK_UP;
+            }],
+
+            [['comment_admin'], 'string', 'on' => self::SCENARIO_ADMIN],
+            [['external_id'], 'string', 'on' => self::SCENARIO_ADMIN],
+            [['status', 'delivery_status'], 'integer', 'on' => self::SCENARIO_ADMIN],
         ];
     }
 
@@ -56,7 +81,14 @@ class Order extends \yii\db\ActiveRecord
             'total' => Yii::t('app.f12.ecommerce', 'Total cost'),
             'status' => Yii::t('app.f12.ecommerce', 'Order status'),
             'delivery_status' => Yii::t('app.f12.ecommerce', 'Delivery status'),
-            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'Extermnl indificator'),
+            'delivery_type_id' => Yii::t('app.f12.ecommerce', 'Delivery type'),
+            'fullname' => Yii::t('app.f12.ecommerce', 'Fullname'),
+            'phone' => Yii::t('app.f12.ecommerce', 'Phone'),
+            'email' => Yii::t('app.f12.ecommerce', 'Email'),
+            'address' => Yii::t('app.f12.ecommerce', 'Address'),
+            'comment' => Yii::t('app.f12.ecommerce', 'Client comment'),
+            'comment_admin' => Yii::t('app.f12.ecommerce', 'Admin comment'),
         ];
     }
 
@@ -65,15 +97,15 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getEcOrderItems()
     {
-        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+        return $this->hasMany(EcOrderItem::className(), ['order_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\OrderQuery the active query used by this AR class.
+     * @return OrderQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \floor12\ecommerce\models\queries\OrderQuery(get_called_class());
+        return new OrderQuery(get_called_class());
     }
 }

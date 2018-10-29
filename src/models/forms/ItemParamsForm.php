@@ -21,8 +21,10 @@ class ItemParamsForm extends Model
     public $category_params = [];
     public $params = [];
     public $params_values = [];
+    public $id;
 
     private $_item;
+    private $_option_item;
     private $_categories;
 
 
@@ -36,6 +38,14 @@ class ItemParamsForm extends Model
             throw new InvalidArgumentException('Item is new record.');
 
         $this->_item = $item;
+        $this->id = $item->id;
+
+
+        if ($this->_item->parent_id) {
+            $this->_item = $item->parent;
+            $this->_option_item = $item;
+        }
+
 
         parent::__construct([]);
     }
@@ -84,7 +94,7 @@ class ItemParamsForm extends Model
                     'value' => ItemParamValue::find()
                         ->where([
                             'param_id' => $category_param->id,
-                            'item_id' => $this->_item->id
+                            'item_id' => $this->_option_item ? $this->_option_item->id : $this->_item->id
                         ])
                         ->select('value')
                         ->scalar()
@@ -95,13 +105,14 @@ class ItemParamsForm extends Model
 
     public function saveParams()
     {
-        ItemParamValue::deleteAll(['item_id' => $this->_item->id]);
+        ItemParamValue::deleteAll(['item_id' => $this->_option_item ? $this->_option_item->id : $this->_item->id]);
         if ($this->params_values)
             foreach ($this->params_values as $param_id => $params_value) {
                 if (empty($params_value))
                     continue;
                 $paramModel = new ItemParamValue([
-                    'item_id' => $this->_item->id,
+                    'item_id' => $this->_option_item ? $this->_option_item->id : $this->_item->id,
+                    'parent_item_id' => $this->_item->id,
                     'param_id' => $param_id,
                     'value' => $params_value,
                     'unit' => $this->params[$param_id]['unit']

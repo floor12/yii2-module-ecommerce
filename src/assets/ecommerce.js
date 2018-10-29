@@ -42,3 +42,15 @@ function submitForm(form) {
     })
 
 }
+
+
+$(document).on('click', '.f12-ec-item .swiper-slide', function () {
+    url = $(this).parents('.f12-ec-item').find('a.f12-ec-item-info').attr('href');
+    offPageLeaving();
+    document.location.href = url;
+})
+
+
+function addToCart(id) {
+    console.log(id);
+}

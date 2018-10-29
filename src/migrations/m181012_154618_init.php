@@ -38,7 +38,7 @@ class m181012_154618_init extends Migration
             'seo_title' => $this->string()->null()->comment('Page title'),
             'price' => $this->float()->null()->comment('Price'),
             'price_discount' => $this->float()->null()->comment('Discount price'),
-            'availible' => $this->string()->null()->comment('Available quantity'),
+            'available' => $this->integer()->defaultValue(0)->null()->comment('Available quantity'),
             'status' => $this->integer()->notNull()->defaultValue(0)->comment('Item status')
         ], $tableOptions);
 
@@ -60,7 +60,7 @@ class m181012_154618_init extends Migration
         //order
         $this->createTable('{{%ec_order}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull()->comment('Buyer indificator'),
+            'user_id' => $this->integer()->null()->comment('Buyer indificator'),
             'created' => $this->integer()->notNull()->comment('Created'),
             'updated' => $this->integer()->notNull()->comment('Updated'),
             'delivered' => $this->integer()->null()->comment('Delivered'),
@@ -78,11 +78,13 @@ class m181012_154618_init extends Migration
         //order items
         $this->createTable('{{%ec_order_item}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull()->comment('Buyer indificator'),
+            'user_id' => $this->integer()->null()->comment('Buyer indificator'),
             'item_id' => $this->integer()->notNull()->comment('Item identificator'),
             'created' => $this->integer()->notNull()->comment('Created'),
             'order_id' => $this->integer()->notNull()->comment('Order identificator'),
-            'price' => $this->integer()->notNull()->comment('Item price'),
+            'quantity' => $this->integer()->notNull()->defaultValue(1)->comment('Order identificator'),
+            'price' => $this->double()->notNull()->defaultValue(0)->comment('Item price'),
+            'sum' => $this->double()->notNull()->defaultValue(0)->comment('Sum'),
             'order_status' => $this->integer()->notNull()->defaultValue(0)->comment('Order status'),
         ], $tableOptions);
 
@@ -92,7 +94,7 @@ class m181012_154618_init extends Migration
         $this->createIndex('idx-ec_order_item-order_id', '{{%ec_order_item}}', 'order_id');
         $this->createIndex('idx-ec_order_item-order_status', '{{%ec_order_item}}', 'order_status');
 
-        $this->addForeignKey('fk-ec_order_item-order', '{{%ec_order_item}}', 'order_id', '{{%ec_order}}', 'id', 'RESTRICT', 'RESTRICT');
+        $this->addForeignKey('fk-ec_order_item-order', '{{%ec_order_item}}', 'order_id', '{{%ec_order}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk-ec_order_item-item_id', '{{%ec_order_item}}', 'item_id', '{{%ec_item}}', 'id', 'RESTRICT', 'RESTRICT');
 
         //items params
@@ -131,8 +133,8 @@ class m181012_154618_init extends Migration
         $this->createIndex('idx-ec_item_param_value-item_id', '{{%ec_item_param_value}}', 'item_id');
         $this->createIndex('idx-ec_item_param_value-value', '{{%ec_item_param_value}}', 'value');
 
-        $this->addForeignKey('fk-ec_item_param_value-param_id', '{{%ec_item_param_value}}', 'param_id', '{{%ec_item_param}}', 'id', 'RESTRICT', 'RESTRICT');
-        $this->addForeignKey('fk-ec_item_param_value-item_id', '{{%ec_item_param_value}}', 'item_id', '{{%ec_item}}', 'id', 'RESTRICT', 'RESTRICT');
+        $this->addForeignKey('fk-ec_item_param_value-param_id', '{{%ec_item_param_value}}', 'param_id', '{{%ec_item_param}}', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-ec_item_param_value-item_id', '{{%ec_item_param_value}}', 'item_id', '{{%ec_item}}', 'id', 'CASCADE', 'CASCADE');
 
 
     }

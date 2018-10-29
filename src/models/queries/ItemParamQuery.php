@@ -2,6 +2,9 @@
 
 namespace floor12\ecommerce\models\queries;
 
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParamValue;
+
 /**
  * This is the ActiveQuery class for [[\floor12\ecommerce\models\ItemParam]].
  *
@@ -9,6 +12,14 @@ namespace floor12\ecommerce\models\queries;
  */
 class ItemParamQuery extends \yii\db\ActiveQuery
 {
+    /**
+     * @param Item $
+     * @return $this
+     */
+    public function byItem(Item $item)
+    {
+        return $this->andWhere("id IN (SELECT param_id FROM " . ItemParamValue::tableName() . " WHERE parent_item_id=:item_id)", [':item_id' => $item->id]);
+    }
 
     /**
      * @return ItemParamQuery

@@ -10,10 +10,10 @@ namespace floor12\ecommerce\components;
 
 
 use floor12\ecommerce\models\Category;
-use floor12\ecommerce\models\ItemParam;
-use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
+use floor12\ecommerce\models\ItemParam;
+use floor12\ecommerce\models\ItemParamValue;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii2mod\slider\IonSlider;
@@ -59,6 +59,7 @@ class ParameterInput extends Widget
         $this->_values = ItemParamValue::find()
             ->select('value')
             ->indexBy('value')
+            ->available($this->category)
             ->param($this->parameter->id)
             ->distinct()
             ->column();

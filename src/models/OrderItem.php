@@ -12,7 +12,9 @@ use Yii;
  * @property int $item_id Item identificator
  * @property int $created Created
  * @property int $order_id Order identificator
- * @property int $price Item price
+ * @property int $quantity Quantity
+ * @property float $price Item price
+ * @property float $sum Item price
  * @property int $order_status Order status
  *
  * @property Item $item
@@ -34,8 +36,9 @@ class OrderItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'item_id', 'created', 'order_id', 'price'], 'required'],
-            [['user_id', 'item_id', 'created', 'order_id', 'price', 'order_status'], 'integer'],
+            [['item_id', 'created', 'order_id', 'price'], 'required'],
+            [['price', 'sum'], 'double'],
+            [['user_id', 'item_id', 'created', 'order_id', 'order_status'], 'integer'],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
         ];

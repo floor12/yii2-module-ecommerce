@@ -11,10 +11,10 @@ namespace floor12\ecommerce\models\filters;
 
 use app\components\Pagination;
 use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\ItemParamValue;
-use floor12\ecommerce\models\enum\ParamType;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -27,7 +27,7 @@ use yii\data\ActiveDataProvider;
  * @property ItemParam[] $slider_params
  * @property integer $category_id
  * @property string $category_title
- * @property ar\ $param_values
+ * @property array $param_values
  */
 class ItemFrontendFilter extends Model
 {
@@ -41,6 +41,7 @@ class ItemFrontendFilter extends Model
     public $price_min;
     public $price_max;
     public $discount = false;
+    public $showDiscountOption = false;
 
     private $_category;
 
@@ -57,9 +58,18 @@ class ItemFrontendFilter extends Model
             $this->params = array_merge($this->slider_params, $this->checkbox_params);
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
+            $this->showDiscountOption = Item::find()
+                ->active()
+                ->select('id')
+                ->category($this->_category)
+                ->andWhere("!ISNULL(price_discount)")
+                ->scalar();
+
         } else {
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
         }
+
+
         parent::init();
     }
 
@@ -87,7 +97,10 @@ class ItemFrontendFilter extends Model
      */
     public function dataProvider()
     {
-        $query = Item::find()->with('images');
+        $query = Item::find()
+            ->with('images')
+            ->category($this->_category)
+            ->andWhere(['parent_id' => 0]);
 
         if ($this->price) {
             list($price_min, $price_max) = explode(';', $this->price);
@@ -112,13 +125,13 @@ class ItemFrontendFilter extends Model
                     $param_value
                 );
                 $values = implode(',', $param_value);
-                $query->andWhere("id IN (SELECT item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
+                $query->andWhere("id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
             }
 
             if ($parameter->type_id == ParamType::SLIDER) {
                 list($min, $max) = explode(';', $param_value);
                 if ($min && $max)
-                    $query->andWhere("id IN (SELECT item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
+                    $query->andWhere("id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
             }
 
         }

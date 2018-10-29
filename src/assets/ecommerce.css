@@ -26,11 +26,11 @@ div.f12-ec-item {
 }
 
 a.f12-ec-item-info {
-    background-color: #dedfd961;
-    padding: 4px 6px;
+    padding: 2px 3px;
     height: 60px;
     display: flex;
     align-items: center;
+    border-bottom: 2px black solid;
 }
 
 a.f12-ec-item-info:hover {
@@ -39,12 +39,12 @@ a.f12-ec-item-info:hover {
 }
 
 div.f12-ec-item-title {
-    font-weight: 500;
     color: black;
 }
 
 div.f12-ec-item-price {
     flex: 1;
+    font-weight: 600;
     text-align: right;
 }
 
@@ -53,8 +53,8 @@ div.f12-ec-item-price price {
 }
 
 div.f12-ec-item-price price.discount {
-    color: red;
-    font-weight: 500;
+    color: #b20000;
+    font-weight: 600;
 }
 
 div.f12-ec-item-price price.striked {
@@ -87,6 +87,78 @@ div.item-filter div.f12-ecommerce-checkbox-block {
 tr.disabled {
     text-decoration: line-through;
     opacity: 0.2;
+}
+
+table.item-options span,
+table.table-cart span {
+    min-width: 70px;
+    display: block;
+    float: left;
+}
+
+div.favorites-shadow-object,
+div.cart-shadow-object {
+    position: fixed;
+    background-color: rgba(9, 48, 96, 0.21);
+    z-index: 999;
+}
+
+a.fav {
+    color: white;
+    position: absolute;
+    z-index: 10;
+    font-size: 150%;
+    margin: 3px;
+}
+
+.favorites-link span.counter {
+    font-weight: 600;
+}
+
+.cart-link span.counter {
+    font-weight: 600;
+}
+
+a.fav-active {
+    color: black;
+}
+
+.model-body table.table-cart {
+    margin-top: -15px;
+}
+
+div.param {
+    border-bottom: 1px #ccc solid;
+}
+
+div.param:last-child {
+    border: 0;
+}
+
+.table-cart > tbody > tr > td {
+    vertical-align: middle;
+}
+
+td.cart-item-title {
+    font-weight: 600;
+    font-size: 120%;
+}
+
+div.cart-total {
+    font-weight: 500;
+    font-size: 120%;
+    float: right;
+    margin: 0 12px 0;
+}
+
+div.cart-total span {
+    font-weight: 800;
+}
+
+table.table-cart input {
+    width: 90px;
+    display: inline;
+    text-align: right;
 }
 
 @media (min-width: 992px) {

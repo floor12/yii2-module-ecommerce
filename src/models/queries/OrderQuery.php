@@ -3,9 +3,9 @@
 namespace floor12\ecommerce\models\queries;
 
 /**
- * This is the ActiveQuery class for [[\floor12\ecommerce\models\Order]].
+ * This is the ActiveQuery class for [[\app\models\Order]].
  *
- * @see \floor12\ecommerce\models\Order
+ * @see \app\models\Order
  */
 class OrderQuery extends \yii\db\ActiveQuery
 {
@@ -16,7 +16,7 @@ class OrderQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\Order[]|array
+     * @return \app\models\Order[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class OrderQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \floor12\ecommerce\models\Order|array|null
+     * @return \app\models\Order|array|null
      */
     public function one($db = null)
     {

@@ -11,6 +11,8 @@
 
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
+use floor12\ecommerce\models\enum\OrderStatus;
+use floor12\ecommerce\models\Order;
 use floor12\editmodal\EditModalHelper;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
@@ -25,11 +27,6 @@ echo Html::tag('h1', Yii::t('app.f12.ecommerce', 'Shop'));
 
 echo TabWidget::widget();
 
-echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Create order'), null, [
-    'onclick' => EditModalHelper::showForm('shop/admin/order-form', 0),
-    'class' => 'btn btn-sm btn-primary btn-ecommerce-add'
-]);
-
 echo Html::tag('br');
 
 Pjax::begin(['id' => 'items']);
@@ -40,9 +37,24 @@ echo GridView::widget([
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
         'id',
-
+        'created:datetime',
+        'fullname',
+        'phone',
+        'email:email',
+        [
+            'attribute' => 'total',
+            'content' => function (Order $model) {
+                return Yii::$app->formatter->asCurrency($model->total, Yii::$app->getModule('shop')->currency);
+            },
+        ],
+        [
+            'attribute' => 'status',
+            'content' => function (Order $model) {
+                return OrderStatus::getLabel($model->status);
+            },
+        ],
         ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
-            'content' => function (EcItem $model) {
+            'content' => function (Order $model) {
                 return
                     Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/order-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
                     Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/order-delete', $model->id), 'class' => 'btn btn-default btn-sm']);

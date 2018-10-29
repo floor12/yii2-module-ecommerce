@@ -11,13 +11,14 @@
  *
  */
 
-use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\enum\ParamType;
+use floor12\ecommerce\models\ItemParamValue;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 
 $form = ActiveForm::begin([
+    'action' => ['/shop/admin/item-params', 'id' => $model->id],
     'options' => ['class' => 'modaledit-form'],
     'enableClientValidation' => true
 ]);
