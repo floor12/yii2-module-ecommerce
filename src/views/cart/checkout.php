@@ -47,24 +47,42 @@ $form = ActiveForm::begin([
 
         <div class="col-md-5">
 
-            <?= $form->field($model, 'fullname')->textInput() ?>
+            <?= $form->field($model, 'fullname')
+                ->textInput([
+                    'data-description' => Yii::t('app.f12.ecommerce', 'Enter the name here.'),
+                    'data-description-show' => 'true'
+                ]); ?>
 
             <div class="row">
                 <div class="col-xs-6">
-                    <?= $form->field($model, 'email')->textInput() ?>
+                    <?= $form->field($model, 'email')->textInput([
+                        'data-description' => Yii::t('app.f12.ecommerce', 'We need your email so that we can send the details of the order and contact you.'),
+                        'data-description-show' => 'true'
+                    ]); ?>
                 </div>
                 <div class="col-xs-6">
                     <?= $form->field($model, 'phone')->widget(MaskedInput::class, [
                         'mask' => '+9 (999) 999-99-99'
-                    ]) ?>
+                    ])->textInput([
+                        'data-description' => Yii::t('app.f12.ecommerce', 'We need your phone number to clarify delivery issues.'),
+                        'data-description-show' => 'true'
+                    ]); ?>
                 </div>
             </div>
 
             <?= $form->field($model, 'delivery_type_id')->dropDownList(DeliveryType::listData()) ?>
 
-            <?= $form->field($model, 'address')->textarea() ?>
+            <?= $form->field($model, 'address')->textarea([
+                'data-description' => Yii::t('app.f12.ecommerce', 'Please enter a valid shipping address.'),
+                'data-description-show' => 'true'
+            ]) ?>
 
-            <?= $form->field($model, 'comment')->textarea() ?>
+            <?= $form->field($model, 'comment')
+                ->label( Yii::t('app.f12.ecommerce', 'Additional comment'))
+                ->textarea([
+                'data-description' => Yii::t('app.f12.ecommerce', 'If you have additional comments or wished, please describe them here.'),
+                'data-description-show' => 'true'
+            ]) ?>
 
             <?= Html::submitButton(Yii::t('app.f12.ecommerce', 'Send'), ['class' => 'btn btn-primary']) ?>
 
