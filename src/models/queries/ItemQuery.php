@@ -16,7 +16,9 @@ class ItemQuery extends \yii\db\ActiveQuery
 
     private $_categories = [];
 
-
+    /** 
+     * @return ItemQuery
+     */
     public function available()
     {
         return $this->andWhere(['!=', 'available', 0]);
