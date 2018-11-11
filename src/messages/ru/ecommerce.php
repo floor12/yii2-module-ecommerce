@@ -110,8 +110,8 @@ return [
     'Please enter a valid shipping address.' => 'Введите точный адрес доставки, пожалуйста.',
     'Additional comment' => 'Дополнительный комментарий',
     'If you have additional comments or wished, please describe them here.' => 'Если у вас дополнительные пожелания или комментарии, то, пожалйста, напишите их здесь.',
-    '' => '',
-    '' => '',
+    'categories search' => 'поиск по категориям',
+    'only root categories' => 'только корневые категории',
     '' => '',
     '' => '',
 ];

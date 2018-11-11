@@ -14,6 +14,7 @@ use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\Category;
 use floor12\ecommerce\models\enum\Status;
 use floor12\editmodal\EditModalHelper;
+use kartik\form\ActiveForm;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -33,6 +34,33 @@ echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Crea
 ]);
 
 echo Html::tag('br');
+
+$form = ActiveForm::begin([
+    'method' => 'GET',
+    'options' => ['class' => 'autosubmit', 'data-container' => '#items'],
+]);
+?>
+
+    <div class="item-filter">
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'filter')
+                    ->label(false)
+                    ->textInput(['placeholder' => Yii::t('app.f12.ecommerce', 'categories search')]) ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'status')
+                    ->label(false)
+                    ->dropDownList(Status::listData(), ['prompt' => Yii::t('app.f12.ecommerce', 'any status')]) ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'root')->checkbox() ?>
+            </div>
+        </div>
+    </div>
+
+<?php
+ActiveForm::end();
 
 Pjax::begin(['id' => 'items']);
 
