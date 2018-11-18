@@ -68,9 +68,19 @@ $(document).on('click', 'a.cart', function () {
             if (parent.length) {
                 block = $(this).parents('tr');
                 block.fadeOut(300, function () {
-                    block.parent().remove();
+                    showCart();
                 });
-                $('#items div[data-key="' + id + '"]').find('a.cart').removeClass('btn-primary');
+
+                // $('#items s.cart[data-key="' + id + '"]').removeClass('btn-primary').addClass('btn-default');
+
+                $.each($("a.cart"), function (key, val) {
+                    a = $(val);
+                    if (a.data('id') == id) {
+                        a.removeClass('btn-primary')
+                        a.addClass('btn-default')
+                        a.attr('title', 'Добавить в избранное')
+                    }
+                });
 
                 if (parent.find('tr').length == 0)
                     cancelModalEditSilent();

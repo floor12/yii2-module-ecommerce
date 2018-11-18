@@ -18,11 +18,18 @@ use yii\helpers\Html;
 <div class="modal-body row">
     <table class="table table-striped table-cart">
         <tbody>
-        <?php if ($model->rows) foreach ($model->rows as $row) echo $this->render('_index', ['row' => $row, 'editable' => true]) ?>
+        <?php
+        if ($model->rows)
+            foreach ($model->rows as $row)
+                echo $this->render('_index', ['row' => $row, 'editable' => true]);
+        else
+            echo Html::tag('div', Yii::t('app.f12.ecommerce', 'Your cart is empty.'), ['class' => 'text-center']);
+
+        ?>
         </tbody>
     </table>
     <div class="cart-total">
-        <?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->total ?></span>
+        <?php if ($model->rows) echo Yii::t('app.f12.ecommerce', 'Total') . ': ' . Html::tag('span', $model->total) ?>
     </div>
 </div>
 <div class="modal-footer">

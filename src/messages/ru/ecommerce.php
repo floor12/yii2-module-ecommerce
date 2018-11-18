@@ -121,6 +121,6 @@ return [
     'Building number' => 'Дом (номер, корпус и пр.)',
     'Apartament or office number' => '№ квартиры или офиса',
     'Please fill this field.' => 'Это поле необходимо заполнить.',
-    '' => '',
+    'Your cart is empty.' => 'Ваша корзина пуста.',
     '' => '',
 ];
