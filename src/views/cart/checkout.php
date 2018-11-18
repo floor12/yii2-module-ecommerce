@@ -16,6 +16,7 @@ use yii\widgets\MaskedInput;
 $this->title = Yii::t('app.f12.ecommerce', 'Order checkout');
 $this->params['breadcrumbs'][] = $this->title;
 
+$this->registerJs('ecommerceAddressCheck()');
 
 $form = ActiveForm::begin([
     'enableClientValidation' => false
@@ -72,17 +73,37 @@ $form = ActiveForm::begin([
 
             <?= $form->field($model, 'delivery_type_id')->dropDownList(DeliveryType::listData()) ?>
 
-            <?= $form->field($model, 'address')->textarea([
-                'data-description' => Yii::t('app.f12.ecommerce', 'Please enter a valid shipping address.'),
-                'data-description-show' => 'true'
-            ]) ?>
+            <div class="f12-ecommerce-address-section">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <?= $form->field($model, 'postcode')->textInput(['maxlength' => 6]) ?>
+                    </div>
+                    <div class="col-sm-8">
+                        <?= $form->field($model, 'city') ?>
+                    </div>
+                </div>
+
+                <?= $form->field($model, 'street') ?>
+
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'building') ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'apartament') ?>
+                    </div>
+                </div>
+
+            </div>
 
             <?= $form->field($model, 'comment')
-                ->label( Yii::t('app.f12.ecommerce', 'Additional comment'))
+                ->label(Yii::t('app.f12.ecommerce', 'Additional comment'))
                 ->textarea([
-                'data-description' => Yii::t('app.f12.ecommerce', 'If you have additional comments or wished, please describe them here.'),
-                'data-description-show' => 'true'
-            ]) ?>
+                    'data-description' => Yii::t('app.f12.ecommerce', 'If you have additional comments or wished, please describe them here.'),
+                    'data-description-show' => 'true'
+                ]) ?>
 
             <?= Html::submitButton(Yii::t('app.f12.ecommerce', 'Send'), ['class' => 'btn btn-primary']) ?>
 

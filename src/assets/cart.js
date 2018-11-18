@@ -76,6 +76,7 @@ $(document).on('click', 'a.cart', function () {
 
     } else {
         $.cookie(name, 1, {expires: 31, path: '/'});
+        $('.proceed-to-checkout').fadeIn(300);
         $(this).addClass('btn-primary');
         $(this).removeClass('btn-default')
         $(this).attr('title', 'Удалить из избранного');

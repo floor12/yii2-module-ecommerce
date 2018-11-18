@@ -37,6 +37,12 @@ class Order extends \yii\db\ActiveRecord
 
     public $cart;
 
+    public $postcode;
+    public $city;
+    public $street;
+    public $building;
+    public $apartament;
+
     /**
      * {@inheritdoc}
      */
@@ -57,10 +63,13 @@ class Order extends \yii\db\ActiveRecord
             ['email', 'email'],
 
             [['fullname', 'delivery_type_id', 'email', 'phone'], 'required', 'on' => self::SCENARIO_CHECKOUT],
-            [['address'], 'required', 'on' => self::SCENARIO_CHECKOUT, 'when' => function (self $model) {
-                return $model->delivery_type_id != DeliveryType::PICK_UP;
-            }],
-
+            [['postcode', 'city', 'street', 'building', 'apartament', 'address'], 'required',
+                'on' => self::SCENARIO_CHECKOUT,
+                'message' => Yii::t('app.f12.ecommerce', 'Please fill this field.'),
+                'when' => function (self $model) {
+                    return $model->delivery_type_id != DeliveryType::PICK_UP;
+                }],
+            ['postcode', 'match', 'pattern' => '/[0-9]{5,6}/'],
             [['comment_admin'], 'string', 'on' => self::SCENARIO_ADMIN],
             [['external_id'], 'string', 'on' => self::SCENARIO_ADMIN],
             [['status', 'delivery_status'], 'integer', 'on' => self::SCENARIO_ADMIN],
@@ -89,6 +98,11 @@ class Order extends \yii\db\ActiveRecord
             'address' => Yii::t('app.f12.ecommerce', 'Address'),
             'comment' => Yii::t('app.f12.ecommerce', 'Client comment'),
             'comment_admin' => Yii::t('app.f12.ecommerce', 'Admin comment'),
+            'postcode' => Yii::t('app.f12.ecommerce', 'Postcode'),
+            'city' => Yii::t('app.f12.ecommerce', 'City'),
+            'street' => Yii::t('app.f12.ecommerce', 'Street name'),
+            'building' => Yii::t('app.f12.ecommerce', 'Building number'),
+            'apartament' => Yii::t('app.f12.ecommerce', 'Apartament or office number'),
         ];
     }
 

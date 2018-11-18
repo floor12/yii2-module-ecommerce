@@ -41,6 +41,8 @@ class OrderCreate
     {
         $this->_model->load($this->_data);
 
+        $this->_model->address = "{$this->_model->postcode}, {$this->_model->city}, {$this->_model->street} {$this->_model->building}, кв(оф) {$this->_model->apartament}";
+
         $this->_model->on(Order::EVENT_AFTER_INSERT, function ($event) {
 
             $event->sender->total = 0;

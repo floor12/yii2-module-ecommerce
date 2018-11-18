@@ -2,6 +2,7 @@
 
 namespace floor12\ecommerce\models\queries;
 
+use floor12\ecommerce\models\enum\ParamType;
 use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\ItemParamValue;
 
@@ -12,6 +13,32 @@ use floor12\ecommerce\models\ItemParamValue;
  */
 class ItemParamQuery extends \yii\db\ActiveQuery
 {
+
+    /**
+     * @return ItemParamQuery
+     */
+    public function checkbox()
+    {
+        return $this->andWhere(['type_id' => ParamType::CHECKBOX]);
+    }
+
+
+    /**
+     * @return ItemParamQuery
+     */
+    public function slider()
+    {
+        return $this->andWhere(['type_id' => ParamType::SLIDER]);
+    }
+
+    /**
+     * @return ItemParamQuery
+     */
+    public function root()
+    {
+        return $this->andWhere("id NOT IN (SELECT param_id FROM ec_param_category)");
+    }
+
     /**
      * @param Item $
      * @return $this

@@ -2,9 +2,9 @@
 
 namespace floor12\ecommerce\models;
 
-use floor12\ecommerce\models\enum\ParamType;
-use floor12\ecommerce\models\queries\EcCatego;
 use floor12\ecommerce\models\queries\CategoryQuery;
+use floor12\ecommerce\models\queries\EcCatego;
+use floor12\ecommerce\models\queries\ItemParamQuery;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 
@@ -75,7 +75,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ItemParamQuery
      */
     public function getParams()
     {
@@ -90,7 +90,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getCheckbox_params()
     {
-        return $this->getParams()->andWhere(['type_id' => ParamType::CHECKBOX]);
+        return $this->getParams()->checkbox();
     }
 
     /**
@@ -98,7 +98,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getSlider_params()
     {
-        return $this->getParams()->andWhere(['type_id' => ParamType::SLIDER]);
+        return $this->getParams()->slider();
     }
 
 

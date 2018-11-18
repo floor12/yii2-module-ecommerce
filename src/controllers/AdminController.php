@@ -191,6 +191,12 @@ class AdminController extends Controller
                 'model' => Item::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is deleted.')
             ],
+            'order-form' => [
+                'class' => EditModalAction::class,
+                'model' => Order::class,
+                'view' => 'form-order',
+                'message' => Yii::t('app.f12.ecommerce', 'Order is saved.'),
+            ],
             'order-delete' => [
                 'class' => DeleteAction::class,
                 'model' => Order::class,

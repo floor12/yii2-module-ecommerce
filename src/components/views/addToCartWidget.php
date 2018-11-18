@@ -7,6 +7,7 @@
  *
  * @var $this \yii\web\View
  * @var $options \floor12\ecommerce\models\Item[]
+ * @var $showProceedBtn boolean
  */
 
 use app\components\FontAwesome;
@@ -17,18 +18,13 @@ use yii\helpers\Html;
 
 <table class="table table-striped item-options">
     <?php if ($options) foreach ($options as $option) { ?>
-
         <tr>
-
-
             <td>
                 <?php foreach ($option->itemParamValues as $value) {
                     echo Html::tag('div', "<span>{$value->param->title}:</span> <b>{$value->value} {$value->unit}</b>");
                 } ?>
 
             </td>
-
-
             <td>
                 <div class="f12-ec-item-price">
                     <price class='discount'><?= $option->price_discount ? Yii::$app->formatter->asCurrency($option->price_discount, Yii::$app->getModule('shop')->currency) : NULL ?></price>
@@ -45,6 +41,13 @@ use yii\helpers\Html;
 
             </td>
         </tr>
-
     <?php } ?>
 </table>
+
+<div class="clearfix">
+    <?=
+    Html::a(FontAwesome::icon('check') . ' ' . Yii::t('app.f12.ecommerce', 'Proceed to checkout'),
+        ['/shop/cart/checkout'],
+        ['class' => $showProceedBtn ? 'btn btn-primary proceed-to-checkout' : 'btn btn-primary proceed-to-checkout proceed-to-checkout-hidden'])
+    ?>
+</div>

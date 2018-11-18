@@ -42,6 +42,7 @@ class ItemFrontendFilter extends Model
     public $price_max;
     public $discount = false;
     public $showDiscountOption = false;
+    public $filter;
 
     private $_category;
 
@@ -55,7 +56,6 @@ class ItemFrontendFilter extends Model
             $this->category_title = $this->_category->title;
             $this->slider_params = $this->_category->getSlider_params()->active()->all();
             $this->checkbox_params = $this->_category->getCheckbox_params()->active()->all();
-            $this->params = array_merge($this->slider_params, $this->checkbox_params);
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
             $this->showDiscountOption = Item::find()
@@ -67,8 +67,15 @@ class ItemFrontendFilter extends Model
 
         } else {
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
+            $this->price_min = (int)Item::find()->active()->min('price');
+            $this->price_max = (int)Item::find()->active()->max('price');
+
         }
 
+        $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
+        $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
+
+        $this->params = array_merge($this->slider_params, $this->checkbox_params);
 
         parent::init();
     }
@@ -79,6 +86,7 @@ class ItemFrontendFilter extends Model
     public function rules()
     {
         return [
+            ['filter', 'string'],
             [['param_values', 'price', 'discount'], 'safe']
         ];
     }
@@ -99,8 +107,11 @@ class ItemFrontendFilter extends Model
     {
         $query = Item::find()
             ->with('images')
-            ->category($this->_category)
+            ->andFilterWhere(['LIKE', 'title', $this->filter])
             ->andWhere(['parent_id' => 0]);
+
+        if ($this->category_id)
+            $query->category($this->_category);
 
         if ($this->price) {
             list($price_min, $price_max) = explode(';', $this->price);

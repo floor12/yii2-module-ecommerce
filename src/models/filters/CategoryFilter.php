@@ -25,8 +25,6 @@ use yii\data\ActiveDataProvider;
 class CategoryFilter extends Model
 {
     public $filter;
-    public $status;
-    public $root = false;
 
     private $_query;
 
@@ -36,7 +34,6 @@ class CategoryFilter extends Model
     public function rules()
     {
         return [
-            [['status', 'root'], 'integer'],
             [['filter'], 'string'],
         ];
     }
@@ -46,15 +43,11 @@ class CategoryFilter extends Model
      */
     public function dataProvider()
     {
-        $this->_query = Category::find()
-            ->andFilterWhere(['=', 'status', $this->status])
-            ->andFilterWhere(['LIKE', 'title', $this->filter]);
-
-        if ($this->root)
-            $this->_query->andWhere(['parent_id' => null]);
+        $this->_query = Category::find()->andFilterWhere(['LIKE', 'title', $this->filter]);
 
         return new ActiveDataProvider([
-            'query' => $this->_query
+            'query' => $this->_query,
+            'pagination' => false
         ]);
     }
 

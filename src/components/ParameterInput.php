@@ -67,13 +67,21 @@ class ParameterInput extends Widget
 
     protected function getValues()
     {
-        $this->_values = ItemParamValue::find()
-            ->select('value')
-            ->indexBy('value')
-            ->available($this->category)
-            ->param($this->parameter->id)
-            ->distinct()
-            ->column();
+        if ($this->category)
+            $this->_values = ItemParamValue::find()
+                ->select('value')
+                ->indexBy('value')
+                ->category($this->category)
+                ->param($this->parameter->id)
+                ->distinct()
+                ->column();
+        else
+            $this->_values = ItemParamValue::find()
+                ->select('value')
+                ->indexBy('value')
+                ->param($this->parameter->id)
+                ->distinct()
+                ->column();
     }
 
     /**

@@ -91,7 +91,7 @@ tr.disabled {
 
 table.item-options span,
 table.table-cart span {
-    min-width: 70px;
+    min-width: 100px;
     display: block;
     float: left;
 }
@@ -117,6 +117,10 @@ a.fav {
 
 .cart-link span.counter {
     font-weight: 600;
+}
+
+div.f12-ecommerce-address-section {
+    display: none;
 }
 
 a.fav-active {
@@ -197,4 +201,18 @@ table.table-cart input {
         margin: 0;
     }
 
+}
+
+.treegrid-expander {
+    margin: 3px 4px 0 0;
+    display: block;
+    float: left;
+}
+
+a.proceed-to-checkout {
+    float: right;
+}
+
+a.proceed-to-checkout-hidden {
+    display: none;
 }

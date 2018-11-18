@@ -26,7 +26,7 @@ class ItemParamValueQuery extends \yii\db\ActiveQuery
      * @param Category $category
      * @return ItemParamValueQuery
      */
-    public function available(Category $category)
+    public function category(Category $category)
     {
         $items_ids = Item::find()
             ->category($category)
