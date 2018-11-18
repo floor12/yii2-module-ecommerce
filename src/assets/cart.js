@@ -2,18 +2,20 @@
  * Created by evgenygoryaev on 13/08/2017.
  */
 
+var total_in_cart = 0;
+
 function updateCartCount() {
 
     res = document.cookie.match(/cart-/ig);
 
     if (res)
-        total = res.length;
+        total_in_cart = res.length;
     else
-        total = 0;
+        total_in_cart = 0;
 
-    $('.cart-link span.counter').html('[ ' + total + ' ]');
+    $('.cart-link span.counter').html('[ ' + total_in_cart + ' ]');
 
-    if (total > 0) {
+    if (total_in_cart > 0) {
         $('.cart-link span.counter').show();
         $('.cart-link').addClass('cart-link-active');
     } else {
@@ -52,13 +54,15 @@ $(document).on('click', 'a.cart', function () {
     name = "cart-" + id;
     if ($.cookie(name)) {
 
-        if (confirm('Этот товар находится в корзине, вы хотите удалть его?')) {
+        if (true) { // если понадобится, можно сделать какой-нибудь confirm() тут
             $(this).removeClass('btn-primary')
             $(this).addClass('btn-default')
             $(this).attr('title', 'Добавить в избранное')
             $.removeCookie(name, {expires: 31, path: '/'});
             updateCartCount();
 
+            if (total_in_cart == 0)
+                $('.proceed-to-checkout').fadeOut(300);
 
             parent = $(this).parents('.modal-body table tbody');
             if (parent.length) {
@@ -91,18 +95,18 @@ $(document).on('click', 'a.cart', function () {
             shadow_object = $("<div>").addClass('cart-shadow-object').appendTo('body');
             shadow_object.width(full_block.width()).height(full_block.height() - 30).css({top: pos_y, left: pos_x});
 
-            console.log(shadow_object);
-
             //анимируем его перемещение
-
             cart_pos_x = $('.cart-link').offset().left;
+            cart_pos_y = $('.cart-link').offset().top - $(window).scrollTop();
+
+            console.log(cart_pos_y);
 
             shadow_object.animate({
-                top: 10,
-                left: cart_pos_x + 10,
+                top: cart_pos_y,
+                left: cart_pos_x + 20,
                 width: 10,
                 height: 10,
-                opacity: 0.5
+                opacity: 0.3
             }, 500, function () {
                 shadow_object.remove();
                 updateCartCount();

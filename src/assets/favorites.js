@@ -96,10 +96,11 @@ $(document).on('click', 'a.fav', function () {
             //анимируем его перемещение
 
             cart_pos_x = $('.favorites-link').offset().left;
+            cart_pos_y = $('.favorites-link').offset().top - $(window).scrollTop();
 
             shadow_object.animate({
-                top: 10,
-                left: cart_pos_x + 10,
+                top: cart_pos_y,
+                left: cart_pos_x + 20,
                 width: 10,
                 height: 10,
                 opacity: 0.5
