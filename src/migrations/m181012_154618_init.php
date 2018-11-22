@@ -45,7 +45,7 @@ class m181012_154618_init extends Migration
         $this->createIndex('idx-ec_item-status', '{{%ec_item}}', 'status');
         $this->createIndex('idx-ec_item-price', '{{%ec_item}}', 'price');
         $this->createIndex('idx-ec_item-price_discount', '{{%ec_item}}', 'price_discount');
-        $this->createIndex('idx-ec_item-availible', '{{%ec_item}}', 'availible');
+        $this->createIndex('idx-ec_item-available', '{{%ec_item}}', 'available');
 
         //item-category link
         $this->createTable('{{%ec_item_category}}', [
