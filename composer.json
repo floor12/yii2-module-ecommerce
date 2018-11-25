@@ -25,7 +25,8 @@
     "kartik-v/yii2-widget-select2": "@dev",
     "kartik-v/yii2-widget-activeform": "@dev",
     "yii2mod/yii2-enum": "*",
-    "yii2mod/yii2-ion-slider": "^1.2"
+    "yii2mod/yii2-ion-slider": "^1.2",
+    "leandrogehlen/yii2-treegrid": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"
