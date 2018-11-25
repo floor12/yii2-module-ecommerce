@@ -34,7 +34,7 @@ class ItemParamValueQuery extends \yii\db\ActiveQuery
             ->select('id')
             ->column();
 
-        return $this->andWhere(['IN', 'item_id', $items_ids]);
+        return $this->andWhere(['IN', 'parent_item_id', $items_ids]);
     }
 
     /**
