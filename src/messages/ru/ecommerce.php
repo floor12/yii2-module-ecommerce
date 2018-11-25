@@ -123,6 +123,7 @@ return [
     'Please fill this field.' => 'Это поле необходимо заполнить.',
     'Your cart is empty.' => 'Ваша корзина пуста.',
     'Order updating' => 'Редактирование заказа',
-    '' => '',
+    'In progress' => 'В обработке',
+    'Done' => 'Выполнен',
     '' => '',
 ];
