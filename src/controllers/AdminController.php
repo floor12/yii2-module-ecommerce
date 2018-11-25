@@ -9,6 +9,7 @@
 namespace floor12\ecommerce\controllers;
 
 use floor12\ecommerce\logic\ItemOptionCreate;
+use floor12\ecommerce\logic\ItemUpdate;
 use floor12\ecommerce\models\Category;
 use floor12\ecommerce\models\filters\CategoryFilter;
 use floor12\ecommerce\models\filters\ItemFilter;
@@ -21,7 +22,6 @@ use floor12\ecommerce\models\Order;
 use floor12\editmodal\DeleteAction;
 use floor12\editmodal\EditModalAction;
 use floor12\editmodal\ModalWindow;
-use floor12\ecommerce\logic\ItemUpdate;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -195,6 +195,7 @@ class AdminController extends Controller
                 'class' => EditModalAction::class,
                 'model' => Order::class,
                 'view' => 'form-order',
+                'scenario' => Order::SCENARIO_ADMIN,
                 'message' => Yii::t('app.f12.ecommerce', 'Order is saved.'),
             ],
             'order-delete' => [
