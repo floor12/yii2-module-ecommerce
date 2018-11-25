@@ -33,7 +33,7 @@ class m181012_154618_init extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull()->comment('Item title'),
             'subtitle' => $this->string()->null()->comment('Item subtitle'),
-            'description' => $this->string()->null()->comment('Item description'),
+            'description' => $this->text()->null()->comment('Item description'),
             'seo_description' => $this->text()->null()->comment('Description META'),
             'seo_title' => $this->string()->null()->comment('Page title'),
             'price' => $this->float()->null()->comment('Price'),
