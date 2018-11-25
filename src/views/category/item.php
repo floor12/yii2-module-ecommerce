@@ -26,17 +26,6 @@ $this->params['breadcrumbs'][] = $model->title;
 
     <div class="row">
 
-        <div class="col-md-7">
-
-            <div class="f12-ec-item-view-description">
-                <?= $model->description ?>
-            </div>
-
-            <h2><?= Yii::t('app.f12.ecommerce', 'Order options') ?></h2>
-
-            <?= AddToCartWidget::widget(['item' => $model]) ?>
-
-        </div>
 
         <div class="col-md-5">
 
@@ -53,6 +42,21 @@ $this->params['breadcrumbs'][] = $model->title;
             </div>
 
         </div>
+
+        <div class="col-md-7">
+
+            <div class="f12-ec-item-view-description">
+                <?= $model->description ?>
+            </div>
+
+            <h2><?= Yii::t('app.f12.ecommerce', 'Order options') ?></h2>
+
+            <?= AddToCartWidget::widget(['item' => $model]) ?>
+
+
+
+        </div>
+
     </div>
 
 </div>
