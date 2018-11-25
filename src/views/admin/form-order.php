@@ -11,8 +11,11 @@
  *
  */
 
+use floor12\ecommerce\models\enum\DeliveryType;
+use floor12\ecommerce\models\enum\OrderStatus;
 use kartik\form\ActiveForm;
 use yii\helpers\Html;
+use yii\widgets\MaskedInput;
 
 $form = ActiveForm::begin([
     'options' => ['class' => 'modaledit-form'],
@@ -28,12 +31,60 @@ $form = ActiveForm::begin([
 
     <?= $form->errorSummary($model); ?>
 
+    <table class="table table-striped table-bordered table-cart">
+        <tbody>
+        <tr>
+            <th><?= Yii::t('app.f12.ecommerce', 'Item title') ?></th>
+            <th><?= Yii::t('app.f12.ecommerce', 'Parameters') ?></th>
+            <th><?= Yii::t('app.f12.ecommerce', 'Quantity') ?></th>
+            <th><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>
+            <th><?= Yii::t('app.f12.ecommerce', 'Sum') ?></th>
+        </tr>
+        <?php if ($model->orderItems) foreach ($model->orderItems as $item) echo $this->render('order_item_row', ['model' => $item]) ?>
+        </tbody>
+    </table>
+    <div class="cart-total">
+        <?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->total ?></span>
+    </div>
+
+    <br>
+    <br>
+
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-xs-4">
             <?= $form->field($model, 'fullname') ?>
         </div>
-
+        <div class="col-xs-4">
+            <?= $form->field($model, 'email') ?>
+        </div>
+        <div class="col-xs-4">
+            <?= $form->field($model, 'phone')->widget(MaskedInput::class, [
+                'mask' => '+9 (999) 999-99-99'
+            ]) ?>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <?= $form->field($model, 'delivery_type_id')->dropDownList(DeliveryType::listData()) ?>
+        </div>
+        <div class="col-xs-4">
+            <?= $form->field($model, 'status')->dropDownList(OrderStatus::listData()) ?>
+        </div>
+    </div>
+
+
+    <?= $form->field($model, 'address')
+        ->label(Yii::t('app.f12.ecommerce', 'Additional comment'))
+        ->textarea(['rows' => 4])
+    ?>
+
+
+    <?= $form->field($model, 'comment')
+        ->label(Yii::t('app.f12.ecommerce', 'Additional comment'))
+        ->textarea(['rows' => 4])
+    ?>
+
 
 </div>
 <div class="modal-footer">

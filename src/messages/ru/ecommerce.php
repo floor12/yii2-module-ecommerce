@@ -122,5 +122,7 @@ return [
     'Apartament or office number' => '№ квартиры или офиса',
     'Please fill this field.' => 'Это поле необходимо заполнить.',
     'Your cart is empty.' => 'Ваша корзина пуста.',
+    'Order updating' => 'Редактирование заказа',
+    '' => '',
     '' => '',
 ];

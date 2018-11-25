@@ -27,7 +27,7 @@ use Yii;
  * @property string $comment Client comment
  * @property string $comment_admin Admin comment
  *
- * @property EcOrderItem[] $ecOrderItems
+ * @property OrderItem[] $orderItems
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -109,9 +109,9 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcOrderItems()
+    public function getOrderItems()
     {
-        return $this->hasMany(EcOrderItem::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
     }
 
     /**
