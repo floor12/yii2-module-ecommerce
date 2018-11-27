@@ -55,7 +55,7 @@ return [
     'Save' => 'Сохранить',
     'Available quantity' => 'На складе',
     'Item parameters are saved.' => 'Атрибуты товара сохранены.',
-    'External indificator' => 'Внешний ключ (1С и пр.)',
+    'External indificator' => 'Ключ 1С',
     'Hide on website' => 'Не показывать на сайте',
     'Linked parameters' => 'Связанные атрибуты',
     'Item is not found.' => 'Товар не найден.',
@@ -125,5 +125,6 @@ return [
     'Order updating' => 'Редактирование заказа',
     'In progress' => 'В обработке',
     'Done' => 'Выполнен',
+    'Item article' => 'Артукул товара',
     '' => '',
 ];

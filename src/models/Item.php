@@ -28,6 +28,7 @@ use yii\helpers\Url;
  * @property int $status Item status
  * @property int $parent_id Parent intem ID
  * @property string $url item view url
+ * @property string $article Item article
  *
  * @property ItemParamValue[] $itemParamValues
  * @property OrderItem[] $orderItems
@@ -57,7 +58,7 @@ class Item extends ActiveRecord implements PageObjectInterface
             [['price', 'price_discount'], 'number'],
             [['status', 'available'], 'integer'],
             ['description', 'string'],
-            [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id'], 'string', 'max' => 255],
+            [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id', 'article'], 'string', 'max' => 255],
             [['category_ids'], 'each', 'rule' => ['integer']],
             ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']],
         ];
@@ -82,6 +83,7 @@ class Item extends ActiveRecord implements PageObjectInterface
             'category_ids' => Yii::t('app.f12.ecommerce', 'Linked categories'),
             'images' => Yii::t('app.f12.ecommerce', 'Item images'),
             'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
+            'article' => Yii::t('app.f12.ecommerce', 'Item article'),
         ];
     }
 

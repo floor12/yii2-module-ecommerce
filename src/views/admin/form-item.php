@@ -59,12 +59,21 @@ $form = ActiveForm::begin([
         <div class="col-md-2">
             <?= $form->field($model, 'available') ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'external_id') ?>
+        <div class="col-md-2">
+            <?= $form->field($model, 'article') ?>
         </div>
         <div class="col-md-2">
+            <?= $form->field($model, 'external_id') ?>
+        </div>
+        <div class="col-md-2" style="padding-top: 30px;">
             <?= $form->field($model, 'status')->checkbox() ?>
         </div>
+
+
+    </div>
+
+    <div class="row">
+
     </div>
 
     <?= $form->field($model, 'description')->widget(Summernote::class, []) ?>
