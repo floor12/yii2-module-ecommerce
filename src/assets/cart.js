@@ -13,7 +13,7 @@ function updateCartCount() {
     else
         total_in_cart = 0;
 
-    $('.cart-link span.counter').html('[ ' + total_in_cart + ' ]');
+    $('.cart-link span.counter').html(total_in_cart);
 
     if (total_in_cart > 0) {
         $('.cart-link span.counter').show();

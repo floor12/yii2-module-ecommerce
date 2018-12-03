@@ -11,7 +11,7 @@ function updateFavCount() {
     else
         total = 0;
 
-    $('.favorites-link span.counter').html('[ ' + total + ' ]');
+    $('.favorites-link span.counter').html(total);
 
     if (total > 0) {
         $('.favorites-link span.counter').show();
