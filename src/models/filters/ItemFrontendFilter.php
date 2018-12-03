@@ -69,11 +69,11 @@ class ItemFrontendFilter extends Model
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
             $this->price_min = (int)Item::find()->active()->min('price');
             $this->price_max = (int)Item::find()->active()->max('price');
-
+            $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
+            $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
         }
 
-        $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
-        $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
+
 
         $this->params = array_merge($this->slider_params, $this->checkbox_params);
 

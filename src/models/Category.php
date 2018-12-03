@@ -85,12 +85,25 @@ class Category extends \yii\db\ActiveRecord
             ->inverseOf('categories');
     }
 
+//    /**
+//     * @return ItemParamQuery
+//     */
+    public function getParamsWithParent()
+    {
+        $category_ids = Category::find()->withParents($this)->select('id')->column();
+
+        return ItemParam::find()
+            ->byCategoyIds($category_ids)
+            ->orderBy('type_id');
+    }
+
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getCheckbox_params()
     {
-        return $this->getParams()->checkbox();
+        return $this->getParamsWithParent()->checkbox();
     }
 
     /**
@@ -98,7 +111,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getSlider_params()
     {
-        return $this->getParams()->slider();
+        return $this->getParamsWithParent()->slider();
     }
 
 

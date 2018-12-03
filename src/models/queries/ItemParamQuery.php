@@ -40,6 +40,16 @@ class ItemParamQuery extends \yii\db\ActiveQuery
     }
 
     /**
+     * @param array $category_ids
+     * @return $this
+     */
+    public function byCategoyIds(array $category_ids)
+    {
+        $ids = implode(',', $category_ids);
+        return $this->andWhere("id IN (SELECT param_id FROM ec_param_category WHERE category_id IN ({$ids}) )");
+    }
+
+    /**
      * @param Item $
      * @return $this
      */
