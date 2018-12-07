@@ -32,6 +32,7 @@ class ItemOptionCreate
             'title' => $this->_parent_model->title,
             'price' => $this->_parent_model->price,
             'price_discount' => $this->_parent_model->price_discount,
+            'category_ids' => $this->_parent_model->category_ids,
             'available' => 0
         ]);
     }

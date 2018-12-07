@@ -58,6 +58,7 @@ class ItemFrontendFilter extends Model
             $this->checkbox_params = $this->_category->getCheckbox_params()->active()->all();
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
+
             $this->showDiscountOption = Item::find()
                 ->active()
                 ->select('id')
@@ -69,11 +70,10 @@ class ItemFrontendFilter extends Model
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
             $this->price_min = (int)Item::find()->active()->min('price');
             $this->price_max = (int)Item::find()->active()->max('price');
-
+            $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
+            $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
         }
 
-        $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
-        $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
 
         $this->params = array_merge($this->slider_params, $this->checkbox_params);
 
@@ -108,7 +108,7 @@ class ItemFrontendFilter extends Model
         $query = Item::find()
             ->with('images')
             ->andFilterWhere(['LIKE', 'title', $this->filter])
-            ->andWhere(['parent_id' => 0]);
+            ->root();
 
         if ($this->category_id)
             $query->category($this->_category);

@@ -16,7 +16,15 @@ class ItemQuery extends \yii\db\ActiveQuery
 
     private $_categories = [];
 
-    /** 
+    /** Ignore items options
+     * @return ItemQuery
+     */
+    public function root()
+    {
+        return $this->andWhere(['parent_id' => 0]);
+    }
+
+    /**
      * @return ItemQuery
      */
     public function available()
