@@ -28,6 +28,7 @@ class ItemOptionCreate
 
         $this->_new_model = new Item([
             'parent_id' => $this->_parent_model->id,
+            'parent_id' => $this->_parent_model->id,
             'title' => $this->_parent_model->title,
             'price' => $this->_parent_model->price,
             'price_discount' => $this->_parent_model->price_discount,
