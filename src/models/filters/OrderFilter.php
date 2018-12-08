@@ -46,7 +46,8 @@ class OrderFilter extends Model
 
 
         return new ActiveDataProvider([
-            'query' => $this->_query
+            'query' => $this->_query,
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
     }
 

@@ -15,7 +15,11 @@ use Yii;
  * @property int $created Created
  * @property int $updated Updated
  * @property int $delivered Delivered
+ * @property int $city_id City ID for delivery service
+ * @property double $items_cost All items cost
+ * @property double $delivery_cost Delivery cost
  * @property double $total Total cost
+ * @property double $items_weight Total items weight
  * @property int $status Order status
  * @property int $delivery_status Delivery status
  * @property string $external_id Extermnl indificator
@@ -58,11 +62,11 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['address', 'fullname'], 'string', 'max' => 255],
-            [['delivery_type_id'], 'integer'],
+            [['delivery_type_id', 'postcode'], 'integer'],
             ['phone', PhoneValidator::class],
             ['email', 'email'],
 
-            [['fullname', 'delivery_type_id', 'email', 'phone'], 'required', 'on' => self::SCENARIO_CHECKOUT],
+            [['fullname', 'delivery_type_id', 'email', 'phone', 'city_id'], 'required', 'on' => self::SCENARIO_CHECKOUT],
             [['postcode', 'city', 'street', 'building', 'apartament', 'address'], 'required',
                 'on' => self::SCENARIO_CHECKOUT,
                 'message' => Yii::t('app.f12.ecommerce', 'Please fill this field.'),
@@ -88,6 +92,9 @@ class Order extends \yii\db\ActiveRecord
             'updated' => Yii::t('app.f12.ecommerce', 'Updated'),
             'delivered' => Yii::t('app.f12.ecommerce', 'Delivered'),
             'total' => Yii::t('app.f12.ecommerce', 'Total cost'),
+            'delivery_cost' => Yii::t('app.f12.ecommerce', 'Delivery cost'),
+            'items_cost' => Yii::t('app.f12.ecommerce', 'All items cost'),
+            'items_weight' => Yii::t('app.f12.ecommerce', 'All items weight'),
             'status' => Yii::t('app.f12.ecommerce', 'Order status'),
             'delivery_status' => Yii::t('app.f12.ecommerce', 'Delivery status'),
             'external_id' => Yii::t('app.f12.ecommerce', 'Extermnl indificator'),

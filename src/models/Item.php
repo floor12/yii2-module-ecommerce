@@ -29,6 +29,7 @@ use yii\helpers\Url;
  * @property int $parent_id Parent intem ID
  * @property string $url item view url
  * @property string $article Item article
+ * @property string $weight_delivery Item weight for delivery
  *
  * @property ItemParamValue[] $itemParamValues
  * @property OrderItem[] $orderItems
@@ -55,7 +56,7 @@ class Item extends ActiveRecord implements PageObjectInterface
     {
         return [
             [['title'], 'required'],
-            [['price', 'price_discount'], 'number'],
+            [['price', 'price_discount', 'weight_delivery'], 'number'],
             [['status', 'available'], 'integer'],
             ['description', 'string'],
             [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id', 'article'], 'string', 'max' => 255],
@@ -84,6 +85,7 @@ class Item extends ActiveRecord implements PageObjectInterface
             'images' => Yii::t('app.f12.ecommerce', 'Item images'),
             'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
             'article' => Yii::t('app.f12.ecommerce', 'Item article'),
+            'weight_delivery' => Yii::t('app.f12.ecommerce', 'Item weight for delivery'),
         ];
     }
 

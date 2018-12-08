@@ -26,6 +26,10 @@ $(document).on('change', '#order-delivery_type_id', function () {
     ecommerceAddressCheck();
 })
 
+$(document).on('change', '#order-city', function () {
+    cityReplace();
+})
+
 $(document).on('keyup', '#f12-eccomerce-item-filter', function () {
     clearInterval(timeout);
     form = $(this);
@@ -59,4 +63,31 @@ function ecommerceAddressCheck() {
         $('.f12-ecommerce-address-section').fadeOut('200');
     else
         $('.f12-ecommerce-address-section').fadeIn('200');
+}
+
+function cityReplace() {
+    weight = 0;
+    select = $('#order-city');
+    city_id = select.val();
+    $('#order-city_id').val(city_id);
+
+    $.each($('input.cart-counter'), function (key, val) {
+        input = $(val);
+        weight = weight+input.data('weight')*input.val();
+        weight = Math.round(weight * 100) / 100;
+    })
+
+
+
+    $.ajax({
+        url: '/shop/cart/delivery-cost',
+        data: {'city_id': city_id, 'weight': weight},
+        error: function (response) {
+            proccessError(response)
+        },
+        success: function (response) {
+            $('#f12-delivery-cost span').html(response);
+        }
+
+    })
 }

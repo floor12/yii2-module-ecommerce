@@ -60,25 +60,32 @@ $form = ActiveForm::begin([
 
     <div class="row">
         <div class="col-md-2">
-            <?= $form->field($model, 'price', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
+            <?= $form->field($model, 'price', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]])
+                ->textInput(['class' => 'text-right']) ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($model, 'price_discount', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]]) ?>
+            <?= $form->field($model, 'price_discount', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]])
+                ->textInput(['class' => 'text-right']) ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($model, 'available') ?>
+            <?= $form->field($model, 'available')->textInput(['class' => 'text-right']) ?>
         </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'article') ?>
-        </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <?= $form->field($model, 'external_id') ?>
         </div>
-        <div class="col-md-2" style="padding-top: 30px;">
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'article') ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'weight_delivery', ['addon' => ['append' => ['content' => Yii::t('app.f12.ecommerce', 'kg')]]])
+                ->textInput(['class' => 'text-right']) ?>
+        </div>
+        <div class="col-md-3" style="padding-top: 25px;">
             <?= $form->field($model, 'status')->checkbox() ?>
         </div>
-
-
     </div>
 
     <div class="row">

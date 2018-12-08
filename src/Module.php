@@ -40,6 +40,31 @@ class Module extends \yii\base\Module
      */
     public $itemPerPage = 6;
 
+    /** Default item weight for delivery in kg.
+     * @var float
+     */
+    public $defaultDeliveryWeight = 0.4;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryWidth = 30;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryHeight = 40;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryDepth = 5;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $sdekCityFromId = 270;
+
 
     /** View paths
      * @var string

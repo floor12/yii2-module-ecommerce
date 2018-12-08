@@ -8,15 +8,18 @@
  * @var $model \floor12\ecommerce\models\Order
  */
 
+use floor12\ecommerce\models\City;
 use floor12\ecommerce\models\enum\DeliveryType;
 use kartik\form\ActiveForm;
+use kartik\select2\Select2;
 use yii\helpers\Html;
+use yii\web\JsExpression;
 use yii\widgets\MaskedInput;
 
 $this->title = Yii::t('app.f12.ecommerce', 'Order checkout');
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJs('ecommerceAddressCheck()');
+$this->registerJs('ecommerceAddressCheck(); cityReplace();');
 
 $form = ActiveForm::begin([
     'enableClientValidation' => false
@@ -80,7 +83,27 @@ $form = ActiveForm::begin([
                         <?= $form->field($model, 'postcode')->textInput(['maxlength' => 6]) ?>
                     </div>
                     <div class="col-sm-8">
-                        <?= $form->field($model, 'city') ?>
+                        <?= $form->field($model, 'city')
+                            ->widget(Select2::class, [
+                                    'data' => $model->city ? [$model->city => City::findOne($model->city)] : [],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                        'minimumInputLength' => 3,
+                                        'ajax' => [
+                                            'url' => \yii\helpers\Url::toRoute(['/shop/cart/city']),
+                                            'dataType' => 'json',
+                                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                                        ],
+                                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                        'templateResult' => new JsExpression('function(city) { return city.text; }'),
+                                        'templateSelection' => new JsExpression('function (city) { return city.text; }'),
+                                    ],
+                                ]
+                            ) ?>
+                        <?= $form->field($model, 'city_id')
+                            ->label(false)
+                            ->hiddenInput();
+                        ?>
                     </div>
                 </div>
 
@@ -105,7 +128,12 @@ $form = ActiveForm::begin([
                     'data-description-show' => 'true'
                 ]) ?>
 
-            <?= Html::submitButton(Yii::t('app.f12.ecommerce', 'Send'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton(Yii::t('app.f12.ecommerce', 'Send'), ['class' => 'btn btn-primary pull-right']) ?>
+
+            <div id="f12-delivery-cost">
+                <?= Yii::t('app.f12.ecommerce', 'Delivery cost') ?>:
+                <span>0</span> <?= Yii::$app->getModule('shop')->currencyLabel ?>
+            </div>
 
 
         </div>

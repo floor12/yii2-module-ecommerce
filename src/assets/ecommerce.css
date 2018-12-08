@@ -150,13 +150,19 @@ td.cart-item-title {
 
 div.cart-total {
     font-weight: 500;
-    font-size: 120%;
+    font-size: 110%;
     float: right;
     margin: 0 12px 0;
+    text-align: right;
 }
 
 div.cart-total span {
     font-weight: 800;
+}
+
+div.f12-delivery-cost {
+    font-weight: 500;
+    font-size: 120%;
 }
 
 table.table-cart input {

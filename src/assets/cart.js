@@ -130,3 +130,5 @@ $(document).on('click', 'a.cart', function () {
 })
 
 updateCartCount();
+
+

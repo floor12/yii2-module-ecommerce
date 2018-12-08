@@ -128,5 +128,9 @@ return [
     'In progress' => 'В обработке',
     'Done' => 'Выполнен',
     'Item article' => 'Артукул товара',
+    'Item weight for delivery' => 'Вес товара для доставки',
+    'kg' => 'кг',
+    'Delivery cost' => 'Стоимость доставки',
+    'Total items cost' => 'Стоимость товаров',
     '' => '',
 ];

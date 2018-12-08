@@ -34,8 +34,8 @@ use yii\helpers\Html;
 </div>
 <div class="modal-footer">
     <?= Html::a(Yii::t('app.f12.ecommerce', 'Close'), '', ['class' => 'btn btn-default modaledit-disable-silent']) ?>
-    <?= Html::a(Yii::t('app.f12.ecommerce', 'Checkout'), ['/shop/cart/checkout'], [
+    <?= ($model->rows) ? Html::a(Yii::t('app.f12.ecommerce', 'Checkout'), ['/shop/cart/checkout'], [
         'class' => 'btn btn-primary',
         'onclick' => 'offPageLeaving();',
-    ]) ?>
+    ]) : NULL ?>
 </div>

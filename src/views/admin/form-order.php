@@ -44,9 +44,16 @@ $form = ActiveForm::begin([
         </tbody>
     </table>
     <div class="cart-total">
-        <?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->total ?></span>
+        <div> <?= Yii::t('app.f12.ecommerce', 'Total items cost') ?>:
+            <span><?= $model->items_cost ?> <?= Yii::$app->getModule('shop')->currencyLabel ?></span></div>
+        <div> <?= Yii::t('app.f12.ecommerce', 'Delivery cost') ?>:
+            <span><?= $model->delivery_cost ?> <?= Yii::$app->getModule('shop')->currencyLabel ?></span></div>
+        <div><?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->total ?>
+                <?= Yii::$app->getModule('shop')->currencyLabel ?></span></div>
     </div>
 
+    <br>
+    <br>
     <br>
     <br>
 
