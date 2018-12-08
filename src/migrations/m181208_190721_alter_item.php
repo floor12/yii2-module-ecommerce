@@ -14,14 +14,14 @@ class m181208_190721_alter_item extends Migration
     {
 
 
-//        $this->addColumn('{{%ec_order}}', 'delivery_cost',
-//            $this->float()->defaultValue(0)->notNull()->comment('Delivery cost'));
-//
-//        $this->addColumn('{{%ec_order}}', 'items_cost',
-//            $this->float()->defaultValue(0)->notNull()->comment('All items cost'));
-//
-//        $this->addColumn('{{%ec_order}}', 'items_weight',
-//            $this->float()->defaultValue(0)->notNull()->comment('All items weight'));
+        $this->addColumn('{{%ec_order}}', 'delivery_cost',
+            $this->float()->defaultValue(0)->notNull()->comment('Delivery cost'));
+
+        $this->addColumn('{{%ec_order}}', 'items_cost',
+            $this->float()->defaultValue(0)->notNull()->comment('All items cost'));
+
+        $this->addColumn('{{%ec_order}}', 'items_weight',
+            $this->float()->defaultValue(0)->notNull()->comment('All items weight'));
 
 
     }
