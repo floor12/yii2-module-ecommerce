@@ -20,6 +20,13 @@ class   m181207_130010_alter_item extends Migration
         $this->addColumn("{{%ec_order}}", "city_id", $this->integer()
             ->null()
             ->comment('City ID for delivery service'));
+
+        try {
+            $this->execute("UPDATE ec_item SET weight_delivery=0.4;", []);
+        } catch (Exception $e) {
+            echo "Error import into database" . PHP_EOL;
+
+        }
     }
 
     /**
