@@ -73,10 +73,9 @@ function cityReplace() {
 
     $.each($('input.cart-counter'), function (key, val) {
         input = $(val);
-        weight = weight+input.data('weight')*input.val();
+        weight = weight + input.data('weight') * input.val();
         weight = Math.round(weight * 100) / 100;
     })
-
 
 
     $.ajax({
@@ -86,7 +85,8 @@ function cityReplace() {
             proccessError(response)
         },
         success: function (response) {
-            $('#f12-delivery-cost span').html(response);
+            if (response)
+                $('#f12-delivery-cost span').html(response);
         }
 
     })
