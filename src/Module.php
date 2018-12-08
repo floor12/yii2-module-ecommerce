@@ -60,10 +60,15 @@ class Module extends \yii\base\Module
      */
     public $defaultDeliveryDepth = 5;
 
-    /** Default item width for delivery in cm.
-     * @var float
+    /** Sdek sender city id
+     * @var int
      */
-    public $sdekCityFromId = 270;
+    public $sdekCityFromId = 173;
+
+    /** Sdek tariff
+     * @var int
+     */
+    public $sdekDeliveryTariff = 1;
 
 
     /** View paths

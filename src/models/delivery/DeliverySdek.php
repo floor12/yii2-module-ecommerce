@@ -37,7 +37,7 @@ class DeliverySdek implements DeliveryInterface
         $this->height = Yii::$app->getModule('shop')->defaultDeliveryHeight;
         $this->length = Yii::$app->getModule('shop')->defaultDeliveryDepth;
         $this->date = date('Y-m-d');
-        $this->tariffId = 11;
+        $this->tariffId = Yii::$app->getModule('shop')->sdekDeliveryTariff;
 
 
     }
