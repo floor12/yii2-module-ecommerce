@@ -13,6 +13,7 @@
 
 use floor12\ecommerce\models\enum\DeliveryType;
 use floor12\ecommerce\models\enum\OrderStatus;
+use floor12\ecommerce\models\enum\PaymentType;
 use kartik\form\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\MaskedInput;
@@ -76,13 +77,16 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'delivery_type_id')->dropDownList(DeliveryType::listData()) ?>
         </div>
         <div class="col-xs-4">
+            <?= $form->field($model, 'payment_type_id')->dropDownList(PaymentType::listData()) ?>
+        </div>
+        <div class="col-xs-4">
             <?= $form->field($model, 'status')->dropDownList(OrderStatus::listData()) ?>
         </div>
     </div>
 
 
     <?= $form->field($model, 'address')
-        ->label(Yii::t('app.f12.ecommerce', 'Additional comment'))
+        ->label(Yii::t('app.f12.ecommerce', 'Address'))
         ->textarea(['rows' => 4])
     ?>
 

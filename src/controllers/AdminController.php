@@ -15,6 +15,7 @@ use floor12\ecommerce\models\filters\CategoryFilter;
 use floor12\ecommerce\models\filters\ItemFilter;
 use floor12\ecommerce\models\filters\OrderFilter;
 use floor12\ecommerce\models\filters\ParamFilter;
+use floor12\ecommerce\models\filters\PaymentFilter;
 use floor12\ecommerce\models\forms\ItemParamsForm;
 use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\ItemParam;
@@ -100,6 +101,16 @@ class AdminController extends Controller
         $model = new ParamFilter();
         $model->load(Yii::$app->request->get());
         return $this->render('param', ['model' => $model]);
+    }
+
+    /** Displays payments admin page
+     * @return string
+     */
+    public function actionPayment()
+    {
+        $model = new PaymentFilter();
+        $model->load(Yii::$app->request->get());
+        return $this->render('payment', ['model' => $model]);
     }
 
     /** Updating item parameters

@@ -9,22 +9,21 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\Order;
-use floor12\ecommerce\models\queries\OrderQuery;
+use floor12\ecommerce\models\Payment;
+use floor12\ecommerce\models\queries\EcParamQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class OrderFilter
+ * Class PaymentFilter
+ * @property integer $status Payment status
+ * @property string $date Date of payment
  * @package floor12\ecommerce\models\filters
- * @property string $filter
- * @property integer $status
- * @property OrderQuery $_query
  */
-class OrderFilter extends Model
+class PaymentFilter extends Model
 {
-    public $filter;
     public $status;
+    public $date;
 
     private $_query;
 
@@ -35,7 +34,7 @@ class OrderFilter extends Model
     {
         return [
             [['status'], 'integer'],
-            [['filter'], 'string'],
+            [['date'], 'string'],
         ];
     }
 
@@ -44,13 +43,12 @@ class OrderFilter extends Model
      */
     public function dataProvider()
     {
-        $this->_query = Order::find()
+        $this->_query = Payment::find()
             ->andFilterWhere(['=', 'status', $this->status]);
 
 
         return new ActiveDataProvider([
-            'query' => $this->_query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
+            'query' => $this->_query
         ]);
     }
 

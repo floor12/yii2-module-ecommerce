@@ -10,14 +10,17 @@ namespace floor12\ecommerce\controllers;
 
 
 use floor12\ecommerce\logic\OrderCreate;
+use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
 use floor12\ecommerce\models\delivery\DeliverySdek;
+use floor12\ecommerce\models\enum\PaymentType;
 use floor12\ecommerce\models\forms\CartForm;
 use floor12\ecommerce\models\Order;
 use Yii;
 use yii\db\Query;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class CartController extends Controller
@@ -37,6 +40,7 @@ class CartController extends Controller
      */
     public function actionCheckout()
     {
+        //Yii::$app->getModule('shop');
         $model = new Order();
         $model->cart = new CartForm();
 
@@ -45,10 +49,38 @@ class CartController extends Controller
 
         if (Yii::$app->request->isPost) {
             if (Yii::createObject(OrderCreate::class, [$model, Yii::$app->request->post()])->execute())
-                return $this->render('success');
+                if ($model->payment_type_id == PaymentType::RECEIVING)
+                    return $this->render('success');
+                else
+                    $this->redirect(['/shop/cart/pay', 'order_id' => $model->id]);
         }
 
         return $this->render('checkout', ['model' => $model]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionPay($order_id)
+    {
+        $model = Order::findOne((int)$order_id);
+        if (!$model)
+            throw new NotFoundHttpException('Order not found');
+
+        Yii::createObject(PaymentCreate::class, [$model])->execute();
+
+
+        if ($model->payment_type_id == PaymentType::CLOUDPAYMENTS) {
+            $publicKey = Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['api_id'];
+            $privateKey = Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['api_pass'];
+            $currency = Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['currency'];
+            return $this->render('pay_cloudpayments', [
+                'model' => $model,
+                'publicKey' => $publicKey,
+                'currency' => $currency,
+            ]);
+        }
+
     }
 
     /**

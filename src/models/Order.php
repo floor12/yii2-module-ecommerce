@@ -24,6 +24,7 @@ use Yii;
  * @property int $delivery_status Delivery status
  * @property string $external_id Extermnl indificator
  * @property int $delivery_type_id Delivery type
+ * @property int $payment_type_id Delivery type
  * @property string $fullname Fullname
  * @property string $phone Phone
  * @property string $mail Email
@@ -66,8 +67,8 @@ class Order extends \yii\db\ActiveRecord
             ['phone', PhoneValidator::class],
             ['email', 'email'],
 
-            [['fullname', 'delivery_type_id', 'email', 'phone', 'city_id'], 'required', 'on' => self::SCENARIO_CHECKOUT],
-            [['postcode', 'city', 'street', 'building', 'apartament', 'address'], 'required',
+            [['fullname', 'delivery_type_id', 'email', 'phone', 'payment_type_id'], 'required', 'on' => self::SCENARIO_CHECKOUT],
+            [['postcode', 'city', 'street', 'building', 'apartament', 'address', 'city_id'], 'required',
                 'on' => self::SCENARIO_CHECKOUT,
                 'message' => Yii::t('app.f12.ecommerce', 'Please fill this field.'),
                 'when' => function (self $model) {
@@ -97,8 +98,9 @@ class Order extends \yii\db\ActiveRecord
             'items_weight' => Yii::t('app.f12.ecommerce', 'All items weight'),
             'status' => Yii::t('app.f12.ecommerce', 'Order status'),
             'delivery_status' => Yii::t('app.f12.ecommerce', 'Delivery status'),
-            'external_id' => Yii::t('app.f12.ecommerce', 'Extermnl indificator'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
             'delivery_type_id' => Yii::t('app.f12.ecommerce', 'Delivery type'),
+            'payment_type_id' => Yii::t('app.f12.ecommerce', 'Payment type'),
             'fullname' => Yii::t('app.f12.ecommerce', 'Fullname'),
             'phone' => Yii::t('app.f12.ecommerce', 'Phone'),
             'email' => Yii::t('app.f12.ecommerce', 'Email'),
@@ -113,12 +115,22 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getOrderItems()
     {
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPayments()
+    {
+        return $this->hasMany(Payment::className(), ['order_id' => 'id'])->orderBy('created DESC');
     }
 
     /**

@@ -64,12 +64,17 @@ class Module extends \yii\base\Module
      * @var int
      */
     public $sdekCityFromId = 173;
+    
+    public $paymentDescription = 'Payment in online store.';
 
     /** Sdek tariff
      * @var int
      */
     public $sdekDeliveryTariff = 1;
 
+    public $payment_types = [];
+    
+    public $payment_params = [];
 
     /** View paths
      * @var string

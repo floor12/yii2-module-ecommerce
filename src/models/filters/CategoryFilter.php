@@ -51,6 +51,10 @@ class CategoryFilter extends Model
         ]);
     }
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function attributeLabels()
     {
         return [

@@ -14,12 +14,16 @@ class OrderStatus extends BaseEnum
 {
     const READY = 0;
     const ORDERED = 1;
-    const IN_PROGRESS = 2;
-    const DONE = 3;
+    const PAYMENT_EXPECTS = 2;
+    const PAYED = 3;
+    const IN_PROGRESS = 4;
+    const DONE = 5;
 
     static public $list = [
         self::READY => 'Ready to order',
         self::ORDERED => 'Ordered',
+        self::PAYMENT_EXPECTS => 'Expects payment',
+        self::PAYED => 'Payed',
         self::IN_PROGRESS => 'In progress',
         self::DONE => 'Done',
     ];

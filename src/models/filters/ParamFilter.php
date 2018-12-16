@@ -39,6 +39,9 @@ class ParamFilter extends Model
         ];
     }
 
+    /**
+     * @return ActiveDataProvider
+     */
     public function dataProvider()
     {
         $this->_query = ItemParam::find()
