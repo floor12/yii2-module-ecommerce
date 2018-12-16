@@ -31,7 +31,7 @@ class PaymentController extends Controller
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $payment_id = (int)Yii::$app->request->getQueryParam('InvoiceId');
+        $payment_id = (int)Yii::$app->request->post('InvoiceId');
 
         $payment = Payment::findOne($payment_id);
 
@@ -41,7 +41,7 @@ class PaymentController extends Controller
         Yii::getLogger()->log('Invoice is found', 1);
 
 
-        Yii::createObject(PaymentProcessCloudPayments::class, [$payment, Yii::$app->request->getQueryParam()])->execute();
+        Yii::createObject(PaymentProcessCloudPayments::class, [$payment, Yii::$app->request->post()])->execute();
 
         return ['code' => 0];
     }
