@@ -172,7 +172,9 @@ class Item extends ActiveRecord implements PageObjectInterface
      */
     public function getImages()
     {
-        return $this->hasMany(File::class, ['object_id' => 'id'])->andWhere(['class' => self::class]);
+        return $this->hasMany(File::class, ['object_id' => 'id'])
+            ->andWhere(['class' => self::class])
+            ->orderBy('ordering');
     }
 
     /**
