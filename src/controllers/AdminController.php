@@ -194,7 +194,7 @@ class AdminController extends Controller
                 'logic' => ItemUpdate::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is saved.'),
                 'viewParams' => [
-                    'categories' => Category::find()->dropbdown(),
+                    'categories' => Category::find()->dropbdown(false),
                 ],
             ],
             'item-delete' => [
