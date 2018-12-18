@@ -30,6 +30,7 @@ class ItemOptionCreate
             'parent_id' => $this->_parent_model->id,
             'parent_id' => $this->_parent_model->id,
             'title' => $this->_parent_model->title,
+            'article' => $this->_parent_model->article,
             'price' => $this->_parent_model->price,
             'price_discount' => $this->_parent_model->price_discount,
             'category_ids' => $this->_parent_model->category_ids,

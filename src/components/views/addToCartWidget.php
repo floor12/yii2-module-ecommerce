@@ -20,6 +20,7 @@ use yii\helpers\Html;
     <?php if ($options) foreach ($options as $option) { ?>
         <tr>
             <td>
+                <?= $option->article ? Html::tag('div', "<span>Артикул:</span> <b>{$option->article}</b>") : NULL ?>
                 <?php foreach ($option->itemParamValues as $value) {
                     echo Html::tag('div', "<span>{$value->param->title}:</span> <b>{$value->value} {$value->unit}</b>");
                 } ?>
