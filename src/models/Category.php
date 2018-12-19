@@ -2,6 +2,7 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\logic\CategoryPathBuilder;
 use floor12\ecommerce\models\queries\CategoryQuery;
 use floor12\ecommerce\models\queries\EcCatego;
 use floor12\ecommerce\models\queries\ItemParamQuery;
@@ -13,6 +14,7 @@ use Yii;
  *
  * @property int $id
  * @property string $title Category title
+ * @property string $path Category title with path
  * @property int $parent_id Parent category
  * @property int $status Category status
  * @property string $external_id External id
@@ -178,5 +180,17 @@ class Category extends \yii\db\ActiveRecord
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $pathBuilder = new CategoryPathBuilder;
+        $pathBuilder->execute();
+        $pathBuilder->execute();
+        return parent::afterSave($insert, $changedAttributes);
     }
 }

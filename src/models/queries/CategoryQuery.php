@@ -35,26 +35,11 @@ class CategoryQuery extends \yii\db\ActiveQuery
      */
     public function dropbdown($rootOnly = true)
     {
-        $rootCategories = $this
-            ->select('title')
+        return $this
+            ->select('path')
             ->indexBy('id')
-            ->where('ISNULL(parent_id)')
-            ->orderBy('title')
+            ->orderBy('path')
             ->column();
-
-        if ($rootOnly)
-            return $rootCategories;
-        $ret = [];
-        if ($rootCategories)
-            foreach ($rootCategories as $id => $title) {
-                $ret[$title] = $this
-                    ->select('title')
-                    ->indexBy('id')
-                    ->where(['parent_id' => $id])
-                    ->orderBy('title')
-                    ->column();
-            }
-        return $ret;
     }
 
     /**
