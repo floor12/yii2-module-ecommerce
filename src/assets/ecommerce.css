@@ -89,6 +89,10 @@ tr.disabled {
     opacity: 0.2;
 }
 
+table.item-options {
+    font-size: 90%;
+}
+
 table.item-options span,
 table.table-cart span {
     min-width: 100px;
@@ -222,4 +226,18 @@ a.proceed-to-checkout-hidden {
 #f12-delivery-cost {
     font-size: 120%;
     font-weight: 500;
+}
+
+tr.f12-ec-item-na {
+    opacity: 0.6;
+}
+
+div.f12-ec-item-na {
+    float: right;
+    color: red;
+    color: #b20000;
+    font-weight: 600;
+    border: 2px #b20000 solid;
+    padding: 2px 10px;
+    font-size: 70%;
 }

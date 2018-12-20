@@ -23,7 +23,8 @@ class CartForm extends Model
         foreach ($_COOKIE as $name => $quantity) {
             if (preg_match('/cart-(\d+)/', $name, $matches)) {
                 $item = Item::findOne($matches[1]);
-                if (!$item)
+
+                if (!$item || !$item->available)
                     continue;
 
                 $sum = $quantity * $item->price_current;
@@ -42,6 +43,15 @@ class CartForm extends Model
         $this->total = Yii::$app->formatter->asCurrency($this->total, Yii::$app->getModule('shop')->currency);
     }
 
+
+    public function cleanNotAvailble()
+    {
+//        if ($this->rows)
+//            foreach ($this->rows as $key => $row) {
+//                if (!$row['item']->available)
+//                    unset($this->rows[$key]);
+//            }
+    }
 
     /**
      *  epmty cart

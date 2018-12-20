@@ -44,6 +44,9 @@ class CartController extends Controller
         $model = new Order();
         $model->cart = new CartForm();
 
+        $model->cart->cleanNotAvailble();
+        //var_dump($model->cart->rows);
+
         if (!sizeof($model->cart->rows))
             throw new BadRequestHttpException('Your cart is empty');
 

@@ -29,7 +29,6 @@ class AddToCartWidget extends Widget
         $this->_options = Item::find()
             ->where(['parent_id' => $this->item->id])
             ->active()
-            ->available()
             ->all();
         $this->_options[] = $this->item;
 

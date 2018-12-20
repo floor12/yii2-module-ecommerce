@@ -17,6 +17,7 @@ use yii\helpers\Html;
 <tr>
 
     <td class="cart-item-title">
+        <?= !$row['item']->available ? Html::tag('div', 'нет на складе', ['class' => 'f12-ec-item-na']) : NULL ?>
         <?= $row['item']->title ?>
     </td>
     <td>
