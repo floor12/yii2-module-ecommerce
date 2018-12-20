@@ -3,6 +3,7 @@
 namespace floor12\ecommerce\models\queries;
 
 use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\enum\Status;
 
 /**
  * This is the ActiveQuery class for [[\floor12\ecommerce\models\Category]].
@@ -12,6 +13,11 @@ use floor12\ecommerce\models\Category;
 class CategoryQuery extends \yii\db\ActiveQuery
 {
     private $_categories = [];
+
+    public function active()
+    {
+        return $this->andWhere(['status' => Status::ACTIVE]);
+    }
 
     public function withParents(Category $category)
     {

@@ -151,7 +151,7 @@ return [
     'The payment is not completed' => 'Платеж не завершен',
     'The payment is completed successfully' => 'Платеж произведен успешно',
     'This order no expects payment.' => 'Этот заказ не ожидает оплаты.',
-    '' => '',
+    'All categories' => 'Все категории',
     '' => '',
     '' => '',
     '' => '',

@@ -33,6 +33,8 @@ class ItemFrontendFilter extends Model
 {
     public $category_id;
     public $category_title;
+    public $selected_category_id;
+    public $sub_categories = [];
     public $price;
     public $params = [];
     public $slider_params = [];
@@ -59,6 +61,8 @@ class ItemFrontendFilter extends Model
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
 
+            $this->sub_categories = Category::find()->active()->where(['parent_id' => $this->category_id])->select('title')->indexBy('id')->column();
+
             $this->showDiscountOption = Item::find()
                 ->active()
                 ->select('id')
@@ -67,6 +71,7 @@ class ItemFrontendFilter extends Model
                 ->scalar();
 
         } else {
+            $this->sub_categories = Category::find()->active()->where('ISNULL(parent_id)')->select('title')->indexBy('id')->column();
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
             $this->price_min = (int)Item::find()->active()->min('price');
             $this->price_max = (int)Item::find()->active()->max('price');
@@ -74,6 +79,7 @@ class ItemFrontendFilter extends Model
             $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
         }
 
+        $this->sub_categories['0'] = Yii::t('app.f12.ecommerce','All categories');
 
         $this->params = array_merge($this->slider_params, $this->checkbox_params);
 
@@ -87,6 +93,7 @@ class ItemFrontendFilter extends Model
     {
         return [
             ['filter', 'string'],
+            ['selected_category_id', 'integer'],
             [['param_values', 'price', 'discount'], 'safe']
         ];
     }
@@ -110,8 +117,11 @@ class ItemFrontendFilter extends Model
             ->andFilterWhere(['LIKE', 'title', $this->filter])
             ->root();
 
-        if ($this->category_id)
-            $query->category($this->_category);
+        if ($this->selected_category_id)
+            $query->category(Category::findOne($this->selected_category_id));
+        elseif ($this->category_id)
+            $query->category(Category::findOne($this->category_id));
+
 
         if ($this->price) {
             list($price_min, $price_max) = explode(';', $this->price);
@@ -120,6 +130,7 @@ class ItemFrontendFilter extends Model
 
         if ($this->discount)
             $query->andWhere(['!=', 'price_discount', '0']);
+
 
         foreach ($this->param_values as $param_id => $param_value) {
 
