@@ -1,4 +1,5 @@
-pageSize = 0;
+if (typeof (pageSize) == 'undefined')
+    pageSize = 0;
 
 f12Listview = {
     pageSize: pageSize,
