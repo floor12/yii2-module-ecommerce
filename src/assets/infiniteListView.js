@@ -1,3 +1,4 @@
+pageSize = 0;
 
 f12Listview = {
     pageSize: pageSize,
