@@ -74,6 +74,7 @@ class ParameterInput extends Widget
                 ->category($this->category)
                 ->param($this->parameter->id)
                 ->distinct()
+                ->orderBy('value')
                 ->column();
         else
             $this->_values = ItemParamValue::find()
@@ -81,6 +82,7 @@ class ParameterInput extends Widget
                 ->indexBy('value')
                 ->param($this->parameter->id)
                 ->distinct()
+                ->orderBy('value')
                 ->column();
     }
 
