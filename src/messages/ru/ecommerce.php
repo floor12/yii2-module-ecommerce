@@ -152,7 +152,8 @@ return [
     'The payment is completed successfully' => 'Платеж произведен успешно',
     'This order no expects payment.' => 'Этот заказ не ожидает оплаты.',
     'All categories' => 'Все категории',
-    '' => '',
-    '' => '',
+    'temporarily unavailable' => 'нет в наличии',
+    'Remove from cart' => 'Удалить из корзины',
+    'Add to cart' => 'Добавить в корзину',
     '' => '',
 ];

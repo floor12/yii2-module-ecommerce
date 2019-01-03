@@ -20,7 +20,7 @@ use yii\helpers\Html;
     <?php if ($options) foreach ($options as $option) { ?>
         <tr <?= !$option->available ? "class='f12-ec-item-na'" : NULL ?>>
             <td>
-                <?= !$option->available ? Html::tag('div', 'нет на складе', ['class' => 'f12-ec-item-na']) : NULL ?>
+                <?= !$option->available ? Html::tag('div', Yii::t('app.f12.ecommerce', 'temporarily unavailable'), ['class' => 'f12-ec-item-na']) : NULL ?>
 
                 <?= $option->article ? Html::tag('div', "<span>Артикул:</span> <b>{$option->article}</b>") : NULL ?>
                 <?php foreach ($option->itemParamValues as $value) {
@@ -37,7 +37,7 @@ use yii\helpers\Html;
 
                 <?= $option->available ? Html::tag('a', FontAwesome::icon('cart-plus', 's'), [
                     'class' => isset($_COOKIE["cart-{$option->id}"]) ? 'btn btn-primary cart cart-active' : 'btn btn-default cart',
-                    'title' => isset($_COOKIE["cart-{$option->id}"]) ? 'Удалить из корзины' : 'Добавить в корзину',
+                    'title' => isset($_COOKIE["cart-{$option->id}"]) ? Yii::t('app.f12.ecommerce', 'Remove from cart') : Yii::t('app.f12.ecommerce', 'Add to cart'),
                     'data-id' => $option->id
                 ]) : NULL; ?>
 
