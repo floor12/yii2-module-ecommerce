@@ -15,11 +15,16 @@ use Yii;
  * @property int $created Created
  * @property int $updated Updated
  * @property int $delivered Delivered
+ * @property int $city_id City ID for delivery service
+ * @property double $items_cost All items cost
+ * @property double $delivery_cost Delivery cost
  * @property double $total Total cost
+ * @property double $items_weight Total items weight
  * @property int $status Order status
  * @property int $delivery_status Delivery status
  * @property string $external_id Extermnl indificator
  * @property int $delivery_type_id Delivery type
+ * @property int $payment_type_id Delivery type
  * @property string $fullname Fullname
  * @property string $phone Phone
  * @property string $mail Email
@@ -27,7 +32,7 @@ use Yii;
  * @property string $comment Client comment
  * @property string $comment_admin Admin comment
  *
- * @property EcOrderItem[] $ecOrderItems
+ * @property OrderItem[] $orderItems
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -36,6 +41,12 @@ class Order extends \yii\db\ActiveRecord
     const SCENARIO_ADMIN = 'admin';
 
     public $cart;
+
+    public $postcode;
+    public $city;
+    public $street;
+    public $building;
+    public $apartament;
 
     /**
      * {@inheritdoc}
@@ -52,15 +63,18 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['address', 'fullname'], 'string', 'max' => 255],
-            [['delivery_type_id'], 'integer'],
+            [['delivery_type_id', 'postcode'], 'integer'],
             ['phone', PhoneValidator::class],
             ['email', 'email'],
 
-            [['fullname', 'delivery_type_id', 'email', 'phone'], 'required', 'on' => self::SCENARIO_CHECKOUT],
-            [['address'], 'required', 'on' => self::SCENARIO_CHECKOUT, 'when' => function (self $model) {
-                return $model->delivery_type_id != DeliveryType::PICK_UP;
-            }],
-
+            [['fullname', 'delivery_type_id', 'email', 'phone', 'payment_type_id'], 'required', 'on' => self::SCENARIO_CHECKOUT],
+            [['postcode', 'city', 'street', 'building', 'apartament', 'address', 'city_id'], 'required',
+                'on' => self::SCENARIO_CHECKOUT,
+                'message' => Yii::t('app.f12.ecommerce', 'Please fill this field.'),
+                'when' => function (self $model) {
+                    return $model->delivery_type_id != DeliveryType::PICK_UP;
+                }],
+            ['postcode', 'match', 'pattern' => '/[0-9]{5,6}/'],
             [['comment_admin'], 'string', 'on' => self::SCENARIO_ADMIN],
             [['external_id'], 'string', 'on' => self::SCENARIO_ADMIN],
             [['status', 'delivery_status'], 'integer', 'on' => self::SCENARIO_ADMIN],
@@ -79,25 +93,44 @@ class Order extends \yii\db\ActiveRecord
             'updated' => Yii::t('app.f12.ecommerce', 'Updated'),
             'delivered' => Yii::t('app.f12.ecommerce', 'Delivered'),
             'total' => Yii::t('app.f12.ecommerce', 'Total cost'),
+            'delivery_cost' => Yii::t('app.f12.ecommerce', 'Delivery cost'),
+            'items_cost' => Yii::t('app.f12.ecommerce', 'All items cost'),
+            'items_weight' => Yii::t('app.f12.ecommerce', 'All items weight'),
             'status' => Yii::t('app.f12.ecommerce', 'Order status'),
             'delivery_status' => Yii::t('app.f12.ecommerce', 'Delivery status'),
-            'external_id' => Yii::t('app.f12.ecommerce', 'Extermnl indificator'),
+            'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
             'delivery_type_id' => Yii::t('app.f12.ecommerce', 'Delivery type'),
+            'payment_type_id' => Yii::t('app.f12.ecommerce', 'Payment type'),
             'fullname' => Yii::t('app.f12.ecommerce', 'Fullname'),
             'phone' => Yii::t('app.f12.ecommerce', 'Phone'),
             'email' => Yii::t('app.f12.ecommerce', 'Email'),
             'address' => Yii::t('app.f12.ecommerce', 'Address'),
             'comment' => Yii::t('app.f12.ecommerce', 'Client comment'),
             'comment_admin' => Yii::t('app.f12.ecommerce', 'Admin comment'),
+            'postcode' => Yii::t('app.f12.ecommerce', 'Postcode'),
+            'city' => Yii::t('app.f12.ecommerce', 'City'),
+            'street' => Yii::t('app.f12.ecommerce', 'Street name'),
+            'building' => Yii::t('app.f12.ecommerce', 'Building number'),
+            'apartament' => Yii::t('app.f12.ecommerce', 'Apartament or office number'),
         ];
     }
+
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEcOrderItems()
+    public function getOrderItems()
     {
-        return $this->hasMany(EcOrderItem::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPayments()
+    {
+        return $this->hasMany(Payment::className(), ['order_id' => 'id'])->orderBy('created DESC');
     }
 
     /**

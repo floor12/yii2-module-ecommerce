@@ -11,6 +11,7 @@ namespace floor12\ecommerce\models\filters;
 
 use floor12\ecommerce\models\Category;
 use floor12\ecommerce\models\queries\CategoryQuery;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -24,7 +25,6 @@ use yii\data\ActiveDataProvider;
 class CategoryFilter extends Model
 {
     public $filter;
-    public $status;
 
     private $_query;
 
@@ -34,20 +34,32 @@ class CategoryFilter extends Model
     public function rules()
     {
         return [
-            [['status'], 'integer'],
             [['filter'], 'string'],
         ];
     }
 
+    /**
+     * @return ActiveDataProvider
+     */
     public function dataProvider()
     {
-        $this->_query = Category::find()
-            ->andFilterWhere(['=', 'status', $this->status]);
-
+        $this->_query = Category::find()->andFilterWhere(['LIKE', 'title', $this->filter]);
 
         return new ActiveDataProvider([
-            'query' => $this->_query
+            'query' => $this->_query,
+            'pagination' => false
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        return [
+            'root' => Yii::t('app.f12.ecommerce', 'only root categories')
+        ];
     }
 
 }

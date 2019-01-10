@@ -10,6 +10,7 @@ namespace floor12\ecommerce\logic;
 
 use floor12\ecommerce\models\Item;
 use floor12\editmodal\LogicInterface;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveRecordInterface;
 use yii\web\IdentityInterface;
@@ -44,6 +45,10 @@ class ItemUpdate implements LogicInterface
     {
         $this->_model->load($this->_data);
 
+        if (!$this->_model->weight_delivery)
+            $this->_model->weight_delivery = Yii::$app->getModule('shop')->defaultDeliveryWeight;
+
+        // если мы меняем статус товара, то меняем заодно статус всех вариантов этого товара
         $this->_model->on(ActiveRecord::EVENT_AFTER_UPDATE, function ($event) {
             if ($event->sender->options)
                 foreach ($event->sender->options as $option) {

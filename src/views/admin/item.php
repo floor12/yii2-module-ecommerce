@@ -76,7 +76,13 @@ echo GridView::widget([
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
         'id',
-        'title',
+        [
+            'attribute' => 'title',
+            'content' => function (Item $model) {
+                return $model->title . Html::tag('div', $model->article, ['class' => 'small']);
+
+            },
+        ],
         [
             'attribute' => 'price',
             'content' => function (Item $model) {

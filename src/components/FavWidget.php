@@ -18,7 +18,7 @@ class FavWidget extends Widget
 
     public function run()
     {
-        return Html::tag('a', FontAwesome::icon('star', 's'), [
+        return Html::tag('a', FontAwesome::icon('star', ''), [
             'class' => isset($_COOKIE["fav-{$this->id}"]) ? 'fav fav-active' : 'fav',
             'title' => isset($_COOKIE["fav-{$this->id}"]) ? 'Удалить из избранного' : 'Добавить в избранное',
             'data-id' => $this->id

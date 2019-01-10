@@ -40,6 +40,41 @@ class Module extends \yii\base\Module
      */
     public $itemPerPage = 6;
 
+    /** Default item weight for delivery in kg.
+     * @var float
+     */
+    public $defaultDeliveryWeight = 0.4;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryWidth = 30;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryHeight = 40;
+
+    /** Default item width for delivery in cm.
+     * @var float
+     */
+    public $defaultDeliveryDepth = 5;
+
+    /** Sdek sender city id
+     * @var int
+     */
+    public $sdekCityFromId = 173;
+    
+    public $paymentDescription = 'Payment in online store.';
+
+    /** Sdek tariff
+     * @var int
+     */
+    public $sdekDeliveryTariff = 1;
+
+    public $payment_types = [];
+    
+    public $payment_params = [];
 
     /** View paths
      * @var string

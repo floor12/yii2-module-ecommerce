@@ -19,6 +19,7 @@ class AddToCartWidget extends Widget
 
     private $_options;
     private $_cartItem;
+    private $_showProceedBtn = false;
 
     /**
      * @inheritdoc
@@ -28,11 +29,15 @@ class AddToCartWidget extends Widget
         $this->_options = Item::find()
             ->where(['parent_id' => $this->item->id])
             ->active()
-            ->available()
             ->all();
         $this->_options[] = $this->item;
 
         $this->_cartItem = new CartItem();
+
+        foreach ($_COOKIE as $name => $value) {
+            if (preg_match('/cart-\d+/', $name, $mathes))
+                $this->_showProceedBtn = true;
+        }
     }
 
     /**
@@ -41,6 +46,9 @@ class AddToCartWidget extends Widget
      */
     public function run()
     {
-        return $this->render('addToCartWidget', ['options' => $this->_options]);
+        return $this->render('addToCartWidget', [
+            'options' => $this->_options,
+            'showProceedBtn' => $this->_showProceedBtn
+        ]);
     }
 }

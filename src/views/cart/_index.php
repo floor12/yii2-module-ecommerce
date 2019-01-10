@@ -17,6 +17,7 @@ use yii\helpers\Html;
 <tr>
 
     <td class="cart-item-title">
+        <?= !$row['item']->available ? Html::tag('div', 'нет на складе', ['class' => 'f12-ec-item-na']) : NULL ?>
         <?= $row['item']->title ?>
     </td>
     <td>
@@ -31,6 +32,7 @@ use yii\helpers\Html;
                value='<?= $row['quantity'] ?>'
                type="number"
                data-id="<?= $row['item']->id ?>"
+               data-weight="<?= $row['item']->weight_delivery ?>"
                class="form-control cart-counter">
     </td>
 

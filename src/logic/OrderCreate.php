@@ -9,9 +9,14 @@
 namespace floor12\ecommerce\logic;
 
 
+use floor12\ecommerce\models\City;
+use floor12\ecommerce\models\delivery\DeliverySdek;
+use floor12\ecommerce\models\enum\DeliveryType;
 use floor12\ecommerce\models\enum\OrderStatus;
+use floor12\ecommerce\models\enum\PaymentType;
 use floor12\ecommerce\models\Order;
 use floor12\ecommerce\models\OrderItem;
+use floor12\ecommerce\models\Payment;
 use Yii;
 use yii\base\ErrorException;
 
@@ -41,9 +46,23 @@ class OrderCreate
     {
         $this->_model->load($this->_data);
 
+
+        // Если доставка не самовывоз - заполняем адрес и назание города
+        if ($this->_model->delivery_type_id != DeliveryType::PICK_UP) {
+            $cityName = City::findOne($this->_model->city);
+            $this->_model->city_id = (int)$this->_model->city;
+            $this->_model->address = "{$this->_model->postcode}, {$cityName}, {$this->_model->street} {$this->_model->building}, кв(оф) {$this->_model->apartament}";
+        }
+
+        // Если оплата не при получении, то выставляем статус "ожидание оплаты"
+        if ($this->_model->payment_type_id != PaymentType::RECEIVING)
+            $this->_model->status = OrderStatus::PAYMENT_EXPECTS;
+
+        // Навешивем эвенты для пересчета стоимости доставки. очистки корзины, подсчета стоимости заказа и доставки
         $this->_model->on(Order::EVENT_AFTER_INSERT, function ($event) {
 
-            $event->sender->total = 0;
+            $event->sender->items_cost = 0;
+            $event->sender->items_weight = 0;
 
             foreach ($event->sender->cart->rows as $row) {
                 $orderItem = new OrderItem([
@@ -55,13 +74,21 @@ class OrderCreate
                     'sum' => $row['quantity'] * $row['item']->price_current,
                     'order_status' => $event->sender->status,
                 ]);
-                $event->sender->total += $orderItem->sum;
+                $event->sender->items_cost += $orderItem->sum;
+                $event->sender->items_weight += $orderItem->item->weight_delivery * (int)$row['quantity'];
                 if (!$orderItem->save())
                     throw new ErrorException('Order item saving error. ' . print_r($orderItem->errors, 1));
             }
 
-            $event->sender->save(false, ['total']);
+            if ($this->_model->delivery_type_id == DeliveryType::DELIVERY) {
+                $sdekData = new DeliverySdek($event->data['city_id'], $event->sender->items_weight);
+                $sdekData->loadData();
+                $event->sender->delivery_cost = $sdekData->price;
+            }
 
+            $event->sender->total = $event->sender->items_cost + $event->sender->delivery_cost;
+            $event->sender->save(false, ['items_cost', 'delivery_cost', 'items_weight', 'total']);
+            
             $event->sender->cart->empty();
 
             //mail to admin
@@ -87,9 +114,10 @@ class OrderCreate
                 ->setSubject(Yii::t('app.f12.ecommerce', 'Thanks for purchase'))
                 ->setTo($event->sender->email)
                 ->send();
-        });
+        }, ['city_id' => (int)$this->_model->city]);
 
         return $this->_model->save();
     }
+
 
 }

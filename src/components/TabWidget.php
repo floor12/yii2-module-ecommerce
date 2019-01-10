@@ -8,10 +8,10 @@
 
 namespace floor12\ecommerce\components;
 
-use yii\helpers\Url;
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
-use Yii;
+use yii\helpers\Url;
 
 class TabWidget extends Widget
 {
@@ -36,6 +36,10 @@ class TabWidget extends Widget
             [
                 'name' => Yii::t('app.f12.ecommerce', 'Items parameters'),
                 'href' => Url::toRoute(['param'])
+            ],
+            [
+                'name' => Yii::t('app.f12.ecommerce', 'Payments'),
+                'href' => Url::toRoute(['payment']),
             ],
         ];
     }

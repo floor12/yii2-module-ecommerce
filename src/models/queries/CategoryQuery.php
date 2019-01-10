@@ -2,6 +2,9 @@
 
 namespace floor12\ecommerce\models\queries;
 
+use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\enum\Status;
+
 /**
  * This is the ActiveQuery class for [[\floor12\ecommerce\models\Category]].
  *
@@ -9,15 +12,39 @@ namespace floor12\ecommerce\models\queries;
  */
 class CategoryQuery extends \yii\db\ActiveQuery
 {
+    private $_categories = [];
+
+    public function active()
+    {
+        return $this->andWhere(['status' => Status::ACTIVE]);
+    }
+
+    public function withParents(Category $category)
+    {
+        $this->addCategory($category);
+
+        $ids = array_map(function ($cat) {
+            return "$cat->id";
+        }, $this->_categories);
+        return $this->andWhere(['IN', 'id', $ids]);
+    }
+
+    private function addCategory(Category $category)
+    {
+        $this->_categories[] = $category;
+        if ($category->parent)
+            $this->addCategory($category->parent);
+    }
+
     /**
      * @return array
      */
-    public function dropbdown()
+    public function dropbdown($rootOnly = true)
     {
         return $this
-            ->select('title')
+            ->select('path')
             ->indexBy('id')
-            ->orderBy('title')
+            ->orderBy('path')
             ->column();
     }
 

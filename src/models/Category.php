@@ -2,9 +2,10 @@
 
 namespace floor12\ecommerce\models;
 
-use floor12\ecommerce\models\enum\ParamType;
-use floor12\ecommerce\models\queries\EcCatego;
+use floor12\ecommerce\logic\CategoryPathBuilder;
 use floor12\ecommerce\models\queries\CategoryQuery;
+use floor12\ecommerce\models\queries\EcCatego;
+use floor12\ecommerce\models\queries\ItemParamQuery;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 
@@ -13,6 +14,7 @@ use Yii;
  *
  * @property int $id
  * @property string $title Category title
+ * @property string $path Category title with path
  * @property int $parent_id Parent category
  * @property int $status Category status
  * @property string $external_id External id
@@ -75,7 +77,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ItemParamQuery
      */
     public function getParams()
     {
@@ -85,12 +87,25 @@ class Category extends \yii\db\ActiveRecord
             ->inverseOf('categories');
     }
 
+//    /**
+//     * @return ItemParamQuery
+//     */
+    public function getParamsWithParent()
+    {
+        $category_ids = Category::find()->withParents($this)->select('id')->column();
+
+        return ItemParam::find()
+            ->byCategoyIds($category_ids)
+            ->orderBy('type_id');
+    }
+
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getCheckbox_params()
     {
-        return $this->getParams()->andWhere(['type_id' => ParamType::CHECKBOX]);
+        return $this->getParamsWithParent()->checkbox();
     }
 
     /**
@@ -98,7 +113,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getSlider_params()
     {
-        return $this->getParams()->andWhere(['type_id' => ParamType::SLIDER]);
+        return $this->getParamsWithParent()->slider();
     }
 
 
@@ -166,4 +181,17 @@ class Category extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $pathBuilder = new CategoryPathBuilder;
+        $pathBuilder->execute();
+        $pathBuilder->execute();
+        return parent::afterSave($insert, $changedAttributes);
+    }
+    
 }

@@ -16,8 +16,8 @@ class DeliveryType extends BaseEnum
     const DELIVERY = 1;
 
     static public $list = [
-        self::PICK_UP => 'Pick up',
         self::DELIVERY => 'Delivery',
+        self::PICK_UP => 'Pick up',
     ];
 
     public static $messageCategory = 'app.f12.ecommerce';

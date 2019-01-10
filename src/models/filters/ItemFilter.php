@@ -58,7 +58,7 @@ class ItemFilter extends Model
             ->andFilterWhere(['LIKE', 'title', $this->filter]);
 
         if ($this->hideOptions)
-            $this->_query->andWhere(['parent_id' => 0]);
+            $this->_query->root();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $this->_query

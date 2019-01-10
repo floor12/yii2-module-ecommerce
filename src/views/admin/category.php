@@ -14,12 +14,34 @@ use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\Category;
 use floor12\ecommerce\models\enum\Status;
 use floor12\editmodal\EditModalHelper;
+use kartik\form\ActiveForm;
 use rmrevin\yii\fontawesome\FontAwesome;
-use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 EcommerceAsset::register($this);
+
+$columns = [
+    [
+        'attribute' => 'title',
+        'content' => function (Category $model) {
+            if (!$model->parent_id)
+                return Html::tag('b', $model->title);
+            return $model->title;
+        }
+    ],
+    'id',
+    'items_total',
+    'params_total',
+    'children_total',
+    ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
+        'content' => function (Category $model) {
+            return
+                Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/category-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
+                Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/category-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+        },
+    ]
+];
 
 $this->title = Yii::t('app.f12.ecommerce', 'Categories');
 
@@ -34,31 +56,57 @@ echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Crea
 
 echo Html::tag('br');
 
+$form = ActiveForm::begin([
+    'method' => 'GET',
+    'options' => ['class' => 'autosubmit', 'data-container' => '#items'],
+]);
+?>
+
+    <div class="item-filter">
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'filter')
+                    ->label(false)
+                    ->textInput(['placeholder' => Yii::t('app.f12.ecommerce', 'categories search')]) ?>
+            </div>
+        </div>
+    </div>
+
+<?php
+ActiveForm::end();
+
 Pjax::begin(['id' => 'items']);
 
-echo GridView::widget([
-    'dataProvider' => $model->dataProvider(),
-    'tableOptions' => ['class' => 'table table-striped'],
-    'rowOptions' => function (Category $model) {
-        if ($model->status == Status::DISABLED)
-            return ['class' => 'disabled'];
-    },
-    'layout' => "{items}\n{pager}\n{summary}",
-    'columns' => [
-        'id',
-        'title',
-        'items_total',
-        'params_total',
-        'children_total',
-        ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
-            'content' => function (Category $model) {
-                return
-                    Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/category-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                    Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/category-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
-            },
-        ]
-    ]
-]);
+if ($model->filter)
+    echo \yii\grid\GridView::widget([
+        'dataProvider' => $model->dataProvider(),
+        'tableOptions' => ['class' => 'table table-striped'],
+        'rowOptions' => function (Category $model) {
+            if ($model->status == Status::DISABLED)
+                return ['class' => 'disabled'];
+        },
+        'layout' => "{items}\n{pager}\n{summary}",
+        'columns' => $columns
+    ]);
+else
+    echo \leandrogehlen\treegrid\TreeGrid::widget([
+        'dataProvider' => $model->dataProvider(),
+        //'filterModel' => $searchModel,
+        'options' => ['class' => 'table'],
+        'rowOptions' => function (Category $model) {
+            if ($model->status == Status::DISABLED)
+                return ['class' => 'disabled'];
+        },
+        'keyColumnName' => 'id',
+        'parentColumnName' => 'parent_id',
+        'parentRootValue' => null, //first parentId value
+        'pluginOptions' => [
+            'initialState' => 'collapsed',
+            'saveState' => true,
+        ],
+        'columns' => $columns
+
+    ]);
 
 Pjax::end();
 

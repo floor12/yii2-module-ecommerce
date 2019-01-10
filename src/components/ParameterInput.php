@@ -33,7 +33,7 @@ class ParameterInput extends Widget
     public $form;
     public $filter;
 
-    private $_values = [];
+    protected $_values = [];
 
     /**
      * @return \kartik\form\ActiveField
@@ -41,28 +41,22 @@ class ParameterInput extends Widget
      */
     public function run()
     {
+        $this->getValues();
+
         if ($this->parameter->type_id == ParamType::CHECKBOX)
             return $this->renderBtnGroup();
 
         if ($this->parameter->type_id == ParamType::SLIDER)
             return $this->renderSlider();
-
-
     }
 
     /**
      * @return \kartik\form\ActiveField
      * @throws \yii\base\InvalidConfigException
      */
-    private function renderBtnGroup()
+    protected function renderBtnGroup()
     {
-        $this->_values = ItemParamValue::find()
-            ->select('value')
-            ->indexBy('value')
-            ->available($this->category)
-            ->param($this->parameter->id)
-            ->distinct()
-            ->column();
+
 
         return Html::tag('div', $this
             ->form
@@ -71,11 +65,32 @@ class ParameterInput extends Widget
             ->label(false), ['class' => 'f12-ecommerce-checkbox-block']);
     }
 
+    protected function getValues()
+    {
+        if ($this->category)
+            $this->_values = ItemParamValue::find()
+                ->select('value')
+                ->indexBy('value')
+                ->category($this->category)
+                ->param($this->parameter->id)
+                ->distinct()
+                ->orderBy('value')
+                ->column();
+        else
+            $this->_values = ItemParamValue::find()
+                ->select('value')
+                ->indexBy('value')
+                ->param($this->parameter->id)
+                ->distinct()
+                ->orderBy('value')
+                ->column();
+    }
+
     /**
      * @return \kartik\form\ActiveField
      * @throws \yii\base\InvalidConfigException
      */
-    private function renderSlider()
+    protected function renderSlider()
     {
 
         $this->_values['min'] = ItemParamValue::find()

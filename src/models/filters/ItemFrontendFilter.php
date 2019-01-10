@@ -33,6 +33,8 @@ class ItemFrontendFilter extends Model
 {
     public $category_id;
     public $category_title;
+    public $selected_category_id;
+    public $sub_categories = [];
     public $price;
     public $params = [];
     public $slider_params = [];
@@ -42,6 +44,7 @@ class ItemFrontendFilter extends Model
     public $price_max;
     public $discount = false;
     public $showDiscountOption = false;
+    public $filter;
 
     private $_category;
 
@@ -55,9 +58,11 @@ class ItemFrontendFilter extends Model
             $this->category_title = $this->_category->title;
             $this->slider_params = $this->_category->getSlider_params()->active()->all();
             $this->checkbox_params = $this->_category->getCheckbox_params()->active()->all();
-            $this->params = array_merge($this->slider_params, $this->checkbox_params);
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
+
+            $this->sub_categories = Category::find()->active()->where(['parent_id' => $this->category_id])->select('title')->indexBy('id')->column();
+
             $this->showDiscountOption = Item::find()
                 ->active()
                 ->select('id')
@@ -66,9 +71,17 @@ class ItemFrontendFilter extends Model
                 ->scalar();
 
         } else {
+            $this->sub_categories = Category::find()->active()->where('ISNULL(parent_id)')->select('title')->indexBy('id')->column();
             $this->category_title = Yii::t('app.f12.ecommerce', 'Catalog');
+            $this->price_min = (int)Item::find()->active()->min('price');
+            $this->price_max = (int)Item::find()->active()->max('price');
+            $this->slider_params = array_merge($this->slider_params, ItemParam::find()->root()->slider()->active()->all());
+            $this->checkbox_params += array_merge($this->checkbox_params, ItemParam::find()->root()->checkbox()->active()->all());
         }
 
+        $this->sub_categories['0'] = Yii::t('app.f12.ecommerce','All categories');
+
+        $this->params = array_merge($this->slider_params, $this->checkbox_params);
 
         parent::init();
     }
@@ -79,6 +92,8 @@ class ItemFrontendFilter extends Model
     public function rules()
     {
         return [
+            ['filter', 'string'],
+            ['selected_category_id', 'integer'],
             [['param_values', 'price', 'discount'], 'safe']
         ];
     }
@@ -99,8 +114,14 @@ class ItemFrontendFilter extends Model
     {
         $query = Item::find()
             ->with('images')
-            ->category($this->_category)
-            ->andWhere(['parent_id' => 0]);
+            ->andFilterWhere(['LIKE', 'title', $this->filter])
+            ->root();
+
+        if ($this->selected_category_id)
+            $query->category(Category::findOne($this->selected_category_id));
+        elseif ($this->category_id)
+            $query->category(Category::findOne($this->category_id));
+
 
         if ($this->price) {
             list($price_min, $price_max) = explode(';', $this->price);
@@ -109,6 +130,7 @@ class ItemFrontendFilter extends Model
 
         if ($this->discount)
             $query->andWhere(['!=', 'price_discount', '0']);
+
 
         foreach ($this->param_values as $param_id => $param_value) {
 

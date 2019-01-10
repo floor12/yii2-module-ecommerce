@@ -14,10 +14,12 @@ use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\Order;
 use floor12\editmodal\EditModalHelper;
+use floor12\phone\PhoneFormatter;
 use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+
 
 EcommerceAsset::register($this);
 
@@ -39,12 +41,20 @@ echo GridView::widget([
         'id',
         'created:datetime',
         'fullname',
-        'phone',
+        [
+            'attribute' => 'phone',
+            'content' => function (Order $model) {
+                return PhoneFormatter::run($model->phone);
+            },
+        ],
         'email:email',
         [
             'attribute' => 'total',
             'content' => function (Order $model) {
-                return Yii::$app->formatter->asCurrency($model->total, Yii::$app->getModule('shop')->currency);
+                $ret = Html::tag('div', FontAwesome::icon('shopping-cart') . ' ' . Yii::$app->formatter->asCurrency($model->items_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                $ret .= Html::tag('div', FontAwesome::icon('car') . ' ' . Yii::$app->formatter->asCurrency($model->delivery_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                $ret .= Html::tag('div', FontAwesome::icon('flag-checkered') . ' ' . Yii::$app->formatter->asCurrency($model->total, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                return $ret;
             },
         ],
         [

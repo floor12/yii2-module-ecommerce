@@ -39,6 +39,9 @@ class OrderFilter extends Model
         ];
     }
 
+    /**
+     * @return ActiveDataProvider
+     */
     public function dataProvider()
     {
         $this->_query = Order::find()
@@ -46,7 +49,8 @@ class OrderFilter extends Model
 
 
         return new ActiveDataProvider([
-            'query' => $this->_query
+            'query' => $this->_query,
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
     }
 
