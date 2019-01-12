@@ -31,11 +31,12 @@ class CategoryController extends Controller
     /**
      * @param $page
      * @param int $category_id
+     * @param int $sale
      * @return string
      */
-    public function actionIndex($page, $category_id = 0)
+    public function actionIndex($page, $category_id = 0, $sale = 0)
     {
-        $model = new ItemFrontendFilter(['category_id' => $category_id]);
+        $model = new ItemFrontendFilter(['category_id' => $category_id, 'discount' => $sale]);
         $model->load(Yii::$app->request->get());
         return $this->render(Yii::$app->getModule('shop')->viewIndex, ['model' => $model]);
     }

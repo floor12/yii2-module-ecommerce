@@ -155,5 +155,6 @@ return [
     'temporarily unavailable' => 'нет в наличии',
     'Remove from cart' => 'Удалить из корзины',
     'Add to cart' => 'Добавить в корзину',
+    'Sale' => 'Товары со скидкой и распрдажи',
     '' => '',
 ];
