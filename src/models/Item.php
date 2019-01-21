@@ -38,6 +38,7 @@ use yii\helpers\Url;
  * @property File[] $images
  * @property self $parent
  * @property self[] $options
+ * @property array $prices
  */
 class Item extends ActiveRecord implements PageObjectInterface
 {
@@ -194,5 +195,22 @@ class Item extends ActiveRecord implements PageObjectInterface
     public function getPrice_current()
     {
         return $this->price_discount ?: $this->price;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPrices()
+    {
+        $min = self::find()
+            ->where(['OR', ['parent_id' => $this->id], ['id' => $this->id]])
+            ->min('price');
+        $max = self::find()
+            ->where(['OR', ['parent_id' => $this->id], ['id' => $this->id]])
+            ->max('price');
+        if ($min == $max)
+            return [$min];
+
+        return [$min, $max];
     }
 }
