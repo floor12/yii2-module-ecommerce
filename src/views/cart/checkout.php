@@ -6,10 +6,10 @@
  * Time: 12:30
  * @var $this \yii\web\View
  * @var $model \floor12\ecommerce\models\Order
+ * @var $deliveries array
  */
 
 use floor12\ecommerce\models\City;
-use floor12\ecommerce\models\enum\DeliveryType;
 use floor12\ecommerce\models\enum\PaymentType;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
@@ -77,7 +77,7 @@ $form = ActiveForm::begin([
 
             <?= $form->field($model, 'payment_type_id')->dropDownList(PaymentType::getAvailableTypes()) ?>
 
-            <?= $form->field($model, 'delivery_type_id')->dropDownList(DeliveryType::listData()) ?>
+            <?= $form->field($model, 'delivery_type_id')->dropDownList($deliveries) ?>
 
             <div class="f12-ecommerce-address-section">
 

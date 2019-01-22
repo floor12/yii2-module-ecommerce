@@ -9,10 +9,10 @@
 namespace floor12\ecommerce\controllers;
 
 
+use floor12\ecommerce\logic\DeliveryCost;
 use floor12\ecommerce\logic\OrderCreate;
 use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
-use floor12\ecommerce\models\delivery\DeliverySdek;
 use floor12\ecommerce\models\enum\PaymentType;
 use floor12\ecommerce\models\forms\CartForm;
 use floor12\ecommerce\models\Order;
@@ -40,15 +40,21 @@ class CartController extends Controller
      */
     public function actionCheckout()
     {
-        //Yii::$app->getModule('shop');
         $model = new Order();
         $model->cart = new CartForm();
+        $deliveries = [];
 
         $model->cart->cleanNotAvailble();
-        //var_dump($model->cart->rows);
 
         if (!sizeof($model->cart->rows))
             throw new BadRequestHttpException('Your cart is empty');
+
+
+        if (Yii::$app->getModule('shop')->deliveryTypes)
+            $deliveries = array_map(function ($delivery) {
+                return $delivery['name'];
+            }, Yii::$app->getModule('shop')->deliveryTypes);
+
 
         if (Yii::$app->request->isPost) {
             if (Yii::createObject(OrderCreate::class, [$model, Yii::$app->request->post()])->execute())
@@ -58,7 +64,7 @@ class CartController extends Controller
                     $this->redirect(['/shop/cart/pay', 'order_id' => $model->id]);
         }
 
-        return $this->render('checkout', ['model' => $model]);
+        return $this->render('checkout', ['model' => $model, 'deliveries' => $deliveries]);
     }
 
     /**
@@ -111,16 +117,12 @@ class CartController extends Controller
     }
 
     /**
+     * @param $type_id
      * @return float|void
      */
-    public function actionDeliveryCost()
+    public function actionDeliveryCost($type_id)
     {
-        $city_id = Yii::$app->request->getQueryParam('city_id');
-        $weight = Yii::$app->request->getQueryParam('weight');
-        if (!$city_id || !$weight)
-            return;
-        $model = new DeliverySdek($city_id, $weight);
-        $model->loadData();
-        return $model->getPrice();
+        $pricer = new DeliveryCost((int)$type_id, Yii::$app->request->getQueryParams());
+        return $pricer->getPrice();
     }
 }

@@ -64,7 +64,7 @@ class Module extends \yii\base\Module
      * @var int
      */
     public $sdekCityFromId = 173;
-    
+
     public $paymentDescription = 'Payment in online store.';
 
     /** Sdek tariff
@@ -73,7 +73,7 @@ class Module extends \yii\base\Module
     public $sdekDeliveryTariff = 1;
 
     public $payment_types = [];
-    
+
     public $payment_params = [];
 
     /** View paths
@@ -82,6 +82,12 @@ class Module extends \yii\base\Module
     public $viewIndex = '@vendor/floor12/yii2-module-ecommerce/src/views/category/index';
     public $viewIndexListItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/_index';
     public $viewItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/item';
+
+
+    /**
+     * @var array Enable delivery types
+     */
+    public $deliveryTypes = [];
 
     /**
      * @inheritdoc

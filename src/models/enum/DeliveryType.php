@@ -13,11 +13,13 @@ use yii2mod\enum\helpers\BaseEnum;
 class DeliveryType extends BaseEnum
 {
     const PICK_UP = 0;
-    const DELIVERY = 1;
+    const SIMPLE = 1;
+    const SDEK = 2;
 
     static public $list = [
-        self::DELIVERY => 'Delivery',
         self::PICK_UP => 'Pick up',
+        self::SIMPLE => 'Simple',
+        self::SDEK => 'TK SDEK',
     ];
 
     public static $messageCategory = 'app.f12.ecommerce';

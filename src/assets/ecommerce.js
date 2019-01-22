@@ -63,6 +63,19 @@ function ecommerceAddressCheck() {
         $('.f12-ecommerce-address-section').fadeOut('200');
     else
         $('.f12-ecommerce-address-section').fadeIn('200');
+
+    $.ajax({
+        url: '/shop/cart/delivery-cost',
+        data: {'type_id': $('#order-delivery_type_id').val()},
+        error: function (response) {
+            proccessError(response)
+        },
+        success: function (response) {
+            if (response)
+                $('#f12-delivery-cost span').html(response);
+        }
+
+    })
 }
 
 function cityReplace() {
@@ -80,7 +93,7 @@ function cityReplace() {
 
     $.ajax({
         url: '/shop/cart/delivery-cost',
-        data: {'city_id': city_id, 'weight': weight},
+        data: {'city_id': city_id, 'weight': weight, 'type_id': $('#order-delivery_type_id').val()},
         error: function (response) {
             proccessError(response)
         },

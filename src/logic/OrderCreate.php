@@ -10,13 +10,11 @@ namespace floor12\ecommerce\logic;
 
 
 use floor12\ecommerce\models\City;
-use floor12\ecommerce\models\delivery\DeliverySdek;
 use floor12\ecommerce\models\enum\DeliveryType;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentType;
 use floor12\ecommerce\models\Order;
 use floor12\ecommerce\models\OrderItem;
-use floor12\ecommerce\models\Payment;
 use Yii;
 use yii\base\ErrorException;
 
@@ -80,15 +78,14 @@ class OrderCreate
                     throw new ErrorException('Order item saving error. ' . print_r($orderItem->errors, 1));
             }
 
-            if ($this->_model->delivery_type_id == DeliveryType::DELIVERY) {
-                $sdekData = new DeliverySdek($event->data['city_id'], $event->sender->items_weight);
-                $sdekData->loadData();
-                $event->sender->delivery_cost = $sdekData->price;
-            }
+            // Обновляем цену доставки
+            $pricer = new DeliveryCost($this->_model->delivery_type_id, ['city_id' => $event->data['city_id'], 'weight' => $event->sender->items_weight]);
+            $event->sender->delivery_cost = $pricer->getPrice();
 
+            // Добавляем стоимость доставки к основной цене
             $event->sender->total = $event->sender->items_cost + $event->sender->delivery_cost;
             $event->sender->save(false, ['items_cost', 'delivery_cost', 'items_weight', 'total']);
-            
+
             $event->sender->cart->empty();
 
             //mail to admin
