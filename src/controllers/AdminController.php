@@ -164,8 +164,8 @@ class AdminController extends Controller
                 'view' => 'form-category',
                 'message' => Yii::t('app.f12.ecommerce', 'Category is saved.'),
                 'viewParams' => [
-                    'categories' => Category::find()->dropbdown(),
-                    'params' => ItemParam::find()->dropbdown(),
+                    'categories' => Category::find()->dropdown(),
+                    'params' => ItemParam::find()->dropdown(),
                 ],
             ],
             'category-delete' => [
@@ -179,7 +179,7 @@ class AdminController extends Controller
                 'view' => 'form-param',
                 'message' => Yii::t('app.f12.ecommerce', 'Parameter is saved.'),
                 'viewParams' => [
-                    'categories' => Category::find()->dropbdown(),
+                    'categories' => Category::find()->dropdown(),
                 ],
             ],
             'param-delete' => [
@@ -194,7 +194,7 @@ class AdminController extends Controller
                 'logic' => ItemUpdate::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Item is saved.'),
                 'viewParams' => [
-                    'categories' => Category::find()->dropbdown(false),
+                    'categories' => Category::find()->dropdown(false),
                 ],
             ],
             'item-delete' => [

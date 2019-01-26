@@ -39,7 +39,7 @@ class CategoryQuery extends \yii\db\ActiveQuery
     /**
      * @return array
      */
-    public function dropbdown($rootOnly = true)
+    public function dropdown($rootOnly = true)
     {
         return $this
             ->select('path')

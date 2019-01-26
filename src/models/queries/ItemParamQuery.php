@@ -71,7 +71,7 @@ class ItemParamQuery extends \yii\db\ActiveQuery
     /**
      * @return array
      */
-    public function dropbdown()
+    public function dropdown()
     {
         return $this
             ->select('title')
