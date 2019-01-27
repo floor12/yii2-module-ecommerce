@@ -55,7 +55,7 @@ class ItemFilter extends Model
         $this->_query = Item::find()->with('categories')
             ->addSelect(["*", $expression])
             ->andFilterWhere(['=', 'status', $this->status])
-            ->andFilterWhere(['LIKE', 'title', $this->filter]);
+            ->andFilterWhere(['OR', ['LIKE', 'title', $this->filter], ['LIKE', 'article', $this->filter]]);
 
         if ($this->hideOptions)
             $this->_query->root();
