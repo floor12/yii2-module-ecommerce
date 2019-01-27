@@ -57,6 +57,7 @@ $form = ActiveForm::begin([
             </div>
             <div class="col-md-3">
                 <?= $form->field($model, 'hideOptions')->checkbox() ?>
+                <?= $form->field($model, 'withoutExternal')->checkbox() ?>
             </div>
         </div>
     </div>

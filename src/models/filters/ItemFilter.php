@@ -28,6 +28,7 @@ class ItemFilter extends Model
     public $filter;
     public $status;
     public $hideOptions = 0;
+    public $withoutExternal = 0;
 
     private $_query;
 
@@ -37,7 +38,7 @@ class ItemFilter extends Model
     public function rules()
     {
         return [
-            [['status', 'hideOptions'], 'integer'],
+            [['status', 'hideOptions', 'withoutExternal'], 'integer'],
             [['filter'], 'string'],
         ];
     }
@@ -59,6 +60,9 @@ class ItemFilter extends Model
 
         if ($this->hideOptions)
             $this->_query->root();
+
+        if ($this->withoutExternal)
+            $this->_query->andWhere('ISNULL(external_id) OR `external_id`=""');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $this->_query
@@ -86,7 +90,8 @@ class ItemFilter extends Model
     public function attributeLabels()
     {
         return [
-            'hideOptions' => Yii::t('app.f12.ecommerce', 'hide options')
+            'hideOptions' => Yii::t('app.f12.ecommerce', 'hide options'),
+            'withoutExternal' => Yii::t('app.f12.ecommerce', 'without external ID')
         ];
     }
 
