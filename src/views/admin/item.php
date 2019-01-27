@@ -80,8 +80,10 @@ echo GridView::widget([
         [
             'attribute' => 'title',
             'content' => function (Item $model) {
-                return $model->title . Html::tag('div', $model->article, ['class' => 'small']);
-
+                $checkbox = ' ';
+                if ($model->external_id)
+                    $checkbox .= FontAwesome::icon('check',['title'=>Yii::t('app.f12.ecommerce','Has external id')]);
+                return $model->title . Html::tag('div', $model->article . $checkbox, ['class' => 'small']);
             },
         ],
         [
