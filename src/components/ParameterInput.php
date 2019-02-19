@@ -84,6 +84,11 @@ class ParameterInput extends Widget
                 ->distinct()
                 ->orderBy('value')
                 ->column();
+
+        if ($this->parameter->type_id == ParamType::CHECKBOX)
+            $this->_values = array_map(function ($value) {
+                return "{$value} {$this->parameter->unit}";
+            }, $this->_values);
     }
 
     /**
