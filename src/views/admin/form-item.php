@@ -12,7 +12,7 @@
  */
 
 use floor12\files\components\FileInputWidget;
-use floor12\pages\components\Summernote;
+use floor12\summernote\Summernote;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\Html;
