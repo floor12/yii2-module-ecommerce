@@ -3,6 +3,7 @@
 namespace floor12\ecommerce;
 
 use Yii;
+use yii\base\ErrorException;
 
 /**
  * pages module definition class
@@ -14,6 +15,10 @@ class Module extends \yii\base\Module
     public $layout = '@app/views/layouts/main';
 
     public $userModel = 'app\models\User';
+
+    public $exportPath = '@runtime/export';
+
+    public $importPath = '@runtime/import';
     /**
      * @inheritdoc
      */
@@ -97,6 +102,18 @@ class Module extends \yii\base\Module
         $this->registerTranslations();
 
         parent::init();
+
+        if (!file_exists(Yii::getAlias($this->exportPath)))
+            @mkdir(Yii::getAlias($this->exportPath));
+
+        if (!file_exists(Yii::getAlias($this->exportPath)))
+            throw new ErrorException('Unable to create export path.');
+
+        if (!file_exists(Yii::getAlias($this->importPath)))
+            @mkdir(Yii::getAlias($this->importPath));
+
+        if (!file_exists(Yii::getAlias($this->importPath)))
+            throw new ErrorException('Unable to create import path.');
     }
 
     public function adminMode()
