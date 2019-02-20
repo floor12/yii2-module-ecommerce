@@ -88,9 +88,19 @@ $form = ActiveForm::begin([
         </div>
     </div>
 
-    <div class="row">
+    <?php if ($model->itemParamValues): ?>
+        <label>Атрибуты товара</label>
+        <div class="grey-block" style="padding: 10px;   background-color: #eee;   border: 1px #ccc solid;">
+            <div class="row">
+                <?php foreach ($model->itemParamValues as $itemParamValue)
+                    echo Html::tag('div', "{$itemParamValue->param->title}: <b>{$itemParamValue->value} {$itemParamValue->unit}</b>", [
+                        'class' => 'col-md-3'
+                    ])
+                ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
-    </div>
     <?php if (!$model->parent_id): ?>
 
         <?= $form->field($model, 'description')->widget(Summernote::class, []) ?>
