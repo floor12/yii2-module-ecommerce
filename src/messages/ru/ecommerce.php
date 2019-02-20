@@ -144,7 +144,7 @@ return [
     'Payment status' => 'Статус платежа',
     'in progress' => 'в процессе оплаты',
     'success' => 'успешный',
-    'new' => 'новыйк',
+    'new' => 'новый',
     'Creation timestamp' => 'Время создания',
     'Push to begin payment process' => 'Нажмите для начала процесса оплаты',
     'Pay' => 'Оплатить',
