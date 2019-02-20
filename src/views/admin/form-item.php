@@ -90,7 +90,7 @@ $form = ActiveForm::begin([
 
     <?php if ($model->itemParamValues): ?>
         <label>Атрибуты товара</label>
-        <div class="grey-block" style="padding: 10px;   background-color: #eee;   border: 1px #ccc solid;">
+        <div class="f12-grey-block">
             <div class="row">
                 <?php foreach ($model->itemParamValues as $itemParamValue)
                     echo Html::tag('div', "{$itemParamValue->param->title}: <b>{$itemParamValue->value} {$itemParamValue->unit}</b>", [

@@ -241,3 +241,11 @@ div.f12-ec-item-na {
     padding: 2px 10px;
     font-size: 70%;
 }
+
+
+.f12-grey-block {
+    padding: 10px;
+    background-color: #eee;
+    border: 1px #ccc solid;
+    margin-bottom: 15px;
+}
