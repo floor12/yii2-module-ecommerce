@@ -82,7 +82,7 @@ echo GridView::widget([
             'content' => function (Item $model) {
                 $checkbox = ' ';
                 if ($model->external_id)
-                    $checkbox .= FontAwesome::icon('check',['title'=>Yii::t('app.f12.ecommerce','Has external id')]);
+                    $checkbox .= FontAwesome::icon('check', ['title' => Yii::t('app.f12.ecommerce', 'Has external id')]);
                 return $model->title . Html::tag('div', $model->article . $checkbox, ['class' => 'small']);
             },
         ],
@@ -97,6 +97,18 @@ echo GridView::widget([
             'content' => function (Item $model) {
                 return Yii::$app->formatter->asCurrency($model->price_discount, Yii::$app->getModule('shop')->currency);
             },
+        ],
+        [
+            'content' => function (Item $model) {
+                if (!$model->itemParamValues)
+                    return;
+                $ret = '';
+                foreach ($model->itemParamValues as $itemParamValue)
+                    $ret .= Html::tag('div', "{$itemParamValue->param->title}: <b>{$itemParamValue->value} {$itemParamValue->unit}</b>", [
+                        'class' => 'small'
+                    ]);
+                return $ret;
+            }
         ],
         [
             'header' => Yii::t('app.f12.ecommerce', 'Linked categories'),
