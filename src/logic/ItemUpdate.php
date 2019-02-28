@@ -53,6 +53,7 @@ class ItemUpdate implements LogicInterface
             if ($event->sender->options)
                 foreach ($event->sender->options as $option) {
                     $option->status = $event->sender->status;
+                    $option->category_ids = $event->sender->category_ids;
                     $option->save();
                 }
         });

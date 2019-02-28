@@ -57,12 +57,13 @@ class Item extends ActiveRecord implements PageObjectInterface
     {
         return [
             [['title'], 'required'],
-            [['price', 'price_discount', 'weight_delivery'], 'number'],
+            [['price', 'price_discount', 'weight_delivery', 'parent_id'], 'number'],
             [['status', 'available'], 'integer'],
             ['description', 'string'],
             [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id', 'article'], 'string', 'max' => 255],
             [['category_ids'], 'each', 'rule' => ['integer']],
             ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']],
+            ['parent_id', 'default', 'value' => 0],
         ];
     }
 
@@ -87,6 +88,7 @@ class Item extends ActiveRecord implements PageObjectInterface
             'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
             'article' => Yii::t('app.f12.ecommerce', 'Item article'),
             'weight_delivery' => Yii::t('app.f12.ecommerce', 'Item weight for delivery'),
+            'parent_id' => Yii::t('app.f12.ecommerce', 'Parent item'),
         ];
     }
 

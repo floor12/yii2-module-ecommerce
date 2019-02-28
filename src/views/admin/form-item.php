@@ -8,6 +8,7 @@
  * @var $this \yii\web\View
  * @var $model \floor12\ecommerce\models\Item
  * @var $categories array
+ * @var $items array
  *
  */
 
@@ -88,6 +89,20 @@ $form = ActiveForm::begin([
         </div>
     </div>
 
+    <div>
+
+    </div>
+
+    <?= $form->field($model, 'parent_id')->widget(Select2::class, [
+        'data' => $items,
+        'language' => 'ru',
+        'pluginOptions' => [
+            'allowClear' => true,
+            'placeholder'=>Yii::t('app.f12.ecommerce','Choose item to set it parent...')
+        ],
+    ]) ?>
+
+    <?= $form->field($model, 'seo_description') ?>
     <?php if ($model->itemParamValues): ?>
         <label>Атрибуты товара</label>
         <div class="f12-grey-block">

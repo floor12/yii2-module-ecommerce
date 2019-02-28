@@ -158,5 +158,7 @@ return [
     'Sale' => 'Товары со скидкой и распродажи',
     'without external ID' => 'без внешнего ID',
     'Has external id' => 'Имеет ключ 1С',
+    'Parent item' => 'Родительский товар',
+    'Choose item to set it parent...' => 'Выберите родительский объект...',
     '' => '',
 ];

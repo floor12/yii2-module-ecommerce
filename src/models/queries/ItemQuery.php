@@ -16,6 +16,17 @@ class ItemQuery extends \yii\db\ActiveQuery
 
     private $_categories = [];
 
+    /** List as array for dropdowns
+     * @return array
+     */
+    public function dropdown()
+    {
+        return $this
+            ->select('title')
+            ->indexBy('id')
+            ->column();
+    }
+
     /** Ignore items options
      * @return ItemQuery
      */

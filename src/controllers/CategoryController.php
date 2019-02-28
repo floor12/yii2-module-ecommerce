@@ -59,9 +59,9 @@ class CategoryController extends Controller
 
 
         Yii::$app->metamaster
-            ->setTitle($model->seo_title)
+            ->setTitle(strval($model->seo_title))
             ->setType('product')
-            ->setDescription($model->seo_description);
+            ->setDescription(strval($model->seo_description));
 
         if (isset($model->images[0]))
             Yii::$app->metamaster->image = $model->images[0]->href;
