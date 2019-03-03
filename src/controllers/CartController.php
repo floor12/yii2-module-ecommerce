@@ -15,6 +15,8 @@ use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
 use floor12\ecommerce\models\enum\PaymentType;
 use floor12\ecommerce\models\forms\CartForm;
+use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\ItemParamValue;
 use floor12\ecommerce\models\Order;
 use Yii;
 use yii\db\Query;
@@ -114,6 +116,67 @@ class CartController extends Controller
             $out['results'] = ['id' => $id, 'text' => City::findOne($id)];
         }
         return $out;
+    }
+
+    public function actionOptions($item_id)
+    {
+        $params = Yii::$app->request->get('params');
+
+        if (!$params)
+            return;
+
+        foreach ($params as $param_id => $param_value) {
+            $items[] = ItemParamValue::find()
+                ->distinct()
+                ->select('item_id')
+                ->where([
+                    'parent_item_id' => $item_id,
+                    'param_id' => $param_id,
+                    'value' => $param_value])
+                ->column();
+        }
+
+        $result = $items[0];
+
+        if (sizeof($items) > 1)
+            foreach ($items as $key => $options_ids) {
+                if (!$key || !$options_ids)
+                    continue;
+                $result = array_uintersect($result, $options_ids, "strcasecmp");
+            }
+
+
+        switch (sizeof($result)) {
+            case 1:
+                $id = $result[array_key_first($result)];
+                $item = Item::findOne($id);
+                if ($item->available)
+                    $ret = [
+                        'status' => 0,
+                        'option_id' => $id,
+                        'price' => $item->price_current,
+                        'message' => "Стоимость: " . $item->price_current . " " . Yii::$app->getModule('shop')->currencyLabel
+                    ];
+                else
+                    $ret = [
+                        'status' => 1,
+                        'message' => 'нет в наличии'
+                    ];
+                break;
+            case 0:
+                $ret = [
+                    'status' => 1,
+                    'message' => 'нет в наличии'
+                ];
+                break;
+            default:
+                $ret = [
+                    'status' => 2,
+                    'message' => 'уточните параметры'
+                ];
+        }
+
+        return json_encode($ret);
     }
 
     /**

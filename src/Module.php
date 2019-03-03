@@ -19,6 +19,8 @@ class Module extends \yii\base\Module
     public $exportPath = '@runtime/export';
 
     public $importPath = '@runtime/import';
+
+    public $useAjaxAddToCartWidget = false;
     /**
      * @inheritdoc
      */

@@ -160,5 +160,6 @@ return [
     'Has external id' => 'Имеет ключ 1С',
     'Parent item' => 'Родительский товар',
     'Choose item to set it parent...' => 'Выберите родительский объект...',
+    'not selected' => 'не выбрано',
     '' => '',
 ];

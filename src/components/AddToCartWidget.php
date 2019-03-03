@@ -19,6 +19,7 @@ class AddToCartWidget extends Widget
 
     private $_options;
     private $_cartItem;
+    private $params;
     private $_showProceedBtn = false;
 
     /**
@@ -31,6 +32,14 @@ class AddToCartWidget extends Widget
             ->active()
             ->all();
         $this->_options[] = $this->item;
+
+        foreach ($this->_options as $option) {
+            if (!$option->itemParamValues)
+                continue;
+            foreach ($option->itemParamValues as $paramValue) {
+
+            }
+        }
 
         $this->_cartItem = new CartItem();
 

@@ -10,6 +10,7 @@
  */
 
 use floor12\ecommerce\components\AddToCartWidget;
+use floor12\ecommerce\components\AddToCartWidgetAjax;
 use floor12\news\SwiperAsset;
 
 SwiperAsset::register($this);
@@ -48,11 +49,27 @@ $this->params['breadcrumbs'][] = $model->title;
             <div class="f12-ec-item-view-description">
                 <?= $model->description ?>
             </div>
+            <br>
+            <br>
+            <div class="small"><?= Yii::t('app.f12.ecommerce', 'Price'); ?>:</div>
+            <?php if (sizeof($model->prices) > 1): ?>
+                <price>
+                    <?= Yii::$app->formatter->asCurrency($model->prices[0], Yii::$app->getModule('shop')->currency) ?>
+                    -
+                    <?= Yii::$app->formatter->asCurrency($model->prices[1], Yii::$app->getModule('shop')->currency) ?>
+                </price>
+            <?php else: ?>
+                <price class='discount'><?= $model->price_discount ? Yii::$app->formatter->asCurrency($model->price_discount, Yii::$app->getModule('shop')->currency) : NULL ?></price>
+                <price class="<?= $model->price_discount ? 'striked' : NULL ?>"><?= Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency) ?></price>
+            <?php endif; ?>
 
             <h2><?= Yii::t('app.f12.ecommerce', 'Order options') ?></h2>
 
-            <?= AddToCartWidget::widget(['item' => $model]) ?>
-
+            <?=
+            Yii::$app->getModule('shop')->useAjaxAddToCartWidget ?
+                AddToCartWidgetAjax::widget(['item' => $model]) :
+                AddToCartWidget::widget(['item' => $model])
+            ?>
 
 
         </div>

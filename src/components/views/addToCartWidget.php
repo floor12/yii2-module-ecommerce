@@ -18,7 +18,7 @@ use yii\helpers\Html;
 
 <table class="table table-striped item-options">
     <?php if ($options) foreach ($options as $option) { ?>
-        <tr <?= !$option->available ? "class='f12-ec-item-na'" : NULL ?>>
+        <tr class='<?= !$option->available ? "f12-ec-item-na'" : NULL ?> cart-shadow'>
             <td>
                 <?= !$option->available ? Html::tag('div', Yii::t('app.f12.ecommerce', 'temporarily unavailable'), ['class' => 'f12-ec-item-na']) : NULL ?>
 
