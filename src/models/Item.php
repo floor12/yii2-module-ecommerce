@@ -5,7 +5,7 @@ namespace floor12\ecommerce\models;
 use floor12\ecommerce\models\queries\ItemQuery;
 use floor12\files\components\FileBehaviour;
 use floor12\files\models\File;
-use floor12\pages\PageObjectInterface;
+use floor12\pages\interfaces\PageObjectInterface;
 use voskobovich\linker\LinkerBehavior;
 use Yii;
 use yii\db\ActiveRecord;
