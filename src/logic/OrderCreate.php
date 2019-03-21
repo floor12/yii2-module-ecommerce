@@ -95,7 +95,7 @@ class OrderCreate
                     ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/admin-new-order-html.php"],
                     ['model' => $event->sender]
                 )
-                ->setFrom([Yii::$app->params['no-replayEmail'] => Yii::$app->params['no-replayName']])
+                ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
                 ->setSubject(Yii::t('app.f12.ecommerce', 'New order'))
                 ->setTo(Yii::$app->params['adminEmail'])
                 ->send();
@@ -107,7 +107,7 @@ class OrderCreate
                     ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/client-new-order-html.php"],
                     ['model' => $event->sender]
                 )
-                ->setFrom([Yii::$app->params['no-replayEmail'] => Yii::$app->params['no-replayName']])
+                ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
                 ->setSubject(Yii::t('app.f12.ecommerce', 'Thanks for purchase'))
                 ->setTo($event->sender->email)
                 ->send();
