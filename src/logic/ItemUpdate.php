@@ -9,7 +9,7 @@
 namespace floor12\ecommerce\logic;
 
 use floor12\ecommerce\models\Item;
-use floor12\editmodal\LogicInterface;
+use floor12\editmodal\LogicWithIdentityInterface;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ActiveRecordInterface;
@@ -20,7 +20,7 @@ use yii\web\IdentityInterface;
  * @package floor12\ecommerce\logic
  * @property Item $_model
  */
-class ItemUpdate implements LogicInterface
+class ItemUpdate implements LogicWithIdentityInterface
 {
 
     private $_model;
