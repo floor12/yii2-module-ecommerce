@@ -19,7 +19,7 @@ $this->registerJs("itemOptionsurl = '" . Url::toRoute(['/shop/cart/options']) . 
 <form id="add-to-cart-ajax" class="cart-shadow">
     <?= Html::hiddenInput('item_id', $item_id) ?>
     <div class="row">
-        <?php foreach ($params as $paramId => $paramData) { ?>
+        <?php if ($params) foreach ($params as $paramId => $paramData) { ?>
             <div class="col-xs-6 col-sm-4">
                 <div class="param-label"><?= $paramData['title'] ?>:</div>
                 <?= Html::dropDownList("params[{$paramId}]", null, $paramData['values'], [

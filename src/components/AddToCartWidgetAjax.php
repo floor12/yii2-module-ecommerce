@@ -17,7 +17,7 @@ class AddToCartWidgetAjax extends Widget
 {
     public $item;
 
-    private $params;
+    private $params = [];
     private $_showProceedBtn = false;
 
     /**
