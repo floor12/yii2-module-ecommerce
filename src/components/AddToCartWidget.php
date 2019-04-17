@@ -19,7 +19,7 @@ class AddToCartWidget extends Widget
 
     private $_options;
     private $_cartItem;
-    private $params;
+    private $params = [];
     private $_showProceedBtn = false;
 
     /**
