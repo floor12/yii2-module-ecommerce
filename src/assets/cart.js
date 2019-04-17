@@ -30,9 +30,9 @@ var f12shop = {
         }
     },
 
-    addToCart: function (id, btn) {
+    addToCart: function (id, btn, quantity = 1) {
         name = "cart-" + id;
-        $.cookie(name, 1, {expires: 31, path: '/'});
+        $.cookie(name, quantity, {expires: 31, path: '/'});
         $('.proceed-to-checkout').fadeIn(300);
         btn.addClass('btn-primary');
         btn.removeClass('btn-default')
