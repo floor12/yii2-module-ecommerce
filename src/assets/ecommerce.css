@@ -148,8 +148,12 @@ div.param:last-child {
 }
 
 td.cart-item-title {
-    font-weight: 600;
-    font-size: 120%;
+    font-weight: 500;
+}
+
+div.cart-item-title-params {
+    font-size: 90%;
+    font-weight: 300;
 }
 
 div.cart-total {

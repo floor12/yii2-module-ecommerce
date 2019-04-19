@@ -67,7 +67,13 @@ var f12shop = {
 
 
     },
+    removeItemFromCart: function (id) {
+        name = "cart-" + id;
+        $.removeCookie(name, {expires: 31, path: '/'});
+        this.showCart();
+        this.updateCartCount();
 
+    },
     removeFromCart: function (id, btn) {
         name = "cart-" + id;
         if (true) { // если понадобится, можно сделать какой-нибудь confirm() тут
@@ -157,6 +163,19 @@ $(document).on('change', 'input.cart-counter', function () {
     f12shop.updateCartQuantity(id, quantity);
 
 })
+
+
+$(document).on('click', 'a.cart-delete', function () {
+
+    id = $(this).data('id');
+    name = "cart-" + id;
+
+    if ($.cookie(name)) {
+        f12shop.removeItemFromCart(id)
+    }
+    ;
+})
+
 
 $(document).on('click', 'a.cart', function () {
 

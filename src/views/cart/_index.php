@@ -19,14 +19,12 @@ use yii\helpers\Html;
     <td class="cart-item-title">
         <?= !$row['item']->available ? Html::tag('div', 'нет на складе', ['class' => 'f12-ec-item-na']) : NULL ?>
         <?= $row['item']->title ?>
+        <div class="cart-item-title-params">
+            <?php echo implode(', ', array_map(function ($paramValue) {
+                return "{$paramValue->param->title}: <b>{$paramValue->value} {$paramValue->unit}</b>";
+            }, $row['item']->itemParamValues)) ?>
+        </div>
     </td>
-    <td>
-        <?php foreach ($row['item']->itemParamValues as $value) {
-            echo Html::tag('div', "<span>{$value->param->title}:</span> <b>{$value->value} {$value->unit}</b>", ['class' => 'param']);
-        } ?>
-
-    </td>
-
     <td>
         <input name="Order[<?= $row['item']->id ?>][count]"
                value='<?= $row['quantity'] ?>'
@@ -45,7 +43,7 @@ use yii\helpers\Html;
     <?php if ($editable): ?>
         <td class="text-right">
             <?= Html::tag('a', FontAwesome::icon('minus', 's'), [
-                'class' => 'btn btn-default cart',
+                'class' => 'btn btn-default cart-delete',
                 'title' => 'Удалить из корзины',
                 'data-id' => $row['item']->id
             ]); ?>
