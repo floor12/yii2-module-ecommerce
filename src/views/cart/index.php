@@ -18,6 +18,13 @@ use yii\helpers\Html;
 <div class="modal-body row">
     <table class="table table-striped table-cart">
         <tbody>
+        <tr>
+            <th><?= Yii::t('app.f12.ecommerce', 'Item title') ?></th>
+            <th class="text-center"><?= Yii::t('app.f12.ecommerce', 'Quantity') ?></th>
+            <th class="text-center"><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>
+            <th class="text-center"><?= Yii::t('app.f12.ecommerce', 'Total') ?></th>
+            <th></th>
+        </tr>
         <?php
         if ($model->rows)
             foreach ($model->rows as $row)

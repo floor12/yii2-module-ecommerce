@@ -161,5 +161,8 @@ return [
     'Parent item' => 'Родительский товар',
     'Choose item to set it parent...' => 'Выберите родительский объект...',
     'not selected' => 'не выбрано',
-    '' => '',
+    'Price' => 'Цена',
+    'Quantity' => 'Количество',
+    'Item title' => 'Наименование',
+    'Total' => 'Всего',
 ];
