@@ -69,15 +69,23 @@ $form = ActiveForm::begin([
                 ->textInput(['class' => 'text-right']) ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($model, 'available')->textInput(['class' => 'text-right']) ?>
+            <?= $form->field($model, 'price2', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]])
+                ->textInput(['class' => 'text-right']) ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'external_id') ?>
+        <div class="col-md-2">
+            <?= $form->field($model, 'price3', ['addon' => ['append' => ['content' => Yii::$app->getModule('shop')->currencyLabel]]])
+                ->textInput(['class' => 'text-right']) ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'available')->textInput(['class' => 'text-right']) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <?= $form->field($model, 'external_id') ?>
+        </div>
+        <div class="col-md-3">
             <?= $form->field($model, 'article') ?>
         </div>
         <div class="col-md-3">
@@ -89,18 +97,30 @@ $form = ActiveForm::begin([
         </div>
     </div>
 
-    <div>
-
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'discount_ids')->widget(Select2::class, [
+                'data' => \floor12\ecommerce\models\DiscountGroup::find()->select('title')->indexBy('id')->column(),
+                'language' => 'ru',
+                'options' => ['multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'placeholder' => Yii::t('app.f12.ecommerce', 'Choose disocount group...')
+                ],
+            ]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'parent_id')->widget(Select2::class, [
+                'data' => $items,
+                'language' => 'ru',
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'placeholder' => Yii::t('app.f12.ecommerce', 'Choose item to set it parent...')
+                ],
+            ]) ?>
+        </div>
     </div>
 
-    <?= $form->field($model, 'parent_id')->widget(Select2::class, [
-        'data' => $items,
-        'language' => 'ru',
-        'pluginOptions' => [
-            'allowClear' => true,
-            'placeholder'=>Yii::t('app.f12.ecommerce','Choose item to set it parent...')
-        ],
-    ]) ?>
 
     <?= $form->field($model, 'seo_description') ?>
     <?php if ($model->itemParamValues): ?>

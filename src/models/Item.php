@@ -20,7 +20,9 @@ use yii\helpers\Url;
  * @property string $description Item description
  * @property string $seo_description Description META
  * @property string $seo_title Page title
- * @property double $price Price
+ * @property double $price First price
+ * @property double $price2 Second price
+ * @property double $price3 Third price
  * @property double $price_current Price
  * @property double $price_discount Discount price
  * @property integer $available Available quantity
@@ -34,7 +36,9 @@ use yii\helpers\Url;
  * @property ItemParamValue[] $itemParamValues
  * @property OrderItem[] $orderItems
  * @property Category[] $categories
+ * @property DiscountGroup[] $discounts
  * @property array $category_ids
+ * @property array $discount_ids
  * @property File[] $images
  * @property self $parent
  * @property self[] $options
@@ -57,11 +61,11 @@ class Item extends ActiveRecord implements PageObjectInterface
     {
         return [
             [['title'], 'required'],
-            [['price', 'price_discount', 'weight_delivery', 'parent_id'], 'number'],
+            [['price', 'price2', 'price3', 'price', 'price_discount', 'weight_delivery', 'parent_id'], 'number'],
             [['status', 'available'], 'integer'],
             ['description', 'string'],
             [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id', 'article'], 'string', 'max' => 255],
-            [['category_ids'], 'each', 'rule' => ['integer']],
+            [['category_ids', 'discount_ids'], 'each', 'rule' => ['integer']],
             ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']],
             ['parent_id', 'default', 'value' => 0],
         ];
@@ -79,7 +83,9 @@ class Item extends ActiveRecord implements PageObjectInterface
             'description' => Yii::t('app.f12.ecommerce', 'Item description'),
             'seo_description' => Yii::t('app.f12.ecommerce', 'Description META'),
             'seo_title' => Yii::t('app.f12.ecommerce', 'Page title'),
-            'price' => Yii::t('app.f12.ecommerce', 'Price'),
+            'price' => Yii::t('app.f12.ecommerce', 'First price'),
+            'price2' => Yii::t('app.f12.ecommerce', 'Second price'),
+            'price3' => Yii::t('app.f12.ecommerce', 'Third price'),
             'price_discount' => Yii::t('app.f12.ecommerce', 'Discount price'),
             'available' => Yii::t('app.f12.ecommerce', 'Available quantity'),
             'status' => Yii::t('app.f12.ecommerce', 'Disable item'),
@@ -89,6 +95,7 @@ class Item extends ActiveRecord implements PageObjectInterface
             'article' => Yii::t('app.f12.ecommerce', 'Item article'),
             'weight_delivery' => Yii::t('app.f12.ecommerce', 'Item weight for delivery'),
             'parent_id' => Yii::t('app.f12.ecommerce', 'Parent item'),
+            'discount_ids' => Yii::t('app.f12.ecommerce', 'Discount groups'),
         ];
     }
 
@@ -121,6 +128,15 @@ class Item extends ActiveRecord implements PageObjectInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getDiscounts()
+    {
+        return $this->hasMany(DiscountGroup::className(), ['id' => 'discount_group_id'])
+            ->viaTable('{{ec_discount_group_item}}', ['item_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getParent()
     {
         return $this->hasOne(self::className(), ['id' => 'parent_id']);
@@ -132,15 +148,6 @@ class Item extends ActiveRecord implements PageObjectInterface
     public function getOptions()
     {
         return $this->hasMany(self::className(), ['parent_id' => 'id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return \floor12\ecommerce\models\queries\ItemQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new ItemQuery(get_called_class());
     }
 
     /**
@@ -157,6 +164,7 @@ class Item extends ActiveRecord implements PageObjectInterface
                 'class' => LinkerBehavior::class,
                 'relations' => [
                     'category_ids' => 'categories',
+                    'discount_ids' => 'discounts',
                 ],
             ],
         ];
@@ -214,5 +222,14 @@ class Item extends ActiveRecord implements PageObjectInterface
             return [$min];
 
         return [$min, $max];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \floor12\ecommerce\models\queries\ItemQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ItemQuery(get_called_class());
     }
 }

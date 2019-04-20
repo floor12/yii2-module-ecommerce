@@ -8,10 +8,13 @@
 
 namespace floor12\ecommerce\controllers;
 
+use floor12\ecommerce\logic\DiscountGroupUpdate;
 use floor12\ecommerce\logic\ItemOptionCreate;
 use floor12\ecommerce\logic\ItemUpdate;
 use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\DiscountGroup;
 use floor12\ecommerce\models\filters\CategoryFilter;
+use floor12\ecommerce\models\filters\DiscountGroupFilter;
 use floor12\ecommerce\models\filters\ItemFilter;
 use floor12\ecommerce\models\filters\OrderFilter;
 use floor12\ecommerce\models\filters\ParamFilter;
@@ -22,6 +25,7 @@ use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\Order;
 use floor12\editmodal\DeleteAction;
 use floor12\editmodal\EditModalAction;
+use floor12\editmodal\IndexAction;
 use floor12\editmodal\ModalWindow;
 use Yii;
 use yii\filters\AccessControl;
@@ -158,6 +162,11 @@ class AdminController extends Controller
     public function actions(): array
     {
         return [
+            'discounts' => [
+                'class' => IndexAction::class,
+                'model' => DiscountGroupFilter::class,
+                'view' => 'discounts'
+            ],
             'category-form' => [
                 'class' => EditModalAction::class,
                 'model' => Category::class,
@@ -181,6 +190,13 @@ class AdminController extends Controller
                 'viewParams' => [
                     'categories' => Category::find()->dropdown(),
                 ],
+            ],
+            'discount-form' => [
+                'class' => EditModalAction::class,
+                'model' => DiscountGroup::class,
+                'logic' => DiscountGroupUpdate::class,
+                'view' => 'form-discount',
+                'message' => Yii::t('app.f12.ecommerce', 'Discount group is saved.'),
             ],
             'param-delete' => [
                 'class' => DeleteAction::class,
@@ -214,6 +230,11 @@ class AdminController extends Controller
                 'class' => DeleteAction::class,
                 'model' => Order::class,
                 'message' => Yii::t('app.f12.ecommerce', 'Order is deleted.')
+            ],
+            'discount-delete' => [
+                'class' => DeleteAction::class,
+                'model' => DiscountGroup::class,
+                'message' => Yii::t('app.f12.ecommerce', 'Discount group is deleted.')
             ]
         ];
     }

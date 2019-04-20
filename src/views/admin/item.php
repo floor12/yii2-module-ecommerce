@@ -120,7 +120,7 @@ echo GridView::widget([
         ],
         'available',
         [
-            'contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
+            'contentOptions' => ['style' => 'min-width:170px; text-align:right;'],
             'content' => function (Item $model) {
                 $html = '';
                 if (!$model->parent_id) {

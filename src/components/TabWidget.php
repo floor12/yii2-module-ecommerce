@@ -41,6 +41,10 @@ class TabWidget extends Widget
                 'name' => Yii::t('app.f12.ecommerce', 'Payments'),
                 'href' => Url::toRoute(['payment']),
             ],
+            [
+                'name' => Yii::t('app.f12.ecommerce', 'Discount groups'),
+                'href' => Url::toRoute(['discounts']),
+            ],
         ];
     }
 
