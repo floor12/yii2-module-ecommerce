@@ -14,11 +14,15 @@ use yii\helpers\Html;
 
 ?>
 
-<tr>
+<tr class="<?= !empty($row['message']) ? 'f12-cart-discounted' : NULL ?>">
 
     <td class="cart-item-title">
         <?= !$row['item']->available ? Html::tag('div', 'нет на складе', ['class' => 'f12-ec-item-na']) : NULL ?>
         <?= $row['item']->title ?>
+
+        <?= !empty($row['message']) ? Html::tag('div', '₽', ['title' => $row['message'], 'class' => 'f12-discount-info']) : NULL ?>
+
+
         <div class="cart-item-title-params">
             <?php echo implode(', ', array_map(function ($paramValue) {
                 return "{$paramValue->param->title}: <b>{$paramValue->value} {$paramValue->unit}</b>";

@@ -37,7 +37,6 @@ $form = ActiveForm::begin([
                 <tbody>
                 <tr>
                     <th><?= Yii::t('app.f12.ecommerce', 'Item title') ?></th>
-                    <th><?= Yii::t('app.f12.ecommerce', 'Parameters') ?></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Quantity') ?></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Sum') ?></th>
@@ -45,9 +44,17 @@ $form = ActiveForm::begin([
                 <?php if ($model->cart->rows) foreach ($model->cart->rows as $row) echo $this->render('_index', ['row' => $row, 'editable' => false]) ?>
                 </tbody>
             </table>
+
+            <?php if ($model->cart->messages)
+                foreach ($model->cart->messages as $message)
+                    echo Html::tag('p', $message, ['class' => 'f12-discount-info']);
+            ?>
+
             <div class="cart-total">
                 <?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->cart->total ?></span>
             </div>
+
+
         </div>
 
         <div class="col-md-5">

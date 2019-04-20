@@ -156,6 +156,16 @@ div.cart-item-title-params {
     font-weight: 300;
 }
 
+p.f12-discount-info {
+    float: left;
+    background-color: white;
+    padding: 10px 20px;
+    margin: 0 0 0 10px;
+    color: #ef7d00;
+    border: #ef7d00 2px solid;
+    margin-bottom: 15px;
+}
+
 div.cart-total {
     font-weight: 500;
     font-size: 110%;

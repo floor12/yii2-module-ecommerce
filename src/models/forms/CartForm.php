@@ -9,6 +9,7 @@
 namespace floor12\ecommerce\models\forms;
 
 
+use floor12\ecommerce\models\DiscountGroup;
 use floor12\ecommerce\models\Item;
 use Yii;
 use yii\base\Model;
@@ -17,6 +18,8 @@ class CartForm extends Model
 {
     public $total = 0;
     public $rows = [];
+    public $messages = [];
+    public $discount_items = [];
 
     public function init()
     {
@@ -27,30 +30,70 @@ class CartForm extends Model
                 if (!$item || !$item->available)
                     continue;
 
-                $sum = $quantity * $item->price_current;
-                $this->total = $this->total + $sum;
+
+                $this->processDiscount($item, $quantity);
 
                 $this->rows[$item->id] = [
                     'item' => $item,
                     'quantity' => $quantity,
-                    'price' => Yii::$app->formatter->asCurrency($item->price_current, Yii::$app->getModule('shop')->currency),
-                    'sum' => Yii::$app->formatter->asCurrency($sum, Yii::$app->getModule('shop')->currency),
+//                    'price' => Yii::$app->formatter->asCurrency($item->price_current, Yii::$app->getModule('shop')->currency),
+//                    'sum' => Yii::$app->formatter->asCurrency($sum, Yii::$app->getModule('shop')->currency),
                 ];
+
             }
+        }
+
+        foreach ($this->rows as &$row) {
+            $row['price'] = $row['item']->price_current;
+
+            if (!empty($row['item']->discounts))
+                foreach ($row['item']->discounts as $discount) {
+                    if (!empty($this->discount_items[$discount->id] && $this->discount_items[$discount->id]['active'] == true)) {
+                        if ($discount->discount_price_id) {
+                            $row['price'] = $row['item']->{"price" . ++$discount->discount_price_id};
+                            $row['message'] = $discount->description;
+                        }
+                    }
+                }
+            $row['sum'] = $row['quantity'] * $row['price'];
+            $this->total = $this->total + $row['sum'];
+            $row['price'] = Yii::$app->formatter->asCurrency($row['price'], Yii::$app->getModule('shop')->currency);
+            $row['sum'] = Yii::$app->formatter->asCurrency($row['sum'], Yii::$app->getModule('shop')->currency);
         }
 
         ksort($this->rows);
         $this->total = Yii::$app->formatter->asCurrency($this->total, Yii::$app->getModule('shop')->currency);
     }
 
-
-    public function cleanNotAvailble()
+    /**
+     * @param Item $item
+     * @param int $quantity
+     */
+    public function processDiscount(Item $item, int $quantity)
     {
-//        if ($this->rows)
-//            foreach ($this->rows as $key => $row) {
-//                if (!$row['item']->available)
-//                    unset($this->rows[$key]);
-//            }
+        if (!empty($item->discounts))
+            foreach ($item->discounts as $discount) {
+                if (empty($this->discount_items[$discount->id])) {
+                    $this->discount_items[$discount->id]['discount_group'] = $discount;
+                    $this->discount_items[$discount->id]['quantity'] = $quantity;
+                } else
+                    $this->discount_items[$discount->id]['quantity'] = $this->discount_items[$discount->id]['quantity'] + $quantity;
+                $this->discount_items[$discount->id]['active'] = $this->checkDiscountStatus($discount, $this->discount_items[$discount->id]['quantity']);
+                if ($this->discount_items[$discount->id]['active'])
+                    $this->messages[] = $discount->description;
+            }
+    }
+
+    /**
+     * @param DiscountGroup $group
+     * @param int $quantity
+     * @return bool
+     */
+    public function checkDiscountStatus(DiscountGroup $group, int $quantity)
+    {
+        if ($group->item_quantity > 0 && $quantity >= $group->item_quantity)
+            return true;
+        return false;
     }
 
     /**
@@ -62,5 +105,14 @@ class CartForm extends Model
             if (preg_match('/cart-(\d+)/', $name, $matches))
                 setcookie($matches[0], '', time() - 3600, '/');
         }
+    }
+
+    public function cleanNotAvailble()
+    {
+//        if ($this->rows)
+//            foreach ($this->rows as $key => $row) {
+//                if (!$row['item']->available)
+//                    unset($this->rows[$key]);
+//            }
     }
 }

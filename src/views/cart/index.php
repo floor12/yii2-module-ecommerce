@@ -38,6 +38,12 @@ use yii\helpers\Html;
     <div class="cart-total">
         <?php if ($model->rows) echo Yii::t('app.f12.ecommerce', 'Total') . ': ' . Html::tag('span', $model->total) ?>
     </div>
+
+    <?php
+    if ($model->messages)
+        foreach ($model->messages as $message)
+            echo Html::tag('p', $message, ['class' => 'f12-discount-info']);
+    ?>
 </div>
 <div class="modal-footer">
     <?= Html::a(Yii::t('app.f12.ecommerce', 'Close'), '', ['class' => 'btn btn-default modaledit-disable-silent']) ?>
