@@ -80,7 +80,7 @@ class CartForm extends Model
                     $this->discount_items[$discount->id]['quantity'] = $this->discount_items[$discount->id]['quantity'] + $quantity;
                 $this->discount_items[$discount->id]['active'] = $this->checkDiscountStatus($discount, $this->discount_items[$discount->id]['quantity']);
                 if ($this->discount_items[$discount->id]['active'])
-                    $this->messages[] = $discount->description;
+                    $this->messages[$discount->id] = $discount->description;
             }
     }
 
