@@ -54,10 +54,13 @@ $form = ActiveForm::begin([
                 <?= Yii::t('app.f12.ecommerce', 'Total') ?>: <span><?= $model->cart->total ?></span>
             </div>
 
+            <div class="clearfix"></div>
 
         </div>
 
         <div class="col-md-5">
+
+            <h2><?= Yii::t('app.f12.ecommerce', 'Your data for purchase and delivery') ?></h2>
 
             <?= $form->field($model, 'fullname')
                 ->textInput([

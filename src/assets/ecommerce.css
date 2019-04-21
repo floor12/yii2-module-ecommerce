@@ -160,7 +160,7 @@ p.f12-discount-info {
     float: left;
     background-color: white;
     padding: 10px 20px;
-    margin: 0 0 0 10px;
+    margin: 0 10px 0 10px;
     color: #ef7d00;
     border: #ef7d00 2px solid;
     margin-bottom: 15px;
@@ -170,7 +170,7 @@ div.cart-total {
     font-weight: 500;
     font-size: 110%;
     float: right;
-    margin: 0 12px 0;
+    margin: 0 12px 20px;
     text-align: right;
 }
 
@@ -180,7 +180,7 @@ div.cart-total span {
 
 
 table.table-cart input {
-    width: 90px;
+    max-width: 90px;
     display: inline;
     text-align: right;
 }

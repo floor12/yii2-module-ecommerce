@@ -162,7 +162,6 @@ return [
     'Choose item to set it parent...' => 'Выберите родительский объект...',
     'not selected' => 'не выбрано',
     'Price' => 'Цена',
-    'Quantity' => 'Количество',
     'Item title' => 'Наименование',
     'Total' => 'Всего',
     'Discount groups' => 'Группы скидок',
@@ -181,5 +180,6 @@ return [
     'Second price' => 'Вторая цена',
     'Third price' => 'Третья цена',
     'Choose disocount group...' => 'Выберите группу скидки',
-    
+    'Your data for purchase and delivery' => 'Ваши данные для покупки и доставки',
+
 ];
