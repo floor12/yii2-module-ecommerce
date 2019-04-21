@@ -12,6 +12,7 @@ namespace floor12\ecommerce\controllers;
 use floor12\ecommerce\logic\CheckoutTagRegister;
 use floor12\ecommerce\logic\DeliveryCost;
 use floor12\ecommerce\logic\OrderCreate;
+use floor12\ecommerce\logic\OrderPurchaseTagRegister;
 use floor12\ecommerce\logic\ParamProcessor;
 use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
