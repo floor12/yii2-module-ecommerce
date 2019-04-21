@@ -9,8 +9,10 @@
 namespace floor12\ecommerce\controllers;
 
 
+use floor12\ecommerce\logic\CheckoutTagRegister;
 use floor12\ecommerce\logic\DeliveryCost;
 use floor12\ecommerce\logic\OrderCreate;
+use floor12\ecommerce\logic\ParamProcessor;
 use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
 use floor12\ecommerce\models\enum\PaymentType;
@@ -42,6 +44,7 @@ class CartController extends Controller
      */
     public function actionCheckout()
     {
+        Yii::$app->getModule('shop');
         $model = new Order();
         $model->cart = new CartForm();
         $deliveries = [];
@@ -165,7 +168,15 @@ class CartController extends Controller
                         'status' => 0,
                         'option_id' => $id,
                         'price' => $price,
-                        'message' => "Стоимость: " . $price . " " . Yii::$app->getModule('shop')->currencyLabel
+                        'message' => "Стоимость: " . $price . " " . Yii::$app->getModule('shop')->currencyLabel,
+                        'gtagData' => [
+                            'id' => $id,
+                            'name' => $item->title,
+                            'price' => $item->price,
+                            'category' => $item->categories ? $item->categories[0]->title : NULL,
+                            'quantity' => 1,
+                            'variant' => Yii::createObject(ParamProcessor::class, [$item])->getParamsInString()
+                        ]
                     ];
                 } else
                     $ret = [

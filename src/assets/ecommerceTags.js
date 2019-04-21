@@ -1,3 +1,5 @@
+var registerGoogleTagEvents = true;
+
 f12Tag = {
     log: true,
 
