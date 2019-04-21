@@ -60,11 +60,19 @@ class CartController extends Controller
 
         if (Yii::$app->request->isPost) {
             if (Yii::createObject(OrderCreate::class, [$model, Yii::$app->request->post()])->execute())
-                if ($model->payment_type_id == PaymentType::RECEIVING)
+                if ($model->payment_type_id == PaymentType::RECEIVING) {
+
+                    if (Yii::$app->getModule('shop')->registerGoogleTagEvents)
+                        Yii::createObject(OrderPurchaseTagRegister::class, [$model, Yii::$app->getView()])->register();
+
                     return $this->render('success');
-                else
+                } else
                     $this->redirect(['/shop/cart/pay', 'order_id' => $model->id]);
         }
+
+
+        if (Yii::$app->getModule('shop')->registerGoogleTagEvents)
+            Yii::createObject(CheckoutTagRegister::class, [$model->cart, Yii::$app->getView()])->register();
 
         return $this->render('checkout', ['model' => $model, 'deliveries' => $deliveries]);
     }
@@ -118,10 +126,6 @@ class CartController extends Controller
         return $out;
     }
 
-    /**
-     * @param $item_id
-     * @return false|string|void
-     */
     public function actionOptions($item_id)
     {
         $params = Yii::$app->request->get('params');

@@ -4,6 +4,8 @@
 
 var itemOptionsurl;
 
+var currentItem = [];
+
 var f12shop = {
     total_in_cart: 0,
 
@@ -69,7 +71,7 @@ var f12shop = {
         } else
             f12shop.updateCartCount();
 
-
+        f12Tag.productAddToCart([currentItem])
     },
     removeItemFromCart: function (id) {
         name = "cart-" + id;
@@ -127,7 +129,6 @@ var f12shop = {
     },
 
     optionsRequest: function () {
-        console.log(11);
         form = $('#add-to-cart-ajax');
         data = form.serialize();
         $.ajax({
@@ -141,6 +142,7 @@ var f12shop = {
                 } else {
                     $('#addToCartAjaxBtn').attr('disabled', 'disabled').removeAttr('onclick');
                 }
+                currentItem = response.gtagData;
             },
             error: function (response) {
                 processError(response);
@@ -164,6 +166,8 @@ $(document).on('change', 'input.cart-counter', function () {
     input = $(this);
     quantity = input.val();
     id = input.data('id');
+    if (registerGoogleTagEvents == true)
+        f12Tag.productQuantity({id: id, quantity: quantity})
     f12shop.updateCartQuantity(id, quantity);
 
 })

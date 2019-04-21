@@ -2,6 +2,7 @@
 
 namespace floor12\ecommerce;
 
+use floor12\ecommerce\assets\EcommerceTagAsset;
 use Yii;
 use yii\base\ErrorException;
 
@@ -19,6 +20,8 @@ class Module extends \yii\base\Module
     public $exportPath = '@runtime/export';
 
     public $importPath = '@runtime/import';
+
+    public $registerGoogleTagEvents = false;
 
     public $useAjaxAddToCartWidget = false;
     /**
@@ -116,16 +119,14 @@ class Module extends \yii\base\Module
 
         if (!file_exists(Yii::getAlias($this->importPath)))
             throw new ErrorException('Unable to create import path.');
-    }
 
-    public function adminMode()
-    {
-        if ($this->editRole == '@')
-            return !\Yii::$app->user->isGuest;
-        else
-            return \Yii::$app->user->can($this->editRole);
+        if ($this->registerGoogleTagEvents) {
+            EcommerceTagAsset::register(Yii::$app->getView());
+            Yii::$app->getView()->registerJs('var registerGoogleTagEvents = true;');
+        } else {
+            Yii::$app->getView()->registerJs('var registerGoogleTagEvents = false;');
+        }
     }
-
 
     public function registerTranslations()
     {
@@ -137,5 +138,13 @@ class Module extends \yii\base\Module
                 'app.f12.ecommerce' => 'ecommerce.php',
             ],
         ];
+    }
+
+    public function adminMode()
+    {
+        if ($this->editRole == '@')
+            return !\Yii::$app->user->isGuest;
+        else
+            return \Yii::$app->user->can($this->editRole);
     }
 }
