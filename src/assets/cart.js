@@ -71,7 +71,8 @@ var f12shop = {
         } else
             f12shop.updateCartCount();
 
-        f12Tag.productAddToCart([currentItem])
+        if (typeof (registerGoogleTagEvents) != 'undefined' && registerGoogleTagEvents == true)
+            f12Tag.productAddToCart([currentItem]);
     },
     removeItemFromCart: function (id) {
         name = "cart-" + id;
