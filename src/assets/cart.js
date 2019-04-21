@@ -34,7 +34,7 @@ var f12shop = {
 
     addToCart: function (id, btn, quantity = 1) {
         name = "cart-" + id;
-        
+
         if ($.cookie(name))
             quantity = parseInt($.cookie(name)) + parseInt(quantity)
 
@@ -178,10 +178,12 @@ $(document).on('click', 'a.cart-delete', function () {
     id = $(this).data('id');
     name = "cart-" + id;
 
+    if (registerGoogleTagEvents == true)
+        f12Tag.productQuantity({id: id, quantity: 0})
+
     if ($.cookie(name)) {
         f12shop.removeItemFromCart(id)
     }
-    ;
 })
 
 
