@@ -9,8 +9,11 @@
 namespace floor12\ecommerce\controllers;
 
 
+use floor12\ecommerce\logic\CheckoutTagRegister;
 use floor12\ecommerce\logic\DeliveryCost;
 use floor12\ecommerce\logic\OrderCreate;
+use floor12\ecommerce\logic\OrderPurchaseTagRegister;
+use floor12\ecommerce\logic\ParamProcessor;
 use floor12\ecommerce\logic\PaymentCreate;
 use floor12\ecommerce\models\City;
 use floor12\ecommerce\models\enum\PaymentType;
@@ -60,11 +63,19 @@ class CartController extends Controller
 
         if (Yii::$app->request->isPost) {
             if (Yii::createObject(OrderCreate::class, [$model, Yii::$app->request->post()])->execute())
-                if ($model->payment_type_id == PaymentType::RECEIVING)
+                if ($model->payment_type_id == PaymentType::RECEIVING) {
+
+                    if (Yii::$app->getModule('shop')->registerGoogleTagEvents)
+                        Yii::createObject(OrderPurchaseTagRegister::class, [$model, Yii::$app->getView()])->register();
+
                     return $this->render('success');
-                else
+                } else
                     $this->redirect(['/shop/cart/pay', 'order_id' => $model->id]);
         }
+
+
+        if (Yii::$app->getModule('shop')->registerGoogleTagEvents)
+            Yii::createObject(CheckoutTagRegister::class, [$model->cart, Yii::$app->getView()])->register();
 
         return $this->render('checkout', ['model' => $model, 'deliveries' => $deliveries]);
     }
@@ -79,7 +90,6 @@ class CartController extends Controller
             throw new NotFoundHttpException('Order not found');
 
         Yii::createObject(PaymentCreate::class, [$model])->execute();
-
 
         if ($model->payment_type_id == PaymentType::CLOUDPAYMENTS) {
             $publicKey = Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['api_id'];
@@ -155,7 +165,15 @@ class CartController extends Controller
                         'status' => 0,
                         'option_id' => $id,
                         'price' => $item->price_current,
-                        'message' => "Стоимость: " . $item->price_current . " " . Yii::$app->getModule('shop')->currencyLabel
+                        'message' => "Стоимость: " . $item->price_current . " " . Yii::$app->getModule('shop')->currencyLabel,
+                        'gtagData' => [
+                            'id' => $id,
+                            'name' => $item->title,
+                            'price' => $item->price,
+                            'category' => $item->categories ? $item->categories[0]->title : NULL,
+                            'quantity' => 1,
+                            'variant' => Yii::createObject(ParamProcessor::class, [$item])->getParamsInString()
+                        ]
                     ];
                 else
                     $ret = [

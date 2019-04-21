@@ -9,6 +9,7 @@
 namespace floor12\ecommerce\controllers;
 
 
+use floor12\ecommerce\logic\ItemsListTagRegister;
 use floor12\ecommerce\models\enum\Status;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
 use floor12\ecommerce\models\Item;
@@ -38,6 +39,7 @@ class CategoryController extends Controller
     {
         $model = new ItemFrontendFilter(['category_id' => $category_id, 'discount' => $sale]);
         $model->load(Yii::$app->request->get());
+
         return $this->render(Yii::$app->getModule('shop')->viewIndex, ['model' => $model]);
     }
 
@@ -56,6 +58,17 @@ class CategoryController extends Controller
 
         if ($model->status == Status::DISABLED && !Yii::$app->getModule('shop')->adminMode())
             throw new ForbiddenHttpException('Item is disabled.');
+
+        if (Yii::$app->getModule('shop')->registerGoogleTagEvents) {
+            $productJson = json_encode([
+                'id' => $model->id,
+                'name' => $model->title,
+                'price' => $model->price,
+                'category' => $model->categories ? $model->categories[0]->title : NULL,
+            ]);
+
+            $this->getView()->registerJs("f12Tag.productView([{$productJson}])");
+        }
 
 
         Yii::$app->metamaster
