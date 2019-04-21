@@ -118,6 +118,10 @@ class CartController extends Controller
         return $out;
     }
 
+    /**
+     * @param $item_id
+     * @return false|string|void
+     */
     public function actionOptions($item_id)
     {
         $params = Yii::$app->request->get('params');
@@ -150,14 +154,16 @@ class CartController extends Controller
             case 1:
                 $id = $result[array_key_first($result)];
                 $item = Item::findOne($id);
-                if ($item->available)
+                if ($item->available) {
+                    $cart = new CartForm();
+                    $price = $cart->getPrice($item);
                     $ret = [
                         'status' => 0,
                         'option_id' => $id,
-                        'price' => $item->price_current,
-                        'message' => "Стоимость: " . $item->price_current . " " . Yii::$app->getModule('shop')->currencyLabel
+                        'price' => $price,
+                        'message' => "Стоимость: " . $price . " " . Yii::$app->getModule('shop')->currencyLabel
                     ];
-                else
+                } else
                     $ret = [
                         'status' => 1,
                         'message' => 'нет в наличии'

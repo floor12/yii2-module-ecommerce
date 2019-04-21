@@ -30,14 +30,11 @@ class CartForm extends Model
                 if (!$item || !$item->available)
                     continue;
 
-
                 $this->processDiscount($item, $quantity);
 
                 $this->rows[$item->id] = [
                     'item' => $item,
                     'quantity' => $quantity,
-//                    'price' => Yii::$app->formatter->asCurrency($item->price_current, Yii::$app->getModule('shop')->currency),
-//                    'sum' => Yii::$app->formatter->asCurrency($sum, Yii::$app->getModule('shop')->currency),
                 ];
 
             }
@@ -94,6 +91,23 @@ class CartForm extends Model
         if ($group->item_quantity > 0 && $quantity >= $group->item_quantity)
             return true;
         return false;
+    }
+
+    /**
+     * @param Item $item
+     * @return int
+     */
+    public function getPrice(Item $item)
+    {
+        if (!empty($item->discounts))
+            foreach ($item->discounts as $discount)
+                if (!empty($this->discount_items[$discount->id] && $this->discount_items[$discount->id]['active'] == true)) {
+                    if ($discount->discount_price_id) {
+                        return $item->{"price" . ++$discount->discount_price_id};
+                    }
+                }
+
+        return $item->price_current;
     }
 
     /**
