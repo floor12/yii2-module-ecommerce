@@ -101,7 +101,7 @@ class CartForm extends Model
     {
         if (!empty($item->discounts))
             foreach ($item->discounts as $discount)
-                if (!empty($this->discount_items[$discount->id] && $this->discount_items[$discount->id]['active'] == true)) {
+                if (!empty($this->discount_items[$discount->id]) && $this->discount_items[$discount->id]['active'] == true) {
                     if ($discount->discount_price_id) {
                         return $item->{"price" . ++$discount->discount_price_id};
                     }
