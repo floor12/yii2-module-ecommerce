@@ -65,9 +65,7 @@ f12Tag = {
                         actionField: {
                             order
                         },
-                        products: {
-                            products
-                        }
+                        products: products
                     }
             }
         })

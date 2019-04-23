@@ -28,7 +28,7 @@ class OrderPurchaseTagRegister
         ]);
         $products = [];
         foreach ($this->model->orderItems as $orderItem) {
-            $products = [
+            $products[] = [
                 'id' => $orderItem->item->id,
                 'name' => $orderItem->item->title,
                 'category' => $orderItem->item->categories ? $orderItem->item->categories[0]->title : NULL,
