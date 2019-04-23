@@ -28,11 +28,12 @@ class OrderPurchaseTagRegister
         ]);
         $products = [];
         foreach ($this->model->orderItems as $orderItem) {
-            $products[] = [
+            $products = [
                 'id' => $orderItem->item->id,
                 'name' => $orderItem->item->title,
                 'category' => $orderItem->item->categories ? $orderItem->item->categories[0]->title : NULL,
                 'quantity' => $orderItem->quantity,
+                'price' => $orderItem->price,
                 'variant' => Yii::createObject(ParamProcessor::class, [$orderItem->item])->getParamsInString()
             ];
         }

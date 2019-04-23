@@ -8,15 +8,18 @@ f12Tag = {
             console.log(eventName);
             console.log(data);
         }
-        dataLayer.push({
+
+        event = {
             event: eventName,
             ecommerce: {
                 currencyCode: 'RUB',
-                eventName: {
-                    products: data
-                }
             }
-        });
+        };
+
+        event.ecommerce[eventName] = {products: data};
+
+        console.log(event);
+        dataLayer.push(event);
     },
 
     checkout: function (products) {
