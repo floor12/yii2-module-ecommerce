@@ -33,6 +33,7 @@ class OrderPurchaseTagRegister
                 'name' => $orderItem->item->title,
                 'category' => $orderItem->item->categories ? $orderItem->item->categories[0]->title : NULL,
                 'quantity' => $orderItem->quantity,
+                'price' => $orderItem->price,
                 'variant' => Yii::createObject(ParamProcessor::class, [$orderItem->item])->getParamsInString()
             ];
         }
