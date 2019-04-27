@@ -32,7 +32,8 @@ class CartForm extends Model
 
                 $this->processDiscount($item, $quantity);
 
-                $this->rows[$item->id] = [
+                $this->rows[] = [
+                    'item_id' => $item->id,
                     'item' => $item,
                     'quantity' => $quantity,
                 ];
@@ -77,7 +78,7 @@ class CartForm extends Model
                     $this->discount_items[$discount->id]['quantity'] = $this->discount_items[$discount->id]['quantity'] + $quantity;
                 $this->discount_items[$discount->id]['active'] = $this->checkDiscountStatus($discount, $this->discount_items[$discount->id]['quantity']);
                 if ($this->discount_items[$discount->id]['active'])
-                    $this->messages[$discount->id] = $discount->description;
+                    $this->messages[] = $discount->description;
             }
     }
 

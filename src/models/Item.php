@@ -2,6 +2,8 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\logic\ParamProcessor;
+use floor12\ecommerce\models\forms\CartForm;
 use floor12\ecommerce\models\queries\ItemQuery;
 use floor12\files\components\FileBehaviour;
 use floor12\files\models\File;
@@ -231,5 +233,21 @@ class Item extends ActiveRecord implements PageObjectInterface
     public static function find()
     {
         return new ItemQuery(get_called_class());
+    }
+
+    /**
+     * @param array $fields
+     * @param array $expand
+     * @param bool $recursive
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'variant' => Yii::createObject(ParamProcessor::class, [$this])->getParamsInString(),
+        ];
     }
 }

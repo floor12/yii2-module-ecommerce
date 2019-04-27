@@ -40,6 +40,13 @@ class CartController extends Controller
         return $this->renderAjax('index', ['model' => $model]);
     }
 
+    public function actionJson()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $cart = new CartForm();
+        return $cart;
+    }
+
     /** Странница офорсления заказа
      * @return string
      */

@@ -2,6 +2,7 @@
 
 namespace floor12\ecommerce\models;
 
+use floor12\ecommerce\logic\ParamProcessor;
 use floor12\ecommerce\models\queries\DiscountGroupQuery;
 use Yii;
 
@@ -79,5 +80,20 @@ class DiscountGroup extends \yii\db\ActiveRecord
     public function getEcDiscountGroupItems()
     {
         return $this->hasMany(EcDiscountGroupItem::className(), ['discount_group_id' => 'id']);
+    }
+
+    /**
+     * @param array $fields
+     * @param array $expand
+     * @param bool $recursive
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+        ];
     }
 }
