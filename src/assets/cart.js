@@ -198,10 +198,19 @@ $(document).on('click', 'a.cart-delete', function () {
     id = $(this).data('id');
     name = "cart-" + id;
 
-    if (registerGoogleTagEvents == true)
-        f12Tag.productQuantity({id: id, quantity: 0})
-
     if ($.cookie(name)) {
+
+        if (registerGoogleTagEvents == true)
+            $.ajax({
+                url: '/shop/cart/item',
+                data: {id: id},
+                success: function (response) {
+                    product = response;
+                    product.quantity = parseInt(0);
+                    f12Tag.productRemoveFromCart([product]);
+                }
+            });
+
         f12shop.removeItemFromCart(id)
     }
 })
