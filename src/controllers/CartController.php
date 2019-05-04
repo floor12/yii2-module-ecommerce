@@ -40,6 +40,25 @@ class CartController extends Controller
         return $this->renderAjax('index', ['model' => $model]);
     }
 
+    /**
+     * @return string Json string with information about product item
+     */
+    public function actionItem($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $cart = new CartForm();
+        $model = Item::findOne((int)$id);
+        return [
+            'id' => $id,
+            'name' => $model->title,
+            'variant' => Yii::createObject(ParamProcessor::class, [$model])->getParamsInString(),
+            'price' => $cart->getPrice($model)
+        ];
+    }
+
+    /**
+     * @return string Json string with cart items
+     */
     public function actionJson()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;

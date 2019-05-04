@@ -120,6 +120,25 @@ var f12shop = {
     updateCartQuantity: function (id, quantity) {
         name = "cart-" + id;
 
+        let quantityOld = $.cookie(name);
+        let product = {};
+
+        $.ajax({
+            url: '/shop/cart/item',
+            data: {id: id},
+            success: function (response) {
+                product = response;
+                product.quantity = parseInt(quantity);
+                if (registerGoogleTagEvents == true) {
+                    if (quantity > quantityOld)
+                        f12Tag.productAddToCart([product])
+                    if (quantity < quantityOld)
+                        f12Tag.productRemoveFromCart([product])
+                }
+            }
+        });
+
+
         if (quantity == 0) {
             $.removeCookie(name, {expires: 31, path: '/'});
         } else {
@@ -127,6 +146,8 @@ var f12shop = {
         }
         f12shop.updateCartCount();
         f12shop.showCart();
+
+
     },
 
     optionsRequest: function () {
@@ -167,8 +188,6 @@ $(document).on('change', 'input.cart-counter', function () {
     input = $(this);
     quantity = input.val();
     id = input.data('id');
-    if (registerGoogleTagEvents == true)
-        f12Tag.productQuantity({id: id, quantity: quantity})
     f12shop.updateCartQuantity(id, quantity);
 
 })
@@ -179,10 +198,19 @@ $(document).on('click', 'a.cart-delete', function () {
     id = $(this).data('id');
     name = "cart-" + id;
 
-    if (registerGoogleTagEvents == true)
-        f12Tag.productQuantity({id: id, quantity: 0})
-
     if ($.cookie(name)) {
+
+        if (registerGoogleTagEvents == true)
+            $.ajax({
+                url: '/shop/cart/item',
+                data: {id: id},
+                success: function (response) {
+                    product = response;
+                    product.quantity = parseInt(0);
+                    f12Tag.productRemoveFromCart([product]);
+                }
+            });
+
         f12shop.removeItemFromCart(id)
     }
 })

@@ -26,10 +26,6 @@ f12Tag = {
         this.registerEvent('checkout', products);
     },
 
-    productQuantity: function (product) {
-        this.registerEvent('quantity', product);
-    },
-
     productsListed: function (products) {
         this.registerEvent('impressions', products);
     },
@@ -42,7 +38,7 @@ f12Tag = {
         this.registerEvent('add', product);
     },
 
-    productremoveFromCart: function (data) {
+    productRemoveFromCart: function (product) {
         this.registerEvent('remove', product);
     },
 
