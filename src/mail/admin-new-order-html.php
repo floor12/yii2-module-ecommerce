@@ -27,5 +27,6 @@ use yii\web\View;
 
 <p>
     <?= Yii::t('app.f12.ecommerce', 'For order details click') ?>
-    <?= Html::a(Yii::t('app.f12.ecommerce', 'this link'), ['/shop/admin/order']) ?>.
+    <?= Html::a(Yii::t('app.f12.ecommerce', 'this link'), Yii::$app->urlManager->createAbsoluteUrl(['/shop/admin/order'])) ?>
+    .
 </p>

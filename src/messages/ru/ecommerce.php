@@ -95,7 +95,7 @@ return [
     'Sum' => 'Сумма',
     'Quantity' => 'Кол-во',
     'Parameters' => 'Характеристики',
-    'Our managers will contact you in the nearest future to confirm your order.' => 'Наши менеджеры свяжутся с вами в ближайшее время для подтверджения вашего заказа.',
+    'Our managers will contact you in the nearest future to confirm your order.' => 'Наши менеджеры свяжутся с вами в ближайшее время для подтверждения вашего заказа.',
     'New order' => 'Новый заказ',
     'Your order number is' => 'Номер вашего заказа',
     'Hello' => 'Приветствуем',

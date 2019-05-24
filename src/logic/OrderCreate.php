@@ -67,9 +67,9 @@ class OrderCreate
                     'order_id' => $event->sender->id,
                     'created' => time(),
                     'item_id' => $row['item']->id,
-                    'price' => $row['item']->price_current,
+                    'price' => $row['price_unformatted'],
                     'quantity' => (int)$row['quantity'],
-                    'sum' => $row['quantity'] * $row['item']->price_current,
+                    'sum' => $row['quantity'] * $row['price_unformatted'],
                     'order_status' => $event->sender->status,
                 ]);
                 $event->sender->items_cost += $orderItem->sum;
@@ -77,7 +77,7 @@ class OrderCreate
                 if (!$orderItem->save())
                     throw new ErrorException('Order item saving error. ' . print_r($orderItem->errors, 1));
             }
-
+            
             // Обновляем цену доставки
             $pricer = new DeliveryCost($this->_model->delivery_type_id, ['city_id' => $event->data['city_id'], 'weight' => $event->sender->items_weight]);
             $event->sender->delivery_cost = $pricer->getPrice();
