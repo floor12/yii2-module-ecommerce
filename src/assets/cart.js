@@ -122,17 +122,18 @@ var f12shop = {
 
         let quantityOld = $.cookie(name);
         let product = {};
+        let dif = quantity - quantityOld;
 
         $.ajax({
             url: '/shop/cart/item',
             data: {id: id},
             success: function (response) {
                 product = response;
-                product.quantity = parseInt(quantity);
+                product.quantity = parseInt(Math.abs(dif));
                 if (registerGoogleTagEvents == true) {
-                    if (quantity > quantityOld)
+                    if (dif > 0)
                         f12Tag.productAddToCart([product])
-                    if (quantity < quantityOld)
+                    else
                         f12Tag.productRemoveFromCart([product])
                 }
             }
@@ -197,6 +198,7 @@ $(document).on('click', 'a.cart-delete', function () {
 
     id = $(this).data('id');
     name = "cart-" + id;
+    let quantity = $.cookie(name);
 
     if ($.cookie(name)) {
 
@@ -206,7 +208,7 @@ $(document).on('click', 'a.cart-delete', function () {
                 data: {id: id},
                 success: function (response) {
                     product = response;
-                    product.quantity = parseInt(0);
+                    product.quantity = parseInt(quantity);
                     f12Tag.productRemoveFromCart([product]);
                 }
             });
