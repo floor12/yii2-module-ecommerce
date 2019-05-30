@@ -119,13 +119,15 @@ class Module extends \yii\base\Module
 
         if (!file_exists(Yii::getAlias($this->importPath)))
             throw new ErrorException('Unable to create import path.');
+        
 
-        if ($this->registerGoogleTagEvents) {
-            EcommerceTagAsset::register(Yii::$app->getView());
-            Yii::$app->getView()->registerJs('var registerGoogleTagEvents = true;');
-        } else {
-            Yii::$app->getView()->registerJs('var registerGoogleTagEvents = false;');
-        }
+        if (Yii::$app->controllerNamespace != 'app\commands' && Yii::$app->controllerNamespace != 'console\controllers')
+            if ($this->registerGoogleTagEvents) {
+                EcommerceTagAsset::register(Yii::$app->getView());
+                Yii::$app->getView()->registerJs('var registerGoogleTagEvents = true;');
+            } else {
+                Yii::$app->getView()->registerJs('var registerGoogleTagEvents = false;');
+            }
     }
 
     public function registerTranslations()

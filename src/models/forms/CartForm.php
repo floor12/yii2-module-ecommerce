@@ -53,7 +53,8 @@ class CartForm extends Model
                         }
                     }
                 }
-            $row['sum'] = $row['quantity'] * $row['price'];
+            $row['sum'] = $row['sum_unformatted'] = $row['quantity'] * $row['price'];
+            $row['price_unformatted'] = $row['price'];
             $this->total = $this->total + $row['sum'];
             $row['price'] = Yii::$app->formatter->asCurrency($row['price'], Yii::$app->getModule('shop')->currency);
             $row['sum'] = Yii::$app->formatter->asCurrency($row['sum'], Yii::$app->getModule('shop')->currency);
@@ -78,7 +79,7 @@ class CartForm extends Model
                     $this->discount_items[$discount->id]['quantity'] = $this->discount_items[$discount->id]['quantity'] + $quantity;
                 $this->discount_items[$discount->id]['active'] = $this->checkDiscountStatus($discount, $this->discount_items[$discount->id]['quantity']);
                 if ($this->discount_items[$discount->id]['active'])
-                    $this->messages[] = $discount->description;
+                    $this->messages[$discount->id] = $discount->description;
             }
     }
 
