@@ -46,26 +46,27 @@ f12Tag = {
         this.registerEvent('checkout', products);
     },
 
-    productPurchase: function (order, products) {
-        if (this.log) {
-            console.log('purchase');
-            console.log(order);
-            console.log(products);
-        }
-        dataLayer.push({
+    productPurchase: function (purchase, products) {
+        data = {
             event: 'purchase',
             ecommerce: {
                 currencyCode: 'RUB',
-                purchase:
+                'purchase':
                     {
                         actionField: {
-                            order
+                            purchase
                         },
                         products: products
                     }
             }
-        })
-
-
+        };
+        if (this.log) {
+            console.log('purchase');
+            console.log(purchase);
+            console.log(products);
+            console.log(data);
+        }
+        dataLayer.push(data)
     }
+
 }

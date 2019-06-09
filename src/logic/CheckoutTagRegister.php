@@ -28,6 +28,7 @@ class CheckoutTagRegister
                 'name' => $row['item']->title,
                 'category' => $row['item']->categories ? $row['item']->categories[0]->title : NULL,
                 'quantity' => $row['quantity'],
+                'price' => $this->model->getPrice($row['item']),
                 'variant' => Yii::createObject(ParamProcessor::class, [$row['item']])->getParamsInString()
             ];
         }

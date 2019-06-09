@@ -52,7 +52,8 @@ class CartController extends Controller
             'id' => $id,
             'name' => $model->title,
             'variant' => Yii::createObject(ParamProcessor::class, [$model])->getParamsInString(),
-            'price' => $cart->getPrice($model)
+            'price' => $cart->getPrice($model),
+            'category' => $model->categories ? $model->categories[0]->title : NULL,
         ];
     }
 
