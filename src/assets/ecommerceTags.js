@@ -53,9 +53,7 @@ f12Tag = {
                 currencyCode: 'RUB',
                 'purchase':
                     {
-                        actionField: {
-                            purchase
-                        },
+                        actionField: purchase,
                         products: products
                     }
             }
