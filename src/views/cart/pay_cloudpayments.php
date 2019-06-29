@@ -16,9 +16,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $paymentDescription = Yii::$app->getModule('shop')->paymentDescription;
 
+$recepientCreator = new \floor12\ecommerce\logic\RecepientCreator($model);
+
+
 $js = <<< JS
 this.pay = function () {
+    
     var widget = new cp.CloudPayments();
+    
+    var data = { //содержимое элемента data
+        "cloudPayments": {
+        "customerReceipt": {
+                'Items': {$recepientCreator->getItemsJson()},
+                "email": "{$model->email}",
+                "phone": "{$model->phone}",
+            }
+        }
+    }
+    
     widget.charge({ 
             publicId: '$publicKey',
             description: '$paymentDescription',
@@ -26,6 +41,7 @@ this.pay = function () {
             currency: '$currency',
             invoiceId: {$model->payments[0]->id}, 
             accountId: '$model->email',
+            data: data
         },
         function (options) { 
             $('.alert-success').show();

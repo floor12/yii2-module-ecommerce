@@ -21,6 +21,10 @@ class CartForm extends Model
     public $messages = [];
     public $discount_items = [];
 
+    /**
+     * @inheritDoc
+     * @throws \yii\base\InvalidConfigException
+     */
     public function init()
     {
         foreach ($_COOKIE as $name => $quantity) {
