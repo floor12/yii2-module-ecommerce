@@ -24,6 +24,10 @@ class CartForm extends Model
     public function init()
     {
         foreach ($_COOKIE as $name => $quantity) {
+
+            if ($quantity < 0)
+                $quantity = -1 * $quantity;
+
             if (preg_match('/cart-(\d+)/', $name, $matches)) {
                 $item = Item::findOne($matches[1]);
 
@@ -70,6 +74,9 @@ class CartForm extends Model
      */
     public function processDiscount(Item $item, int $quantity)
     {
+        if ($quantity < 0)
+            $quantity = -1 * $quantity;
+
         if (!empty($item->discounts))
             foreach ($item->discounts as $discount) {
                 if (empty($this->discount_items[$discount->id])) {
