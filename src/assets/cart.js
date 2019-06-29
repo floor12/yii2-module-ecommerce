@@ -35,6 +35,9 @@ var f12shop = {
     addToCart: function (id, btn, quantity = 1) {
         name = "cart-" + id;
 
+        if (quantity < 0)
+            quantity = -1 * quantity;
+
         if ($.cookie(name))
             quantity = parseInt($.cookie(name)) + parseInt(quantity)
 
@@ -119,6 +122,9 @@ var f12shop = {
 
     updateCartQuantity: function (id, quantity) {
         name = "cart-" + id;
+
+        if (quantity < 0)
+            quantity = -1 * quantity;
 
         let quantityOld = $.cookie(name);
         let product = {};
