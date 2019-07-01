@@ -34,15 +34,17 @@ this.pay = function () {
         }
     }
     
-    widget.charge({ 
+    var widgetData = { 
             publicId: '$publicKey',
             description: '$paymentDescription',
             amount: $model->total, 
-            currency: '$currency',
+            currency: '{$currency}',
             invoiceId: {$model->payments[0]->id}, 
             accountId: '$model->email',
             data: data
-        },
+        };
+    
+    widget.charge(widgetData,
         function (options) { 
             $('.alert-success').show();
             $('.payment-go').hide();
