@@ -15,10 +15,12 @@ class PaymentType extends BaseEnum
 {
     const RECEIVING = 0;
     const CLOUDPAYMENTS = 1;
+    const ALFABANK = 2;
 
     static public $list = [
         self::RECEIVING => 'Payment upon receipt',
         self::CLOUDPAYMENTS => 'With Cloud payments',
+        self::ALFABANK => 'By credit card',
     ];
 
     public static $messageCategory = 'app.f12.ecommerce';

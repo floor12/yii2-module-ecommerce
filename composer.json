@@ -28,7 +28,8 @@
     "kartik-v/yii2-widget-activeform": "@dev",
     "yii2mod/yii2-enum": "*",
     "yii2mod/yii2-ion-slider": "^1.2",
-    "leandrogehlen/yii2-treegrid": "*"
+    "leandrogehlen/yii2-treegrid": "*",
+    "voronkovich/sberbank-acquiring-client": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"

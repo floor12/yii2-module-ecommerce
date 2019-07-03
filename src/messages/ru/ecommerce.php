@@ -137,6 +137,7 @@ return [
     'Payment type' => 'Вариант оплаты',
     'Payment upon receipt' => 'Оплата при получении',
     'With Cloud payments' => 'Оплата через агрегатора Cloud Payments',
+    'By credit card' => 'Оплата картой',
     'Order payment' => 'Оплата заказа',
     'Expects payment' => 'Ожидает оплаты',
     'Payed' => 'Оплачен',
