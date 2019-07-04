@@ -27,12 +27,13 @@ use Yii;
  * @property int $payment_type_id Delivery type
  * @property string $fullname Fullname
  * @property string $phone Phone
- * @property string $mail Email
+ * @property string $email Email
  * @property string $address Address
  * @property string $comment Client comment
  * @property string $comment_admin Admin comment
  *
  * @property OrderItem[] $orderItems
+ * @property Payment[] $payments
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -54,6 +55,15 @@ class Order extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'ec_order';
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return OrderQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new OrderQuery(get_called_class());
     }
 
     /**
@@ -115,7 +125,6 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -124,21 +133,11 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
     }
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getPayments()
     {
         return $this->hasMany(Payment::className(), ['order_id' => 'id'])->orderBy('created DESC');
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return OrderQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new OrderQuery(get_called_class());
     }
 }

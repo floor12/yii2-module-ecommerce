@@ -9,6 +9,8 @@
 namespace floor12\ecommerce\controllers;
 
 
+use app\logic\invoice\InvoiceCheck;
+use app\modules\balance\models\Invoice;
 use floor12\ecommerce\logic\AlfaPaymentRegister;
 use floor12\ecommerce\logic\CheckoutTagRegister;
 use floor12\ecommerce\logic\DeliveryCost;
@@ -134,13 +136,12 @@ class CartController extends Controller
 
         if ($model->payment_type_id == PaymentType::ALFABANK) {
             $alfaRegistrator = new AlfaPaymentRegister($model);
-            $alfaRegistrator->register();
-
-           // var_dump($alfaRegistrator->getFormUrl());
+            $alfaRegistrator->execute();
+            $this->redirect($alfaRegistrator->getFormUrl());
         }
 
     }
-
+    
     /**
      * @param null $q
      * @param null $id

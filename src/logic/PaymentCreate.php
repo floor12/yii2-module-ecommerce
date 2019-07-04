@@ -8,11 +8,11 @@
 
 namespace floor12\ecommerce\logic;
 
-use Yii;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentStatus;
 use floor12\ecommerce\models\Order;
 use floor12\ecommerce\models\Payment;
+use Yii;
 use yii\web\BadRequestHttpException;
 
 class PaymentCreate
@@ -20,19 +20,18 @@ class PaymentCreate
     /**
      * @var Order
      */
-    protected $_order;
+    protected $order;
     /**
      * @var Payment
      */
-    protected $_payment;
+    protected $payment;
 
 
     public function __construct(Order $order)
     {
-        $this->_order = $order;
-        $this->_payment = new Payment();
+        $this->order = $order;
 
-        if ($this->_order->status != OrderStatus::PAYMENT_EXPECTS)
+        if ($this->order->status != OrderStatus::PAYMENT_EXPECTS)
             throw new BadRequestHttpException(Yii::t('app.f12.ecommerce', 'This order no expects payment.'));
     }
 
@@ -41,13 +40,25 @@ class PaymentCreate
      */
     public function execute()
     {
-        $this->_payment->created = time();
-        $this->_payment->updated = time();
-        $this->_payment->order_id = $this->_order->id;
-        $this->_payment->sum = $this->_order->total;
-        $this->_payment->status = PaymentStatus::NEW;
-        $this->_payment->type = $this->_order->payment_type_id;
-        return $this->_payment->save();
+        $this->payment = Payment::find()
+            ->where([
+                'order_id' => $this->order->id,
+                'status' => [PaymentStatus::NEW, PaymentStatus::IN_PROCESS],
+                'type' => $this->order->payment_type_id,
+            ])
+            ->one();
+
+        if ($this->payment)
+            return true;
+
+        $this->payment = new Payment();
+        $this->payment->created = time();
+        $this->payment->updated = time();
+        $this->payment->order_id = $this->order->id;
+        $this->payment->sum = $this->order->total;
+        $this->payment->status = PaymentStatus::NEW;
+        $this->payment->type = $this->order->payment_type_id;
+        return $this->payment->save();
     }
 
 }

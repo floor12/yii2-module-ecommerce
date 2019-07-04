@@ -182,5 +182,11 @@ return [
     'Third price' => 'Третья цена',
     'Choose disocount group...' => 'Выберите группу скидки',
     'Your data for purchase and delivery' => 'Ваши данные для покупки и доставки',
+    'Payment success' => 'Оплата прошла успешно',
+    'Payment failure' => 'Оплата не произведена',
+    'error' => 'ошибка',
+    'in process' => 'в процессе оплаты',
+    'An error occurred during the payment.' => 'Во время оплаты произошла ошибка.',
+    'Retry payment' => 'Повторить платеж'
 
 ];

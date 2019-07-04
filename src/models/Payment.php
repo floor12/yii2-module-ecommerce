@@ -14,8 +14,10 @@ use Yii;
  * @property int $payed Payed timestamp
  * @property int $order_id Order id
  * @property int $status Payment status
+ * @property int $external_status External payment status
  * @property int $type Payment type
- * @property int $external_id External payment system id
+ * @property string $external_id External payment system id
+ * @property string $form_url Payment form url
  * @property double $sum Sum
  * @property string $comment Payment comment
  *
@@ -33,14 +35,25 @@ class Payment extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @return PaymentQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PaymentQuery(get_called_class());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
             [['created', 'updated', 'order_id', 'status', 'type', 'sum'], 'required'],
-            [['created', 'updated', 'payed', 'order_id', 'status', 'type', 'external_id'], 'integer'],
+            [['created', 'updated', 'payed', 'order_id', 'status', 'type', 'external_status'], 'integer'],
             [['sum'], 'number'],
             [['comment'], 'string'],
+            ['external_id', 'string', 'max' => 255],
+            ['form_url', 'string', 'max' => 512],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
         ];
     }
@@ -70,15 +83,5 @@ class Payment extends \yii\db\ActiveRecord
     public function getOrder()
     {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     * @return PaymentQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new PaymentQuery(get_called_class());
     }
 }
