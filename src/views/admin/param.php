@@ -11,10 +11,9 @@
 
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
-use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\EcParam;
+use floor12\ecommerce\models\ItemParam;
 use floor12\editmodal\EditModalHelper;
-use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
@@ -28,7 +27,7 @@ echo Html::tag('h1', Yii::t('app.f12.ecommerce', 'Shop'));
 
 echo TabWidget::widget();
 
-echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Create parameter'), null, [
+echo Html::a(\floor12\editmodal\IconHelper::PENCIL . " " . Yii::t('app.f12.ecommerce', 'Create parameter'), null, [
     'onclick' => EditModalHelper::showForm('shop/admin/param-form', 0),
     'class' => 'btn btn-sm btn-primary btn-ecommerce-add'
 ]);
@@ -53,8 +52,8 @@ echo GridView::widget([
         ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
             'content' => function (ItemParam $model) {
                 return
-                    Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/param-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                    Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/param-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                    Html::a(\floor12\editmodal\IconHelper::PENCIL, NULL, ['onclick' => EditModalHelper::showForm('shop/admin/param-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
+                    Html::a(\floor12\editmodal\IconHelper::TRASH, NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/param-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
             },
         ]
     ]

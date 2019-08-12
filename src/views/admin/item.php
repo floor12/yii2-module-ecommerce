@@ -29,7 +29,7 @@ echo Html::tag('h1', Yii::t('app.f12.ecommerce', 'Shop'));
 
 echo TabWidget::widget();
 
-echo Html::a(FontAwesome::icon('plus') . " " . Yii::t('app.f12.ecommerce', 'Create item'), null, [
+echo Html::a(floor12\editmodal\IconHelper::PLUS . " " . Yii::t('app.f12.ecommerce', 'Create item'), null, [
     'onclick' => EditModalHelper::showForm('shop/admin/item-form', 0),
     'class' => 'btn btn-sm btn-primary btn-ecommerce-add'
 ]);
@@ -124,11 +124,11 @@ echo GridView::widget([
             'content' => function (Item $model) {
                 $html = '';
                 if (!$model->parent_id) {
-                    $html .= Html::a(FontAwesome::icon('plus'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Add option'), 'onclick' => EditModalHelper::showForm('shop/admin/item-option', ['parent_id' => $model->id]), 'class' => 'btn btn-default btn-sm']) . " ";
+                    $html .= Html::a(\floor12\editmodal\IconHelper::PLUS, NULL, ['title' => Yii::t('app.f12.ecommerce', 'Add option'), 'onclick' => EditModalHelper::showForm('shop/admin/item-option', ['parent_id' => $model->id]), 'class' => 'btn btn-default btn-sm']) . " ";
                 }
-                $html .= Html::a(FontAwesome::icon('list'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update params'), 'onclick' => EditModalHelper::showForm('shop/admin/item-params', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
-                $html .= Html::a(FontAwesome::icon('pencil'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update'), 'onclick' => EditModalHelper::showForm('shop/admin/item-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
-                $html .= Html::a(FontAwesome::icon('trash'), NULL, ['title' => Yii::t('app.f12.ecommerce', 'Delete'), 'onclick' => EditModalHelper::deleteItem('shop/admin/item-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                $html .= Html::a(floor12\editmodal\IconHelper::LIST, NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update params'), 'onclick' => EditModalHelper::showForm('shop/admin/item-params', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
+                $html .= Html::a(floor12\editmodal\IconHelper::PENCIL, NULL, ['title' => Yii::t('app.f12.ecommerce', 'Update'), 'onclick' => EditModalHelper::showForm('shop/admin/item-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " ";
+                $html .= Html::a(floor12\editmodal\IconHelper::TRASH, NULL, ['title' => Yii::t('app.f12.ecommerce', 'Delete'), 'onclick' => EditModalHelper::deleteItem('shop/admin/item-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
                 return $html;
             },
         ]

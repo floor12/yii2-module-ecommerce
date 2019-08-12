@@ -15,7 +15,6 @@ use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\Order;
 use floor12\editmodal\EditModalHelper;
 use floor12\phone\PhoneFormatter;
-use rmrevin\yii\fontawesome\FontAwesome;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
@@ -51,9 +50,9 @@ echo GridView::widget([
         [
             'attribute' => 'total',
             'content' => function (Order $model) {
-                $ret = Html::tag('div', FontAwesome::icon('shopping-cart') . ' ' . Yii::$app->formatter->asCurrency($model->items_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
-                $ret .= Html::tag('div', FontAwesome::icon('car') . ' ' . Yii::$app->formatter->asCurrency($model->delivery_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
-                $ret .= Html::tag('div', FontAwesome::icon('flag-checkered') . ' ' . Yii::$app->formatter->asCurrency($model->total, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                $ret = Html::tag('div', \floor12\ecommerce\assets\IconHelper::BOXES . ' ' . Yii::$app->formatter->asCurrency($model->items_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                $ret .= Html::tag('div', \floor12\ecommerce\assets\IconHelper::DELIVERY . ' ' . Yii::$app->formatter->asCurrency($model->delivery_cost, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
+                $ret .= Html::tag('div', \floor12\ecommerce\assets\IconHelper::FLAG . ' ' . Yii::$app->formatter->asCurrency($model->total, Yii::$app->getModule('shop')->currency), ['class' => 'small']);
                 return $ret;
             },
         ],
@@ -66,8 +65,8 @@ echo GridView::widget([
         ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
             'content' => function (Order $model) {
                 return
-                    Html::a(FontAwesome::icon('pencil'), NULL, ['onclick' => EditModalHelper::showForm('shop/admin/order-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                    Html::a(FontAwesome::icon('trash'), NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/order-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                    Html::a(\floor12\editmodal\IconHelper::PENCIL, NULL, ['onclick' => EditModalHelper::showForm('shop/admin/order-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
+                    Html::a(\floor12\editmodal\IconHelper::TRASH, NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/order-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
             },
         ]
     ]
