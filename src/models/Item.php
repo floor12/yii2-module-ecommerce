@@ -3,7 +3,6 @@
 namespace floor12\ecommerce\models;
 
 use floor12\ecommerce\logic\ParamProcessor;
-use floor12\ecommerce\models\forms\CartForm;
 use floor12\ecommerce\models\queries\ItemQuery;
 use floor12\files\components\FileBehaviour;
 use floor12\files\models\File;
@@ -198,6 +197,11 @@ class Item extends ActiveRecord implements PageObjectInterface
         if ($this->options)
             foreach ($this->options as $option)
                 $option->delete();
+
+        if ($this->images)
+            foreach ($this->images as $image)
+                $image->delete();
+
         parent::afterDelete();
     }
 
