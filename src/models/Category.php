@@ -135,7 +135,7 @@ class Category extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return EcCatego
+     * @return CategoryQuery
      * Query the active query used by this AR class.
      */
     public static function find()
@@ -193,5 +193,5 @@ class Category extends \yii\db\ActiveRecord
         $pathBuilder->execute();
         return parent::afterSave($insert, $changedAttributes);
     }
-    
+
 }
