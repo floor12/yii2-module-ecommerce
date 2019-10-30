@@ -14,6 +14,14 @@ class CategoryQuery extends \yii\db\ActiveQuery
 {
     private $_categories = [];
 
+    /**
+     * @return $this
+     */
+    public function hasActiveItems()
+    {
+        return $this->andWhere("id IN (SELECT category_id FROM ec_item_category WHERE item_id IN (SELECT id FROM ec_item WHERE status=0))");
+    }
+
     public function active()
     {
         return $this->andWhere(['status' => Status::ACTIVE]);

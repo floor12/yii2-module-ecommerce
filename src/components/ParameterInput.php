@@ -69,6 +69,7 @@ class ParameterInput extends Widget
     {
         if ($this->category)
             $this->_values = ItemParamValue::find()
+                ->hasActiveItem()
                 ->select('value')
                 ->indexBy('value')
                 ->category($this->category)
@@ -78,6 +79,7 @@ class ParameterInput extends Widget
                 ->column();
         else
             $this->_values = ItemParamValue::find()
+                ->hasActiveItem()
                 ->select('value')
                 ->indexBy('value')
                 ->param($this->parameter->id)

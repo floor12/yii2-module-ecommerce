@@ -61,7 +61,14 @@ class ItemFrontendFilter extends Model
             $this->price_min = (int)Item::find()->active()->category($this->_category)->min('price');
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
 
-            $this->sub_categories = Category::find()->orderBy('title')->active()->where(['parent_id' => $this->category_id])->select('title')->indexBy('id')->column();
+            $this->sub_categories = Category::find()
+                ->orderBy('title')
+                ->hasActiveItems()
+                ->active()
+                ->andWhere(['parent_id' => $this->category_id])
+                ->select('title')
+                ->indexBy('id')
+                ->column();
 
             $this->showDiscountOption = Item::find()
                 ->active()
@@ -71,7 +78,15 @@ class ItemFrontendFilter extends Model
                 ->scalar();
 
         } else {
-            $this->sub_categories = Category::find()->orderBy('title')->active()->where('ISNULL(parent_id)')->select('title')->indexBy('id')->column();
+            $this->sub_categories = Category::find()
+                ->orderBy('title')
+                ->hasActiveItems()
+                ->active()
+                ->andWhere('ISNULL(parent_id)')
+                ->select('title')
+                ->indexBy('id')
+                ->column();
+
             $this->category_title = Yii::t('app.f12.ecommerce', $this->discount ? 'Sale' : 'Catalog');
             $this->price_min = (int)Item::find()->active()->min('price');
             $this->price_max = (int)Item::find()->active()->max('price');
@@ -84,7 +99,7 @@ class ItemFrontendFilter extends Model
                 ->scalar();
         }
 
-        $this->sub_categories[] = Yii::t('app.f12.ecommerce', 'All categories');
+      //  $this->sub_categories[] = Yii::t('app.f12.ecommerce', 'All categories');
 
 
         $this->params = array_merge($this->slider_params, $this->checkbox_params);
@@ -119,6 +134,7 @@ class ItemFrontendFilter extends Model
     public function dataProvider()
     {
         $query = Item::find()
+            ->active()
             ->with('images')
             ->andFilterWhere(['LIKE', 'title', $this->filter])
             ->root();

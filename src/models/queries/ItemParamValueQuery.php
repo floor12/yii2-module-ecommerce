@@ -12,6 +12,13 @@ use floor12\ecommerce\models\Item;
  */
 class ItemParamValueQuery extends \yii\db\ActiveQuery
 {
+    /**
+     * @return ItemParamValueQuery
+     */
+    public function hasActiveItem()
+    {
+        return $this->andWhere('item_id IN (SELECT id FROM ec_item WHERE parent_id=0 AND status=0)');
+    }
 
     /**
      * @param integer $param_id
