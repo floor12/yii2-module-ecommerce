@@ -17,6 +17,7 @@ use Yii;
  * @property string $path Category title with path
  * @property int $parent_id Parent category
  * @property int $status Category status
+ * @property int $sort Sorting position
  * @property string $external_id External id
  *
  * @property Category[] $children
@@ -63,6 +64,7 @@ class Category extends \yii\db\ActiveRecord
             'children_total' => Yii::t('app.f12.ecommerce', 'Children'),
             'external_id' => Yii::t('app.f12.ecommerce', 'External indificator'),
             'param_ids' => Yii::t('app.f12.ecommerce', 'Linked parameters'),
+            'sort' => Yii::t('app.f12.ecommerce', 'Order'),
         ];
     }
 
@@ -178,6 +180,14 @@ class Category extends \yii\db\ActiveRecord
                 'relations' => [
                     'param_ids' => 'params',
                 ],
+            ],
+            'sortBehavior' => [
+                'class' => 'demi\sort\SortBehavior',
+                'sortConfig' => [
+                    'condition' => function ($query, $model) {
+                        $query->andWhere(['parent_id' => $model->parent_id]);
+                    },
+                ]
             ],
         ];
     }

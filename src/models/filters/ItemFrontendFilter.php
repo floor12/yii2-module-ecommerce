@@ -62,7 +62,7 @@ class ItemFrontendFilter extends Model
             $this->price_max = (int)Item::find()->active()->category($this->_category)->max('price');
 
             $this->sub_categories = Category::find()
-                ->orderBy('title')
+                ->orderBy('sort')
                 ->hasActiveItems()
                 ->active()
                 ->andWhere(['parent_id' => $this->category_id])
@@ -79,7 +79,7 @@ class ItemFrontendFilter extends Model
 
         } else {
             $this->sub_categories = Category::find()
-                ->orderBy('title')
+                ->orderBy('sort')
                 ->hasActiveItems()
                 ->active()
                 ->andWhere('ISNULL(parent_id)')

@@ -97,6 +97,19 @@ class AdminController extends Controller
         return $this->render('category', ['model' => $model]);
     }
 
+    /**
+     * @param $id
+     * @param $direction
+     * @throws NotFoundHttpException
+     */
+    public function actionCategoryOrder($id, $direction)
+    {
+        $model = Category::findOne((int)$id);
+        if (!$model)
+            throw new NotFoundHttpException();
+        $model->changeSorting($direction);
+    }
+
     /** Displays param admin page
      * @return string
      */

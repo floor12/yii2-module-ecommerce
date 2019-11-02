@@ -47,6 +47,7 @@ class CategoryFilter extends Model
 
         return new ActiveDataProvider([
             'query' => $this->_query,
+            'sort' => ['defaultOrder' => ['sort' => SORT_ASC]],
             'pagination' => false
         ]);
     }

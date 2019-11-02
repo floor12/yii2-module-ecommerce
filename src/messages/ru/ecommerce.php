@@ -187,6 +187,7 @@ return [
     'error' => 'ошибка',
     'in process' => 'в процессе оплаты',
     'An error occurred during the payment.' => 'Во время оплаты произошла ошибка.',
-    'Retry payment' => 'Повторить платеж'
+    'Retry payment' => 'Повторить платеж',
+    'Order' => 'Порядок'
 
 ];

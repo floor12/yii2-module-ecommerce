@@ -9,6 +9,7 @@
  * @var $model \floor12\ecommerce\models\filters\CategoryFilter
  */
 
+use floor12\ecommerce\assets\EcommerceAdminAsset;
 use floor12\ecommerce\assets\EcommerceAsset;
 use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\Category;
@@ -19,6 +20,8 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 EcommerceAsset::register($this);
+EcommerceAdminAsset::register($this);
+
 
 $columns = [
     [
@@ -33,11 +36,27 @@ $columns = [
     'items_total',
     'params_total',
     'children_total',
+    'sort',
     ['contentOptions' => ['style' => 'min-width:100px; text-align:right;'],
         'content' => function (Category $model) {
             return
-                Html::a(\floor12\editmodal\IconHelper::PENCIL, NULL, ['onclick' => EditModalHelper::showForm('shop/admin/category-form', $model->id), 'class' => 'btn btn-default btn-sm']) . " " .
-                Html::a(\floor12\editmodal\IconHelper::TRASH, NULL, ['onclick' => EditModalHelper::deleteItem('shop/admin/category-delete', $model->id), 'class' => 'btn btn-default btn-sm']);
+                Html::button(\floor12\pages\assets\IconHelper::ARROW_UP, [
+                    'class' => 'btn btn-default btn-sm',
+                    'onclick' => "ecommerceAdmin.orderChange('category-order', {$model->id}, 4)",
+                ])
+                . " " .
+                Html::button(\floor12\pages\assets\IconHelper::ARROW_DOWN, [
+                    'class' => 'btn btn-default btn-sm',
+                    'onclick' => "ecommerceAdmin.orderChange('category-order', {$model->id}, 3)",
+                ]) . " " .
+                Html::a(\floor12\editmodal\IconHelper::PENCIL, NULL, [
+                    'onclick' => EditModalHelper::showForm('shop/admin/category-form', $model->id),
+                    'class' => 'btn btn-default btn-sm'
+                ]) . " " .
+                Html::a(\floor12\editmodal\IconHelper::TRASH, NULL, [
+                    'onclick' => EditModalHelper::deleteItem('shop/admin/category-delete', $model->id),
+                    'class' => 'btn btn-default btn-sm'
+                ]);
         },
     ]
 ];

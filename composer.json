@@ -29,6 +29,7 @@
     "yii2mod/yii2-enum": "*",
     "yii2mod/yii2-ion-slider": "^1.2",
     "leandrogehlen/yii2-treegrid": "*",
+    "demi/sort": "dev-master",
     "voronkovich/sberbank-acquiring-client": "dev-master"
   },
   "require-dev": {
