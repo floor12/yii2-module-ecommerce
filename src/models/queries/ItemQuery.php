@@ -32,7 +32,7 @@ class ItemQuery extends \yii\db\ActiveQuery
      */
     public function root()
     {
-        return $this->andWhere(['parent_id' => 0]);
+        return $this->andWhere(['ec_item.parent_id' => 0]);
     }
 
     /**
@@ -40,7 +40,7 @@ class ItemQuery extends \yii\db\ActiveQuery
      */
     public function available()
     {
-        return $this->andWhere(['!=', 'available', 0]);
+        return $this->andWhere(['!=', 'ec_item.available', 0]);
     }
 
     /**
@@ -48,7 +48,7 @@ class ItemQuery extends \yii\db\ActiveQuery
      */
     public function active()
     {
-        return $this->andWhere(['status' => Status::ACTIVE]);
+        return $this->andWhere(['ec_item.status' => Status::ACTIVE]);
     }
 
     /**
@@ -63,7 +63,7 @@ class ItemQuery extends \yii\db\ActiveQuery
             return "'$cat->id'";
         }, $this->_categories);
         $cat_ids = implode(',', $ids);
-        return $this->andWhere("id IN (SELECT item_id FROM ec_item_category WHERE category_id IN ({$cat_ids}))");
+        return $this->andWhere("ec_item.id IN (SELECT item_id FROM ec_item_category WHERE category_id IN ({$cat_ids}))");
     }
 
 

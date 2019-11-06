@@ -16,6 +16,7 @@ use yii\helpers\Url;
  * This is the model class for table "ec_item".
  *
  * @property int $id
+ * @property string $uid
  * @property string $title Item title
  * @property string $subtitle Item subtitle
  * @property string $description Item description

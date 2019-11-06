@@ -99,7 +99,7 @@ class ItemFrontendFilter extends Model
                 ->scalar();
         }
 
-      //  $this->sub_categories[] = Yii::t('app.f12.ecommerce', 'All categories');
+        //  $this->sub_categories[] = Yii::t('app.f12.ecommerce', 'All categories');
 
 
         $this->params = array_merge($this->slider_params, $this->checkbox_params);
@@ -134,10 +134,14 @@ class ItemFrontendFilter extends Model
     public function dataProvider()
     {
         $query = Item::find()
+            ->leftJoin('ec_item_category', 'ec_item_category.item_id=ec_item.id')
+            ->leftJoin('ec_category', 'ec_item_category.category_id=ec_category.id')
             ->active()
             ->with('images')
             ->andFilterWhere(['LIKE', 'title', $this->filter])
+            ->orderBy('ec_category.sort')
             ->root();
+
 
         if ($this->selected_category_id)
             $query->category(Category::findOne($this->selected_category_id));
