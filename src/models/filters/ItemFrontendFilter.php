@@ -138,7 +138,7 @@ class ItemFrontendFilter extends Model
             ->leftJoin('ec_category', 'ec_item_category.category_id=ec_category.id')
             ->active()
             ->with('images')
-            ->andFilterWhere(['LIKE', 'title', $this->filter])
+            ->andFilterWhere(['LIKE', 'ec_item.title', $this->filter])
             ->orderBy('ec_category.sort')
             ->root();
 
@@ -173,13 +173,13 @@ class ItemFrontendFilter extends Model
                     $param_value
                 );
                 $values = implode(',', $param_value);
-                $query->andWhere("id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
+                $query->andWhere("ec_item.id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
             }
 
             if ($parameter->type_id == ParamType::SLIDER) {
                 list($min, $max) = explode(';', $param_value);
                 if ($min && $max)
-                    $query->andWhere("id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
+                    $query->andWhere("ec_item.id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
             }
 
         }
