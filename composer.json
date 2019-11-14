@@ -37,17 +37,19 @@
   },
   "autoload": {
     "psr-4": {
-      "floor12\\ecommerce\\": [
-        "src/"
-      ]
+      "floor12\\ecommerce\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "floor12\\ecommerce\\tests\\": "tests/"
+      "floor12\\ecommerce\\tests\\": "tests"
     }
   },
   "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
     {
       "type": "git",
       "url": "https://github.com/floor12/yii2-editmodal"
