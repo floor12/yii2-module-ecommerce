@@ -1,57 +1,51 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: floor12
- * Date: 13/10/2018
- * Time: 09:49
- */
-
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\Order;
-use floor12\ecommerce\models\queries\OrderQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use floor12\ecommerce\models\entity\Order;
 
 /**
- * Class OrderFilter
- * @package floor12\ecommerce\models\filters
- * @property string $filter
- * @property integer $status
- * @property OrderQuery $_query
+ * OrderFilter represents the model behind the search form of `floor12\ecommerce\models\entity\Order`.
  */
 class OrderFilter extends Model
+
 {
     public $filter;
     public $status;
 
-    private $_query;
-
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['status'], 'integer'],
-            [['filter'], 'string'],
+            ['filter', 'string'],
+            ['status', 'integer']
         ];
     }
 
     /**
+     * Creates data provider instance with search query applied
+     *
      * @return ActiveDataProvider
      */
     public function dataProvider()
     {
-        $this->_query = Order::find()
-            ->andFilterWhere(['=', 'status', $this->status]);
+        $query = Order::find();
 
+        // add conditions that should always apply here
 
-        return new ActiveDataProvider([
-            'query' => $this->_query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
-    }
 
+        if (!$this->validate()) {
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        return $dataProvider;
+    }
 }

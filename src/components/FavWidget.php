@@ -11,6 +11,7 @@ namespace floor12\ecommerce\components;
 use floor12\ecommerce\assets\IconHelper;
 use yii\base\Widget;
 use yii\helpers\Html;
+use Yii;
 
 class FavWidget extends Widget
 {
@@ -18,9 +19,9 @@ class FavWidget extends Widget
 
     public function run()
     {
-        return Html::tag('a', IconHelper::STAR_FILLED, [
+        return Html::button(IconHelper::STAR_FILLED, [
             'class' => isset($_COOKIE["fav-{$this->id}"]) ? 'fav fav-active' : 'fav',
-            'title' => isset($_COOKIE["fav-{$this->id}"]) ? 'Удалить из избранного' : 'Добавить в избранное',
+            'title' => Yii::t('app.f12.ecommerce', isset($_COOKIE["fav-{$this->id}"]) ? 'Remove from favorites' : 'Add to favorites'),
             'data-id' => $this->id
         ]);
     }

@@ -9,8 +9,8 @@
 namespace floor12\ecommerce\components;
 
 
-use floor12\ecommerce\models\ItemParam;
-use floor12\ecommerce\models\ItemParamValue;
+use floor12\ecommerce\models\entity\Parameter;
+use floor12\ecommerce\models\entity\ParameterValue;
 use yii\base\Widget;
 
 class AddToCartWidgetAjax extends Widget
@@ -32,7 +32,7 @@ class AddToCartWidgetAjax extends Widget
             ->column();
 
         foreach ($paramsUnqueIds as $param_id) {
-            $this->params[$param_id]['title'] = ItemParam::find()
+            $this->params[$param_id]['title'] = Parameter::find()
                 ->select('title')
                 ->where(['id' => $param_id])
                 ->scalar();

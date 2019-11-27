@@ -1,0 +1,13 @@
+version: '2'
+services:
+  mysql:
+    ports:
+      - '127.0.0.1:3336:3306'
+    image: mysql:5.7
+    volumes:
+      - ./tests/_output/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: yii2
+      MYSQL_PASSWORD: database

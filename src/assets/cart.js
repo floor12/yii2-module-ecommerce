@@ -10,7 +10,7 @@ var f12shop = {
     total_in_cart: 0,
 
     showCart: function () {
-        showForm('/shop/cart');
+        showForm('/shop/frontend/cart', {}, {}, true);
     },
 
     updateCartCount: function () {
@@ -31,6 +31,15 @@ var f12shop = {
             $('.cart-link').removeClass('cart-link-active');
         }
     },
+    addVariationToCart: function (event) {
+        clickObject = $(event.target);
+        if (event.target.nodeName != 'BUTTON')
+            clickObject = clickObject.parents('button');
+        variationId = $(clickObject).data('id');
+        btn = $(event.target);
+        console.log(variationId);
+        this.addToCart(variationId, btn);
+    },
 
     addToCart: function (id, btn, quantity = 1) {
         name = "cart-" + id;
@@ -43,14 +52,9 @@ var f12shop = {
 
         $.cookie(name, quantity, {expires: 31, path: '/'});
         $('.proceed-to-checkout').fadeIn(300);
-        btn.addClass('btn-primary');
-        btn.removeClass('btn-default')
-        btn.attr('title', 'Удалить из корзины');
 
-        // создаем и позиционируем блок
+
         full_block = btn.parents('.cart-shadow');
-
-
         if (full_block.length !== 0) {
             pos_y = full_block.offset().top - $(window).scrollTop();
             pos_x = full_block.offset().left;
@@ -131,7 +135,7 @@ var f12shop = {
         let dif = quantity - quantityOld;
 
         $.ajax({
-            url: '/shop/cart/item',
+            url: '/shop/frontend/cart/product',
             data: {id: id},
             success: function (response) {
                 product = response;
@@ -188,29 +192,34 @@ $(document).on('click', '.cart-link', function () {
 $(document).on('change', '#add-to-cart-ajax', function () {
     f12shop.optionsRequest();
 })
-$
 
+cartTimeout = setTimeout(function () {
+}, 500);
 
 $(document).on('change', 'input.cart-counter', function () {
+    clearTimeout(cartTimeout);
     input = $(this);
     quantity = input.val();
     id = input.data('id');
-    f12shop.updateCartQuantity(id, quantity);
+    cartTimeout = setTimeout(function () {
+        f12shop.updateCartQuantity(id, quantity);
+    }, 1400);
 
 })
 
 
 $(document).on('click', 'a.cart-delete', function () {
-
     id = $(this).data('id');
     name = "cart-" + id;
     let quantity = $.cookie(name);
+
+    console.log(quantity);
 
     if ($.cookie(name)) {
 
         if (registerGoogleTagEvents == true)
             $.ajax({
-                url: '/shop/cart/item',
+                url: '/shop/frontend/cart/product',
                 data: {id: id},
                 success: function (response) {
                     product = response;

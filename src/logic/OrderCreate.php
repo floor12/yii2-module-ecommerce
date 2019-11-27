@@ -9,12 +9,11 @@
 namespace floor12\ecommerce\logic;
 
 
-use floor12\ecommerce\models\City;
+use floor12\ecommerce\models\entity\City;
+use floor12\ecommerce\models\entity\Order;
 use floor12\ecommerce\models\enum\DeliveryType;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentType;
-use floor12\ecommerce\models\Order;
-use floor12\ecommerce\models\OrderItem;
 use Yii;
 use yii\base\ErrorException;
 
@@ -59,32 +58,27 @@ class OrderCreate
         // Навешивем эвенты для пересчета стоимости доставки. очистки корзины, подсчета стоимости заказа и доставки
         $this->_model->on(Order::EVENT_AFTER_INSERT, function ($event) {
 
-            $event->sender->items_cost = 0;
-            $event->sender->items_weight = 0;
+            $event->sender->products_cost = 0;
+            $event->sender->products_weight = 0;
 
-            foreach ($event->sender->cart->rows as $row) {
-                $orderItem = new OrderItem([
-                    'order_id' => $event->sender->id,
-                    'created' => time(),
-                    'item_id' => $row['item']->id,
-                    'price' => $row['price_unformatted'],
-                    'quantity' => (int)$row['quantity'],
-                    'sum' => $row['quantity'] * $row['price_unformatted'],
-                    'order_status' => $event->sender->status,
-                ]);
-                $event->sender->items_cost += $orderItem->sum;
-                $event->sender->items_weight += $orderItem->item->weight_delivery * (int)$row['quantity'];
+            foreach ($event->sender->cart->orderItems as $orderItem) {
+                $orderItem->order_id = $event->sender->id;
+                $orderItem->created = time();
+                $orderItem->order_status = $event->sender->status;
+                $event->sender->products_cost += $orderItem->sum;
+                $event->sender->products_weight += $orderItem->productVariation->product->weight_delivery * (int)$row['quantity'];
                 if (!$orderItem->save())
                     throw new ErrorException('Order item saving error. ' . print_r($orderItem->errors, 1));
             }
-            
+
             // Обновляем цену доставки
-            $pricer = new DeliveryCost($this->_model->delivery_type_id, ['city_id' => $event->data['city_id'], 'weight' => $event->sender->items_weight]);
+            $pricer = new DeliveryCost($this->_model->delivery_type_id, ['city_id' => $event->data['city_id'], 'weight' =>
+                $event->sender->products_weight]);
             $event->sender->delivery_cost = $pricer->getPrice();
 
             // Добавляем стоимость доставки к основной цене
-            $event->sender->total = $event->sender->items_cost + $event->sender->delivery_cost;
-            $event->sender->save(false, ['items_cost', 'delivery_cost', 'items_weight', 'total']);
+            $event->sender->total = $event->sender->products_cost + $event->sender->delivery_cost;
+            $event->sender->save(false, ['products_cost', 'delivery_cost', 'products_weight', 'total']);
 
             $event->sender->cart->empty();
 

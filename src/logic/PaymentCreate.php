@@ -8,10 +8,10 @@
 
 namespace floor12\ecommerce\logic;
 
+use floor12\ecommerce\models\entity\Order;
+use floor12\ecommerce\models\entity\Payment;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentStatus;
-use floor12\ecommerce\models\Order;
-use floor12\ecommerce\models\Payment;
 use Yii;
 use yii\web\BadRequestHttpException;
 

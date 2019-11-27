@@ -9,10 +9,9 @@
 namespace floor12\ecommerce\models\forms;
 
 
-use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\entity\Category;
 use floor12\ecommerce\models\Item;
-use floor12\ecommerce\models\ItemParam;
-use floor12\ecommerce\models\ItemParamValue;
+use floor12\ecommerce\models\entity\Parameter;
 use http\Exception\InvalidArgumentException;
 use yii\base\ErrorException;
 use yii\base\Model;
@@ -85,7 +84,7 @@ class ItemParamsForm extends Model
                         $this->category_params[$parameter->id] = $parameter;
             }
 
-        $this->category_params += ItemParam::find()
+        $this->category_params += Parameter::find()
             ->root()
             ->indexBy('id')
             ->all();

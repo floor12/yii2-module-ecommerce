@@ -49,7 +49,7 @@ use yii\helpers\Html;
 <div class="clearfix">
     <?=
     Html::a(FontAwesome::icon('check') . ' ' . Yii::t('app.f12.ecommerce', 'Proceed to checkout'),
-        ['/shop/cart/checkout'],
+        ['shop/frontend/cart/checkout'],
         ['class' => $showProceedBtn ? 'btn btn-primary proceed-to-checkout' : 'btn btn-primary proceed-to-checkout proceed-to-checkout-hidden'])
     ?>
 </div>

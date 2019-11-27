@@ -33,12 +33,12 @@ function showFavorites() {
         res.push(result[1])
     }
     if (res.length) {
-        showForm('/shop/favorites');
+        showForm('/shop/frontend/favorites');
         $('#modaledit-modal div.modal-content div.modal-body').html('');
         setTimeout(function () {
             $.each(res, function (key, val) {
                 $.ajax({
-                    url: '/shop/favorites/item',
+                    url: '/shop/frontend/favorites/product',
                     data: {id: val},
                     success: function (response) {
                         $('#modaledit-modal div.modal-content div.modal-body').append(response);
@@ -55,7 +55,7 @@ $(document).on('click', '.favorites-link', function () {
     showFavorites();
 })
 
-$(document).on('click', 'a.fav', function () {
+$(document).on('click', 'button.fav', function () {
     id = $(this).data('id');
     name = "fav-" + id;
     if ($.cookie(name)) {
@@ -71,7 +71,7 @@ $(document).on('click', 'a.fav', function () {
             block.fadeOut(300, function () {
                 block.parent().remove();
             });
-            $('#items div[data-key="' + id + '"]').find('a.fav').removeClass('fav-active');
+            $('#items div[data-key="' + id + '"]').find('button.fav').removeClass('fav-active');
 
             if (parent.find('div.f12-ec-item').length == 1)
                 cancelModalEditSilent();
@@ -84,8 +84,7 @@ $(document).on('click', 'a.fav', function () {
         $(this).attr('title', 'Удалить из избранного');
 
         // создаем и позиционируем блок
-        full_block = $(this).parents('.f12-ec-item');
-
+        full_block = $(this).parent().find('.f12-ec-product');
 
         if (full_block.length !== 0) {
             pos_y = full_block.offset().top - $(window).scrollTop();

@@ -10,15 +10,15 @@ namespace floor12\ecommerce\components;
 
 
 use floor12\ecommerce\models\CartItem;
-use floor12\ecommerce\models\Item;
+use floor12\ecommerce\models\entity\ProductVariation;
 use yii\base\Widget;
 
 class AddToCartWidget extends Widget
 {
-    public $item;
+    public $product;
 
     private $_options;
-    private $_cartItem;
+    private $_cartProduct;
     private $params = [];
     private $_showProceedBtn = false;
 
@@ -27,21 +27,20 @@ class AddToCartWidget extends Widget
      */
     public function init()
     {
-        $this->_options = Item::find()
-            ->where(['parent_id' => $this->item->id])
+        $this->_options = ProductVariation::find()
             ->active()
             ->all();
-        $this->_options[] = $this->item;
+        $this->_options[] = $this->product;
 
         foreach ($this->_options as $option) {
-            if (!$option->itemParamValues)
+            if (!$option->productParamValues)
                 continue;
-            foreach ($option->itemParamValues as $paramValue) {
+            foreach ($option->productParamValues as $paramValue) {
 
             }
         }
 
-        $this->_cartItem = new CartItem();
+        $this->_cartProduct = new CartItem();
 
         foreach ($_COOKIE as $name => $value) {
             if (preg_match('/cart-\d+/', $name, $mathes))

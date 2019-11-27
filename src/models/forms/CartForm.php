@@ -10,20 +10,22 @@ namespace floor12\ecommerce\models\forms;
 
 
 use floor12\ecommerce\models\DiscountGroup;
+use floor12\ecommerce\models\entity\OrderItem;
+use floor12\ecommerce\models\entity\ProductVariation;
 use floor12\ecommerce\models\Item;
-use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 
 class CartForm extends Model
 {
     public $total = 0;
-    public $rows = [];
+    public $orderItems = [];
     public $messages = [];
     public $discount_items = [];
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws  InvalidConfigException
      */
     public function init()
     {
@@ -33,56 +35,33 @@ class CartForm extends Model
                 $quantity = -1 * $quantity;
 
             if (preg_match('/cart-(\d+)/', $name, $matches)) {
-                $item = Item::findOne($matches[1]);
-
-                if (!$item || !$item->available)
+                $productVariation = ProductVariation::findOne($matches[1]);
+                if (!$productVariation)
                     continue;
 
-                $this->processDiscount($item, $quantity);
-
-                $this->rows[] = [
-                    'item_id' => $item->id,
-                    'item' => $item,
+                $this->orderItems[] = new OrderItem([
+                    'product_variation_id' => $productVariation->id,
                     'quantity' => $quantity,
-                ];
+                    'price' => $productVariation->price_0,
+                    'sum' => $productVariation->price_0 * $quantity,
+                ]);
 
+                $this->total = $this->total + $productVariation->price_0 * $quantity;
             }
         }
-
-        foreach ($this->rows as &$row) {
-            $row['price'] = $row['item']->price_current;
-
-            if (!empty($row['item']->discounts))
-                foreach ($row['item']->discounts as $discount) {
-                    if (!empty($this->discount_items[$discount->id] && $this->discount_items[$discount->id]['active'] == true)) {
-                        if ($discount->discount_price_id) {
-                            $row['price'] = $row['item']->{"price" . ++$discount->discount_price_id};
-                            $row['message'] = $discount->description;
-                        }
-                    }
-                }
-            $row['sum'] = $row['sum_unformatted'] = $row['quantity'] * $row['price'];
-            $row['price_unformatted'] = $row['price'];
-            $this->total = $this->total + $row['sum'];
-            $row['price'] = Yii::$app->formatter->asCurrency($row['price'], Yii::$app->getModule('shop')->currency);
-            $row['sum'] = Yii::$app->formatter->asCurrency($row['sum'], Yii::$app->getModule('shop')->currency);
-        }
-
-        ksort($this->rows);
-        $this->total = Yii::$app->formatter->asCurrency($this->total, Yii::$app->getModule('shop')->currency);
     }
 
     /**
-     * @param Item $item
+     * @param Item $productVariation
      * @param int $quantity
      */
-    public function processDiscount(Item $item, int $quantity)
+    public function processDiscount(ProductVariation $productVariation, int $quantity)
     {
         if ($quantity < 0)
             $quantity = -1 * $quantity;
 
-        if (!empty($item->discounts))
-            foreach ($item->discounts as $discount) {
+        if (!empty($productVariation->discounts))
+            foreach ($productVariation->discounts as $discount) {
                 if (empty($this->discount_items[$discount->id])) {
                     $this->discount_items[$discount->id]['discount_group'] = $discount;
                     $this->discount_items[$discount->id]['quantity'] = $quantity;
@@ -107,20 +86,20 @@ class CartForm extends Model
     }
 
     /**
-     * @param Item $item
+     * @param Item $productVariation
      * @return int
      */
-    public function getPrice(Item $item)
+    public function getPrice(ProductVariation $productVariation)
     {
-        if (!empty($item->discounts))
-            foreach ($item->discounts as $discount)
+        if (!empty($productVariation->discounts))
+            foreach ($productVariation->discounts as $discount)
                 if (!empty($this->discount_items[$discount->id]) && $this->discount_items[$discount->id]['active'] == true) {
                     if ($discount->discount_price_id) {
-                        return $item->{"price" . ++$discount->discount_price_id};
+                        return $productVariation->{"price" . ++$discount->discount_price_id};
                     }
                 }
 
-        return $item->price_current;
+        return $productVariation->price_current;
     }
 
     /**
@@ -136,10 +115,10 @@ class CartForm extends Model
 
     public function cleanNotAvailble()
     {
-//        if ($this->rows)
-//            foreach ($this->rows as $key => $row) {
-//                if (!$row['item']->available)
-//                    unset($this->rows[$key]);
+//        if ($this->orderItems)
+//            foreach ($this->orderItems as $key => $row) {
+//                if (!$row['productVariation']->available)
+//                    unset($this->orderItems[$key]);
 //            }
     }
 }

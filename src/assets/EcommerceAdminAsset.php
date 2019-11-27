@@ -13,12 +13,13 @@ use yii\web\AssetBundle;
 class EcommerceAdminAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/floor12/yii2-module-ecommerce/src/assets';
-    
+
     public $js = [
         'ecommerce-admin.js',
     ];
 
     public $depends = [
-        'yii\web\JqueryAsset'
+        'yii\web\JqueryAsset',
+        'floor12\notification\NotificationAsset'
     ];
 }

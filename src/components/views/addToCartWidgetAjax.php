@@ -13,7 +13,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->registerJs("itemOptionsurl = '" . Url::toRoute(['/shop/cart/options']) . "'");
+$this->registerJs("itemOptionsurl = '" . Url::toRoute(['shop/frontend/cart/options']) . "'");
 
 ?>
 <form id="add-to-cart-ajax" class="cart-shadow">

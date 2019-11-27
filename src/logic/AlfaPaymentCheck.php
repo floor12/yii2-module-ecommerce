@@ -12,7 +12,7 @@ use app\modules\balance\models\InvoiceStatus;
 use floor12\ecommerce\components\AlfaClient;
 use floor12\ecommerce\models\enum\PaymentStatus;
 use floor12\ecommerce\models\enum\PaymentType;
-use floor12\ecommerce\models\Payment;
+use floor12\ecommerce\models\entity\Payment;
 use Voronkovich\SberbankAcquiring\Client;
 use Voronkovich\SberbankAcquiring\OrderStatus;
 use Yii;

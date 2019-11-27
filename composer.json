@@ -22,18 +22,21 @@
     "php": ">=7.1.0",
     "yiisoft/yii2": "~2.0.13",
     "floor12/yii2-editmodal": "*",
-    "floor12/yii2-summernote": "*",
+    "floor12/yii2-summernote": "dev-master",
     "floor12/yii2-module-files": "*",
     "kartik-v/yii2-widget-select2": "@dev",
     "kartik-v/yii2-widget-activeform": "@dev",
     "yii2mod/yii2-enum": "*",
-    "yii2mod/yii2-ion-slider": "^1.2",
     "leandrogehlen/yii2-treegrid": "*",
     "demi/sort": "dev-master",
-    "voronkovich/sberbank-acquiring-client": "dev-master"
+    "voronkovich/sberbank-acquiring-client": "dev-master",
+    "voskobovich/yii2-linker-behavior": "^4.0",
+    "ext-json": "*",
+    "ext-curl": "*",
+    "ext-http": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.*"
+    "phpunit/phpunit": "7.*"
   },
   "autoload": {
     "psr-4": {

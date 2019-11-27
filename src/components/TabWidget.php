@@ -8,6 +8,7 @@
 
 namespace floor12\ecommerce\components;
 
+use floor12\ecommerce\assets\IconHelper;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
@@ -22,28 +23,36 @@ class TabWidget extends Widget
     {
         $this->items = [
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Orders'),
-                'href' => Url::toRoute(['order'])
+                'name' => IconHelper::CART . Yii::t('app.f12.ecommerce', 'Orders'),
+                'href' => Url::toRoute(['/shop/admin/order'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Items'),
-                'href' => Url::toRoute(['item'])
+                'name' => IconHelper::BOXES . Yii::t('app.f12.ecommerce', 'Products'),
+                'href' => Url::toRoute(['/shop/admin/product'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Categories'),
-                'href' => Url::toRoute(['category'])
+                'name' => IconHelper::CATS . Yii::t('app.f12.ecommerce', 'Categories'),
+                'href' => Url::toRoute(['/shop/admin/category'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Items parameters'),
-                'href' => Url::toRoute(['param'])
+                'name' => IconHelper::PARAMS . Yii::t('app.f12.ecommerce', 'Product parameters'),
+                'href' => Url::toRoute(['/shop/admin/parameter'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Payments'),
-                'href' => Url::toRoute(['payment']),
+                'name' => IconHelper::PARAMS . Yii::t('app.f12.ecommerce', 'Parameters values'),
+                'href' => Url::toRoute(['/shop/admin/value'])
             ],
             [
-                'name' => Yii::t('app.f12.ecommerce', 'Discount groups'),
-                'href' => Url::toRoute(['discounts']),
+                'name' => IconHelper::WAREHOUSE . Yii::t('app.f12.ecommerce', 'Stocks'),
+                'href' => Url::toRoute(['/shop/admin/stock'])
+            ],
+            [
+                'name' => IconHelper::MONEY . Yii::t('app.f12.ecommerce', 'Payments'),
+                'href' => Url::toRoute(['/shop/admin/payment']),
+            ],
+            [
+                'name' => IconHelper::TAGS . Yii::t('app.f12.ecommerce', 'Discount groups'),
+                'href' => Url::toRoute(['/shop/admin/discount-group']),
             ],
         ];
     }
@@ -72,6 +81,6 @@ class TabWidget extends Widget
                 }
             }
         }
-        return Html::tag('ul', implode("\n", $nodes), ['class' => 'nav nav-tabs']);
+        return Html::tag('ul', implode("\n", $nodes), ['class' => 'nav nav-tabs ecommerce-tab-widget']);
     }
 }

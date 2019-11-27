@@ -9,8 +9,8 @@
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\Category;
-use floor12\ecommerce\models\queries\CategoryQuery;
+use floor12\ecommerce\models\entity\Category;
+use floor12\ecommerce\models\query\CategoryQuery;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

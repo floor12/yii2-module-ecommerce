@@ -12,7 +12,6 @@ use yii\base\ErrorException;
  */
 class Module extends \yii\base\Module
 {
-
     public $layout = '@app/views/layouts/main';
 
     public $userModel = 'app\models\User';
@@ -20,6 +19,8 @@ class Module extends \yii\base\Module
     public $exportPath = '@runtime/export';
 
     public $importPath = '@runtime/import';
+
+    public $mainParameterId = null;
 
     public $registerGoogleTagEvents = false;
 
@@ -48,7 +49,7 @@ class Module extends \yii\base\Module
     /** Кол-во товаров на странице
      * @var integer
      */
-    public $itemPerPage = 6;
+    public $itemPerPage = 12;
 
     /** Default item weight for delivery in kg.
      * @var float
@@ -75,6 +76,11 @@ class Module extends \yii\base\Module
      */
     public $sdekCityFromId = 173;
 
+    /**
+     * @var string
+     */
+    public $productPageTitleTemplate = "{title}";
+
     public $paymentDescription = 'Payment in online store.';
 
     /** Sdek tariff
@@ -89,9 +95,9 @@ class Module extends \yii\base\Module
     /** View paths
      * @var string
      */
-    public $viewIndex = '@vendor/floor12/yii2-module-ecommerce/src/views/category/index';
-    public $viewIndexListItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/_index';
-    public $viewItem = '@vendor/floor12/yii2-module-ecommerce/src/views/category/item';
+    public $viewIndex = '@vendor/floor12/yii2-module-ecommerce/src/views/frontend/product/index';
+    public $viewIndexListItem = '@vendor/floor12/yii2-module-ecommerce/src/views/frontend/product/_index';
+    public $viewItem = '@vendor/floor12/yii2-module-ecommerce/src/views/frontend/product/view';
 
 
     /**
@@ -119,9 +125,9 @@ class Module extends \yii\base\Module
 
         if (!file_exists(Yii::getAlias($this->importPath)))
             throw new ErrorException('Unable to create import path.');
-        
 
-        if (Yii::$app->controllerNamespace != 'app\commands' && Yii::$app->controllerNamespace != 'console\controllers')
+
+        if (YII_ENV != 'test' && Yii::$app->controllerNamespace != 'app\commands' && Yii::$app->controllerNamespace != 'console\controllers')
             if ($this->registerGoogleTagEvents) {
                 EcommerceTagAsset::register(Yii::$app->getView());
                 Yii::$app->getView()->registerJs('var registerGoogleTagEvents = true;');

@@ -8,7 +8,7 @@
 
 namespace floor12\ecommerce\logic;
 
-use floor12\ecommerce\models\Category;
+use floor12\ecommerce\models\entity\Category;
 use Yii;
 
 class CategoryPathBuilder

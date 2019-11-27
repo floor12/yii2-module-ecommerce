@@ -45,6 +45,7 @@ class ItemFilter extends Model
 
     /**
      * @return ActiveDataProvider
+     * @throws BadRequestHttpException
      */
     public function dataProvider()
     {

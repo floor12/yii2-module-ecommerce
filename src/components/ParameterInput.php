@@ -9,11 +9,11 @@
 namespace floor12\ecommerce\components;
 
 
-use floor12\ecommerce\models\Category;
-use floor12\ecommerce\models\enum\ParamType;
+use floor12\ecommerce\models\entity\Category;
+use floor12\ecommerce\models\enum\ParameterType;
 use floor12\ecommerce\models\filters\ItemFrontendFilter;
-use floor12\ecommerce\models\ItemParam;
-use floor12\ecommerce\models\ItemParamValue;
+use floor12\ecommerce\models\entity\Parameter;
+use floor12\ecommerce\models\entity\ParameterValue;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii2mod\slider\IonSlider;
@@ -43,10 +43,10 @@ class ParameterInput extends Widget
     {
         $this->getValues();
 
-        if ($this->parameter->type_id == ParamType::CHECKBOX)
+        if ($this->parameter->type_id == ParameterType::CHECKBOX)
             return $this->renderBtnGroup();
 
-        if ($this->parameter->type_id == ParamType::SLIDER)
+        if ($this->parameter->type_id == ParameterType::SLIDER)
             return $this->renderSlider();
     }
 
@@ -65,33 +65,33 @@ class ParameterInput extends Widget
             ->label(false), ['class' => 'f12-ecommerce-checkbox-block']);
     }
 
-    protected function getValues()
-    {
-        if ($this->category)
-            $this->_values = ItemParamValue::find()
-                ->hasActiveItem()
-                ->select('value')
-                ->indexBy('value')
-                ->category($this->category)
-                ->param($this->parameter->id)
-                ->distinct()
-                ->orderBy('value')
-                ->column();
-        else
-            $this->_values = ItemParamValue::find()
-                ->hasActiveItem()
-                ->select('value')
-                ->indexBy('value')
-                ->param($this->parameter->id)
-                ->distinct()
-                ->orderBy('value')
-                ->column();
-
-        if ($this->parameter->type_id == ParamType::CHECKBOX)
-            $this->_values = array_map(function ($value) {
-                return "{$value} {$this->parameter->unit}";
-            }, $this->_values);
-    }
+//    protected function getValues()
+//    {
+////        if ($this->category)
+////            $this->_values = ParameterValue::find()
+////               // ->hasActiveItem()
+////                ->select('value')
+////                ->indexBy('value')
+//////                ->category($this->category)
+////                ->andWhere($this->parameter->id)
+////                ->distinct()
+////                ->orderBy('value')
+////                ->column();
+////        else
+//            $this->_values = ItemParamValue::find()
+//                ->hasActiveItem()
+//                ->select('value')
+//                ->indexBy('value')
+//                ->param($this->parameter->id)
+//                ->distinct()
+//                ->orderBy('value')
+//                ->column();
+//
+//        if ($this->parameter->type_id == ParameterType::CHECKBOX)
+//            $this->_values = array_map(function ($value) {
+//                return "{$value} {$this->parameter->unit}";
+//            }, $this->_values);
+//    }
 
     /**
      * @return \kartik\form\ActiveField

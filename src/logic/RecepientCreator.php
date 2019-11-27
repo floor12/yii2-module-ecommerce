@@ -4,7 +4,7 @@
 namespace floor12\ecommerce\logic;
 
 
-use floor12\ecommerce\models\Order;
+use floor12\ecommerce\models\entity\Order;
 
 class RecepientCreator
 {
@@ -27,7 +27,7 @@ class RecepientCreator
 
         foreach ($this->order->orderItems as $item) {
             $this->items[] = [
-                'label' => $item->item->title,
+                'label' => $item->productVariation->product->title,
                 'price' => $item->price,
                 'amount' => $item->sum,
                 'quantity' => $item->quantity,

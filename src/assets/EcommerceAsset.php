@@ -15,6 +15,7 @@ class EcommerceAsset extends AssetBundle
     public $sourcePath = '@vendor/floor12/yii2-module-ecommerce/src/assets';
 
     public $css = [
+        'zoomer.css',
         'ecommerce.css'
     ];
 
@@ -24,6 +25,7 @@ class EcommerceAsset extends AssetBundle
         'infiniteListView.js',
         'favorites.js',
         'cart.js',
+        'zoomer.js'
     ];
 
     public $depends = [

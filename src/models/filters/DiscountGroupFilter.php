@@ -1,53 +1,51 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: floor12
- * Date: 13/10/2018
- * Time: 09:49
- */
-
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\DiscountGroup;
-use floor12\ecommerce\models\queries\CategoryQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use floor12\ecommerce\models\entity\DiscountGroup;
 
 /**
- * Class CategoryFilter
- * @package floor12\ecommerce\models\filters
- * @property string $filter
- * @property integer $status
- * @property CategoryQuery $_query
+ * DiscountGroupFilter represents the model behind the search form of `floor12\ecommerce\models\entity\DiscountGroup`.
  */
 class DiscountGroupFilter extends Model
+
 {
     public $filter;
-
-    private $_query;
+    public $status;
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['filter'], 'string'],
+            ['filter', 'string'],
+            ['status', 'integer']
         ];
     }
 
     /**
+     * Creates data provider instance with search query applied
+     *
      * @return ActiveDataProvider
      */
     public function dataProvider()
     {
-        $this->_query = DiscountGroup::find()->andFilterWhere(['LIKE', 'title', $this->filter]);
+        $query = DiscountGroup::find();
 
-        return new ActiveDataProvider([
-            'query' => $this->_query,
-            'pagination' => false
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
-    }
 
+        if (!$this->validate()) {
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        return $dataProvider;
+    }
 }

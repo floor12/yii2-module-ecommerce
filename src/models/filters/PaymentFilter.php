@@ -1,55 +1,51 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: floor12
- * Date: 13/10/2018
- * Time: 09:49
- */
-
 
 namespace floor12\ecommerce\models\filters;
 
-use floor12\ecommerce\models\Payment;
-use floor12\ecommerce\models\queries\EcParamQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use floor12\ecommerce\models\entity\Payment;
 
 /**
- * Class PaymentFilter
- * @property integer $status Payment status
- * @property string $date Date of payment
- * @package floor12\ecommerce\models\filters
+ * PaymentFilter represents the model behind the search form of `floor12\ecommerce\models\entity\Payment`.
  */
 class PaymentFilter extends Model
-{
-    public $status;
-    public $date;
 
-    private $_query;
+{
+    public $filter;
+    public $status;
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['status'], 'integer'],
-            [['date'], 'string'],
+            ['filter', 'string'],
+            ['status', 'integer']
         ];
     }
 
     /**
+     * Creates data provider instance with search query applied
+     *
      * @return ActiveDataProvider
      */
     public function dataProvider()
     {
-        $this->_query = Payment::find()
-            ->andFilterWhere(['=', 'status', $this->status]);
+        $query = Payment::find();
 
+        // add conditions that should always apply here
 
-        return new ActiveDataProvider([
-            'query' => $this->_query
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
-    }
 
+        if (!$this->validate()) {
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        return $dataProvider;
+    }
 }

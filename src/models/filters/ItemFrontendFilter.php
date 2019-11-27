@@ -11,7 +11,7 @@ namespace floor12\ecommerce\models\filters;
 
 use app\components\Pagination;
 use floor12\ecommerce\models\Category;
-use floor12\ecommerce\models\enum\ParamType;
+use floor12\ecommerce\models\enum\ParameterType;
 use floor12\ecommerce\models\Item;
 use floor12\ecommerce\models\ItemParam;
 use floor12\ecommerce\models\ItemParamValue;
@@ -165,7 +165,7 @@ class ItemFrontendFilter extends Model
 
             $parameter = ItemParam::findOne($param_id);
 
-            if ($parameter->type_id == ParamType::CHECKBOX) {
+            if ($parameter->type_id == ParameterType::CHECKBOX) {
                 $param_value = array_map(
                     function ($el) {
                         return "'{$el}'";
@@ -176,7 +176,7 @@ class ItemFrontendFilter extends Model
                 $query->andWhere("ec_item.id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value IN ({$values}))");
             }
 
-            if ($parameter->type_id == ParamType::SLIDER) {
+            if ($parameter->type_id == ParameterType::SLIDER) {
                 list($min, $max) = explode(';', $param_value);
                 if ($min && $max)
                     $query->andWhere("ec_item.id IN (SELECT parent_item_id FROM " . ItemParamValue::tableName() . " WHERE param_id={$param_id} AND value BETWEEN $min AND $max)");
@@ -204,5 +204,6 @@ class ItemFrontendFilter extends Model
         foreach ($this->params as $param)
             if ($param->id == $param_id)
                 return $param;
+        return null;
     }
 }
