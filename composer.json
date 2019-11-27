@@ -32,8 +32,7 @@
     "voronkovich/sberbank-acquiring-client": "dev-master",
     "voskobovich/yii2-linker-behavior": "^4.0",
     "ext-json": "*",
-    "ext-curl": "*",
-    "ext-http": "*"
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "7.*"
