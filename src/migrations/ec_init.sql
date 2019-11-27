@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `ec_category`;
 CREATE TABLE `ec_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Category title',
-  `parent_id` int(11) DEFAULT NULL COMMENT 'Parent category',
+  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT 'Parent category',
   `status` int(11) NOT NULL DEFAULT '0' COMMENT 'Category status',
   `external_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'External id',
   `fulltitle` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Title with full path',
@@ -230,6 +230,7 @@ CREATE TABLE `ec_parameter` (
   `type_id` int(11) NOT NULL DEFAULT '0' COMMENT 'Parameter type',
   `external_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Extermnl id',
   `hide` int(11) NOT NULL DEFAULT '0' COMMENT 'Hide on site',
+  `sort` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx-ec_item_param-type_id` (`type_id`),
   KEY `idx-ec_item_param-external_id` (`external_id`),
@@ -433,12 +434,13 @@ DROP TABLE IF EXISTS `ec_product_variation`;
 CREATE TABLE `ec_product_variation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL COMMENT 'Link to product',
-  `external_id` varchar (255) NULL COMMENT 'External ID',
   `price_0` double DEFAULT NULL COMMENT 'First price',
   `price_1` double DEFAULT NULL COMMENT 'Second price',
   `price_2` double DEFAULT NULL COMMENT 'Third price',
+  `external_id` varchar(255) DEFAULT NULL,
+  `price_old` float DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ec_product_id` (`product_id`),
+  KEY `ec_product_variation_product_id_index` (`product_id`),
   CONSTRAINT `ec_product_variation_ec_product_id_fk` FOREIGN KEY (`product_id`) REFERENCES `ec_product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -461,13 +463,17 @@ DROP TABLE IF EXISTS `ec_stock`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ec_stock` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL COMMENT 'Stock title',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'Stock status',
-  `description` text COMMENT 'Stock description',
-  `external_id` varchar(255) DEFAULT NULL COMMENT 'External ID',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Stock title',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'Hide',
+  `description` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'Stock description',
+  `external_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'External ID',
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Stock url',
+  `title_public` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Public title',
+  `sort` int(11) NOT NULL DEFAULT '0',
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Stock address',
   PRIMARY KEY (`id`),
   KEY `ec_storehouse_status_index` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,30 +513,6 @@ LOCK TABLES `ec_stock_balance` WRITE;
 /*!40000 ALTER TABLE `ec_stock_balance` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ec_stock_balance` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `migration`
---
-
-DROP TABLE IF EXISTS `migration`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `migration` (
-  `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migration`
---
-
-LOCK TABLES `migration` WRITE;
-/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` VALUES ('m000000_000000_base',1573840735);
-/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -541,4 +523,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-15 19:04:34
+-- Dump completed on 2019-11-27 19:11:24
