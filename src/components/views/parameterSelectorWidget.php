@@ -19,46 +19,46 @@ $form = ActiveForm::begin([
     'options' => ['data-id' => $product->id, 'class' => 'cart-shadow']
 ]);
 ?>
-    <h2><?= Yii::t('app.f12.ecommerce', 'Order options') ?></h2>
+<h2><?= Yii::t('app.f12.ecommerce', 'Order options') ?></h2>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <?php
-            foreach ($parameters as $parameter) {
+<div class="row">
+    <div class="col-sm-6">
+        <?php
+        foreach ($parameters as $parameter) {
 
-                echo $form->field($model, "parameterValueIds[{$parameter->id}]")
-                    ->label($parameter->title)
-                    ->widget(\yii\bootstrap\ToggleButtonGroup::class, [
-                        'items' => $parameterValuesList[$parameter->id],
-                        'type' => 'radio',
-                        'options' => ['class' => 'btn-group'],
-                        'labelOptions' => ['class' => 'btn btn-default']
-                    ]);
-            } ?>
-        </div>
-        <div class="col-sm-6">
-            <button onclick="f12shop.addVariationToCart(event); return false;"
-                    class="f12-ec-product-view-cart" <?= $producatVariation ? "data-id={$producatVariation->id}" : "disabled='disabled'"
-            ?>>
-                <?= \floor12\editmodal\IconHelper::PLUS ?> <?= Yii::t('app.f12.ecommerce', 'add to cart') ?>
-            </button>
-
-            <div class="f12-ec-product-view-price">
-                <price class='<?= $product->getPriceOld() ? 'discount' : null ?>'>
-                    <?= Yii::$app->formatter->asCurrency($product->price, Yii::$app->getModule('shop')->currency) ?>
-                </price>
-                <?php if ($product->priceOld): ?>>
-                    <price class="striked">
-                        <?= Yii::$app->formatter->asCurrency($product->priceOld, Yii::$app->getModule('shop')->currency) ?>
-                    </price>
-                <?php endif; ?>
-            </div>
-
-        </div>
+            echo $form->field($model, "parameterValueIds[{$parameter->id}]")
+                ->label($parameter->title)
+                ->widget(\yii\bootstrap\ToggleButtonGroup::class, [
+                    'items' => $parameterValuesList[$parameter->id],
+                    'type' => 'radio',
+                    'options' => ['class' => 'btn-group'],
+                    'labelOptions' => ['class' => 'btn btn-default']
+                ]);
+        } ?>
     </div>
+    <div class="col-sm-6">
+        <button onclick="f12shop.addVariationToCart(event); return false;"
+                class="f12-ec-product-view-cart" <?= $producatVariation ? "data-id={$producatVariation->id}" : "disabled='disabled'"
+        ?>>
+            <?= \floor12\editmodal\IconHelper::PLUS ?> <?= Yii::t('app.f12.ecommerce', 'add to cart') ?>
+        </button>
+
+        <div class="f12-ec-product-view-price">
+            <price class='<?= $product->getPriceOld() ? 'discount' : null ?>'>
+                <?= Yii::$app->formatter->asCurrency($product->price, Yii::$app->getModule('shop')->currency) ?>
+            </price>
+            <?php if ($product->priceOld): ?>>
+                <price class="striked">
+                    <?= Yii::$app->formatter->asCurrency($product->priceOld, Yii::$app->getModule('shop')->currency) ?>
+                </price>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</div>
 
 
-    <h2>Наличие в магазинах</h2>
+<h2>Наличие в магазинах</h2>
 <?php if ($stockBalances): ?>
     <ul class="product-stock-balances">
         <?php
@@ -72,6 +72,10 @@ $form = ActiveForm::begin([
 <?php else: ?>
     К сожалению, товара с выбранными параметрами сейчас нет в наличии.
 <?php endif; ?>
-<?php \kartik\form\ActiveForm::end();
+<?php \kartik\form\ActiveForm::end(); ?>
+
+<p class="product-balance-info">
+    Мы ценим ваше время, поэтому перед тем, как отправиться в магазин, позвоните нам и мы отложим для Вас желаемую модель и размер.
+</p>
 
 
