@@ -72,10 +72,13 @@ $form = ActiveForm::begin([
 <?php else: ?>
     К сожалению, товара с выбранными параметрами сейчас нет в наличии.
 <?php endif; ?>
-<?php \kartik\form\ActiveForm::end(); ?>
 
 <p class="product-balance-info">
     Мы ценим ваше время, поэтому перед тем, как отправиться в магазин, позвоните нам и мы отложим для Вас желаемую модель и размер.
 </p>
+
+<?php \kartik\form\ActiveForm::end(); ?>
+
+
 
 
