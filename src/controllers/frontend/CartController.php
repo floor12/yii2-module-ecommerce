@@ -100,7 +100,7 @@ class CartController extends Controller
 
                     return $this->render('success');
                 } else
-                    $this->redirect(['shop/frontend/cart/pay', 'order_id' => $model->id]);
+                    $this->redirect(['/shop/frontend/cart/pay', 'order_id' => $model->id]);
         }
 
 
