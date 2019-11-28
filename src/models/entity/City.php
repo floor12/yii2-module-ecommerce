@@ -25,6 +25,15 @@ class City extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @return CityQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new CityQuery(get_called_class());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -47,11 +56,10 @@ class City extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     * @return CityQuery the active query used by this AR class.
+     * @return string
      */
-    public static function find()
+    public function __toString()
     {
-        return new CityQuery(get_called_class());
+        return $this->fullname;
     }
 }

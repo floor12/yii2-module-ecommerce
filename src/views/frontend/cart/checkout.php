@@ -9,7 +9,7 @@
  * @var $deliveries array
  */
 
-use floor12\ecommerce\models\City;
+use floor12\ecommerce\models\entity\City;
 use floor12\ecommerce\models\enum\PaymentType;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
@@ -113,7 +113,7 @@ $form = ActiveForm::begin([
                                         'allowClear' => true,
                                         'minimumInputLength' => 3,
                                         'ajax' => [
-                                            'url' => \yii\helpers\Url::toRoute(['shop/frontend/cart/city']),
+                                            'url' => \yii\helpers\Url::toRoute(['/shop/frontend/cart/city']),
                                             'dataType' => 'json',
                                             'data' => new JsExpression('function(params) { return {q:params.term}; }')
                                         ],

@@ -143,6 +143,12 @@ class Order extends ActiveRecord
             'products_cost' => Yii::t('app.f12.ecommerce', 'All items cost'),
             'products_weight' => Yii::t('app.f12.ecommerce', 'All items weight'),
             'payment_type_id' => Yii::t('app.f12.ecommerce', 'Payment type'),
+
+            'postcode' => Yii::t('app.f12.ecommerce', 'Postcode'),
+            'city' => Yii::t('app.f12.ecommerce', 'City'),
+            'street' => Yii::t('app.f12.ecommerce', 'Street name'),
+            'building' => Yii::t('app.f12.ecommerce', 'Building number'),
+            'apartament' => Yii::t('app.f12.ecommerce', 'Apartament or office number'),
         ];
     }
 
