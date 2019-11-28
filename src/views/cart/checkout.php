@@ -103,7 +103,7 @@ $form = ActiveForm::begin([
                                         'allowClear' => true,
                                         'minimumInputLength' => 3,
                                         'ajax' => [
-                                            'url' => \yii\helpers\Url::toRoute(['/shop/cart/city']),
+                                            'url' => \yii\helpers\Url::toRoute(['/shop/frontend/cart/city']),
                                             'dataType' => 'json',
                                             'data' => new JsExpression('function(params) { return {q:params.term}; }')
                                         ],
