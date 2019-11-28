@@ -20,6 +20,8 @@ use yii\widgets\MaskedInput;
 $this->title = Yii::t('app.f12.ecommerce', 'Order checkout');
 $this->params['breadcrumbs'][] = $this->title;
 
+\floor12\notification\NotificationAsset::register($this);
+
 $this->registerJs('ecommerceAddressCheck(); cityReplace();');
 
 $form = ActiveForm::begin([

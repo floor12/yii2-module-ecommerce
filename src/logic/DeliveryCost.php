@@ -11,6 +11,7 @@ namespace floor12\ecommerce\logic;
 use floor12\ecommerce\models\delivery\DeliverySdek;
 use floor12\ecommerce\models\enum\DeliveryType;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class DeliveryCost
 {

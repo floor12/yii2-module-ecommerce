@@ -16,11 +16,14 @@ use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentType;
 use Yii;
 use yii\base\ErrorException;
+use yii\web\NotFoundHttpException;
 
 class OrderCreate
 {
     private $_model;
     private $_data;
+    private $deliveries;
+    private $deliveryTypeFromConfig;
 
     /**
      * OrderCreate constructor.
@@ -34,6 +37,7 @@ class OrderCreate
         $this->_model->scenario = Order::SCENARIO_CHECKOUT;
         $this->_model->created = $this->_model->updated = time();
         $this->_model->status = OrderStatus::ORDERED;
+        $this->deliveries = Yii::$app->getModule('shop')->deliveryTypes;
     }
 
     /**
@@ -43,6 +47,11 @@ class OrderCreate
     {
         $this->_model->load($this->_data);
 
+        $this->deliveryTypeFromConfig = $this->_model->delivery_type_id;
+        if (!isset($this->deliveries[$this->_model->delivery_type_id]))
+            throw new NotFoundHttpException('Delivery type is not found.');
+
+        $this->_model->delivery_type_id = $this->deliveries[(int)$this->_model->delivery_type_id]['type'];
 
         // Если доставка не самовывоз - заполняем адрес и назание города
         if ($this->_model->delivery_type_id != DeliveryType::PICK_UP) {
@@ -66,13 +75,13 @@ class OrderCreate
                 $orderItem->created = time();
                 $orderItem->order_status = $event->sender->status;
                 $event->sender->products_cost += $orderItem->sum;
-                $event->sender->products_weight += $orderItem->productVariation->product->weight_delivery * (int)$row['quantity'];
+                $event->sender->products_weight += $orderItem->productVariation->product->weight_delivery * $orderItem->quantity;
                 if (!$orderItem->save())
                     throw new ErrorException('Order item saving error. ' . print_r($orderItem->errors, 1));
             }
 
             // Обновляем цену доставки
-            $pricer = new DeliveryCost($this->_model->delivery_type_id, ['city_id' => $event->data['city_id'], 'weight' =>
+            $pricer = new DeliveryCost($this->deliveryTypeFromConfig, ['city_id' => $event->data['city_id'], 'weight' =>
                 $event->sender->products_weight]);
             $event->sender->delivery_cost = $pricer->getPrice();
 
