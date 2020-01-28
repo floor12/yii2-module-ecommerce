@@ -72,18 +72,16 @@ class ProductVariationCreator
             ->where(['external_id' => $this->productVariationUID])
             ->one();
 
-        if (is_object($this->productVariation))
-            return $this->productVariation;
+        if (!is_object($this->productVariation))
+            $this->productVariation = new productVariation([
+                'external_id' => $this->productVariationUID,
+                'product_id' => $this->product->id,
+            ]);
 
-        $this->productVariation = new productVariation([
-            'external_id' => $this->productVariationUID,
-            'product_id' => $this->product->id,
-            'price_0' => $this->price
-        ]);
-
+        $this->productVariation->price_0 = $this->price;
         if (!$this->productVariation->save())
             throw new ErrorException('Error product variation saving: ' . print_r($this->productVariation->getFirstErrors(), 1));
-
+        
         return $this->productVariation;
     }
 

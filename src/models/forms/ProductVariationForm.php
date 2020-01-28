@@ -84,6 +84,9 @@ class ProductVariationForm extends Model
         $this->productVariation = $productVariation;
         $this->product = $productVariation->product;
         $this->id = $productVariation->id;
+        $this->price_0 = $productVariation->price_0;
+        $this->price_1 = $productVariation->price_1;
+        $this->price_2 = $productVariation->price_2;
         $this->isNewRecord = $productVariation->isNewRecord;
 
         if (!is_object($this->product))
@@ -202,7 +205,7 @@ class ProductVariationForm extends Model
             'price_0' => $this->price_0,
             'price_1' => $this->price_1,
             'price_2' => $this->price_2,
-        ]);
+        ], '');
 
         if (!empty($this->parameterValues))
             $this->prepareParameterValues();
