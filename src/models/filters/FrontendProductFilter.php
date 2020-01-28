@@ -217,7 +217,7 @@ class FrontendProductFilter extends Model
 
         $this->applyValuesToQuery();
 
-        return new ActiveDataProvider([
+        return new ActiveDataProvider([ 
             'query' => $this->query,
             'pagination' => [
                 'class' => Pagination::class,
