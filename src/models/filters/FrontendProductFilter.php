@@ -222,7 +222,8 @@ class FrontendProductFilter extends Model
             'pagination' => [
                 'class' => Pagination::class,
                 'route' => parse_url(Yii::$app->request->url, PHP_URL_PATH),
-                'defaultPageSize' => Yii::$app->getModule('shop')->itemPerPage
+                'defaultPageSize' => Yii::$app->getModule('shop')->itemPerPage,
+                'pageSizeLimit' => [1, 500000]
             ],
         ]);
     }
