@@ -27,6 +27,7 @@ $this->registerJs('pageSize = ' . Yii::$app->getModule('shop')->itemPerPage, Vie
 
             <?php $form = ActiveForm::begin([
                 'method' => 'GET',
+                'enableClientValidation' => false,
                 'id' => 'f12-eccomerce-product-filter',
                 'options' => ['data-container' => '#products'],
             ]);

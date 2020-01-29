@@ -199,7 +199,8 @@ class FrontendProductFilter extends Model
     public function rules()
     {
         return [
-            [['category_id', 'sort', 'priceMinValue', 'priceMaxValue'], 'integer'],
+            [['category_id', 'sort'], 'integer'],
+            [['priceMinValue', 'priceMaxValue'], 'double'],
             ['values', 'safe']
         ];
     }
