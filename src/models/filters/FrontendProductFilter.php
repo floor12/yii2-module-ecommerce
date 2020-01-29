@@ -139,9 +139,14 @@ class FrontendProductFilter extends Model
     protected function findPrices()
     {
         $priceQuery = ProductVariation::find()->active();
+        $this->priceMin = intval($priceQuery->min('price_0'));
+        $this->priceMax = intval($priceQuery->max('price_0'));
 
-        $this->priceMin = $this->priceMinValue = intval($priceQuery->min('price_0'));
-        $this->priceMax = $this->priceMaxValue = intval($priceQuery->max('price_0'));
+        if (empty($this->priceMaxValue))
+            $this->priceMaxValue = $this->priceMax;
+
+        if (empty($this->priceMinValue))
+            $this->priceMinValue = $this->priceMin;
     }
 
     /**
@@ -194,7 +199,7 @@ class FrontendProductFilter extends Model
     public function rules()
     {
         return [
-            [['category_id', 'sort'], 'integer'],
+            [['category_id', 'sort', 'priceMinValue', 'priceMaxValue'], 'integer'],
             ['values', 'safe']
         ];
     }
@@ -210,6 +215,7 @@ class FrontendProductFilter extends Model
             ->leftJoin('ec_product_variation', 'ec_product_variation.product_id=ec_product.id')
             ->leftJoin('ec_category', 'ec_product_category.category_id=ec_category.id')
             ->active()
+            ->andWhere(['BETWEEN', 'ec_product_variation.price_0', $this->priceMinValue, $this->priceMaxValue])
             ->orderBy($this->sortExpressions[$this->sort]);
 
         if ($this->category)
@@ -217,7 +223,7 @@ class FrontendProductFilter extends Model
 
         $this->applyValuesToQuery();
 
-        return new ActiveDataProvider([ 
+        return new ActiveDataProvider([
             'query' => $this->query,
             'pagination' => [
                 'class' => Pagination::class,
