@@ -41,7 +41,7 @@ echo Html::tag('br');
 $form = ActiveForm::begin([
     'method' => 'GET',
     'id' => 'f12-eccomerce-item-filter',
-    'options' => ['data-container' => '#items'],
+    'options' => ['class' => 'autosubmit', 'data-container' => '#items'],
 ]);
 ?>
 
