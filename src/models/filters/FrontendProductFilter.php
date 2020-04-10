@@ -211,12 +211,12 @@ class FrontendProductFilter extends Model
     public function dataProvider()
     {
         $this->query = Product::find()
-//            ->distinct()
+            ->distinct()
             ->leftJoin('ec_product_category', 'ec_product_category.product_id=ec_product.id')
             ->leftJoin('ec_product_variation', 'ec_product_variation.product_id=ec_product.id')
             ->leftJoin('ec_category', 'ec_product_category.category_id=ec_category.id')
             ->active()
-//            ->andWhere(['BETWEEN', 'ec_product_variation.price_0', $this->priceMinValue, $this->priceMaxValue])
+            ->andWhere(['BETWEEN', 'ec_product_variation.price_0', $this->priceMinValue, $this->priceMaxValue])
             ->orderBy($this->sortExpressions[$this->sort]);
 
         if ($this->category)
