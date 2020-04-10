@@ -50,7 +50,7 @@ use yii\helpers\Html;
                 <price class='<?= $model->getPriceOld() ? 'discount' : null ?>'><?= Yii::$app->formatter->asCurrency($model->price,
                         Yii::$app->getModule('shop')->currency)
                     ?></price>
-                <?php if ($model->priceOld): ?>>
+                <?php if ($model->priceOld): ?>
                     <price class="striked">
                         <?= Yii::$app->formatter->asCurrency($model->priceOld, Yii::$app->getModule('shop')->currency) ?>
                     </price>

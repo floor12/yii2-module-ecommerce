@@ -47,7 +47,7 @@ $form = ActiveForm::begin([
             <price class='<?= $product->getPriceOld() ? 'discount' : null ?>'>
                 <?= Yii::$app->formatter->asCurrency($product->price, Yii::$app->getModule('shop')->currency) ?>
             </price>
-            <?php if ($product->priceOld): ?>>
+            <?php if ($product->priceOld): ?>
                 <price class="striked">
                     <?= Yii::$app->formatter->asCurrency($product->priceOld, Yii::$app->getModule('shop')->currency) ?>
                 </price>

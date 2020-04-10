@@ -31,6 +31,10 @@ class ProductVariationCreator
      * @var float
      */
     protected $price;
+    /**
+     * @var int
+     */
+    protected $discount = 0;
 
 
     /**
@@ -40,7 +44,7 @@ class ProductVariationCreator
      * @param array $attributes
      * @throws ErrorException
      */
-    public function __construct(string $productVariationUID, Product $product, float $price, array $attributes = [])
+    public function __construct(string $productVariationUID, Product $product, float $price, array $attributes = [], int $discount)
     {
         if ($product->isNewRecord)
             throw new ErrorException('Product is not saved yet and cant have variations.');
@@ -49,6 +53,7 @@ class ProductVariationCreator
         $this->product = $product;
         $this->attributes = $attributes;
         $this->price = $price;
+        $this->discount = $discount;
     }
 
     /**
@@ -79,9 +84,14 @@ class ProductVariationCreator
             ]);
 
         $this->productVariation->price_0 = $this->price;
+        if ($this->discount > 0 && $this->discount < 100) {
+            $this->productVariation->price_old = $this->price;
+            $this->productVariation->price_0 = (int)$this->price - ($this->price / 100 * $this->discount);
+        }
+
         if (!$this->productVariation->save())
             throw new ErrorException('Error product variation saving: ' . print_r($this->productVariation->getFirstErrors(), 1));
-        
+
         return $this->productVariation;
     }
 

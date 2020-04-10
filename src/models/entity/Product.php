@@ -62,7 +62,7 @@ class Product extends ActiveRecord
             [['weight_delivery'], 'number'],
             [['title', 'subtitle', 'seo_description', 'seo_title', 'external_id', 'article'], 'string', 'max' => 255],
             [['category_ids'], 'each', 'rule' => ['integer']],
-            ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png']]
+            ['images', 'file', 'maxFiles' => 100, 'extensions' => ['jpg', 'jpeg', 'png', 'webp']]
         ];
     }
 
