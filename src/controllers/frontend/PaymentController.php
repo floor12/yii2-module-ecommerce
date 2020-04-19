@@ -9,7 +9,7 @@
 namespace floor12\ecommerce\controllers\frontend;
 
 use floor12\ecommerce\logic\PaymentProcessCloudPayments;
-use floor12\ecommerce\models\Payment;
+use floor12\ecommerce\models\entity\Payment;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
