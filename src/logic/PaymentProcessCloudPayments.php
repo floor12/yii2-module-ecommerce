@@ -13,7 +13,7 @@ use ErrorException;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentStatus;
 use floor12\ecommerce\models\enum\PaymentType;
-use floor12\ecommerce\models\Payment;
+use floor12\ecommerce\models\entity\Payment;
 use yii\web\BadRequestHttpException;
 
 class PaymentProcessCloudPayments

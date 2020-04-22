@@ -8,7 +8,7 @@ use app\logic\invoice\InvoiceCheck;
 use app\modules\balance\models\Invoice;
 use floor12\ecommerce\logic\AlfaPaymentCheck;
 use floor12\ecommerce\models\enum\PaymentStatus;
-use floor12\ecommerce\models\Payment;
+use floor12\ecommerce\models\entity\Payment;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
