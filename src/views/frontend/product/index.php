@@ -15,8 +15,6 @@ use yii\web\View;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
-$this->registerJs('pageSize = ' . Yii::$app->getModule('shop')->itemPerPage, View::POS_BEGIN);
-
 
 ?>
 
@@ -28,8 +26,7 @@ $this->registerJs('pageSize = ' . Yii::$app->getModule('shop')->itemPerPage, Vie
             <?php $form = ActiveForm::begin([
                 'method' => 'GET',
                 'enableClientValidation' => false,
-                'id' => 'f12-eccomerce-product-filter',
-                'options' => ['data-container' => '#products'],
+                'id' => 'f12-eccomerce-product-filter'
             ]);
             ?>
 
@@ -105,22 +102,19 @@ $this->registerJs('pageSize = ' . Yii::$app->getModule('shop')->itemPerPage, Vie
         </div>
     </div>
     <div class="col-md-9">
-        <div>
-            <?php Pjax::begin(['id' => 'products']) ?>
 
-            <div class="f12-ec-items">
-                <?= ListView::widget([
-                    'dataProvider' => $model->dataProvider(),
-                    'layout' => '<div class="row">{items}</div>',
-                    'itemView' => Yii::$app->getModule('shop')->viewIndexListItem
-                ]) ?>
-
-                <?php if ($model->dataProvider()->totalCount > $model->dataProvider()->pagination->pageSize) : ?>
-                    <button onclick="f12Listview.next();" class="load-more"><?= Yii::t('app.f12.ecommerce', 'show more') ?></button>
-                <?php endif; ?>
-
-                <?php Pjax::end() ?>
+        <div class="f12-ec-products">
+            <div class="row">
+                <?php foreach ($model->getProducts() as $product)
+                    echo $this->render(Yii::$app->getModule('shop')->viewIndexListItem, ['model' => $product]);
+                ?>
             </div>
+
+            <button id="load-more" onclick="f12Listview.next();" class="load-more"
+                    style="<?= $model->count() == sizeof($model->getProducts()) ? 'display:none;' : NULL ?>">
+                <span class="downloading"><?= Yii::t('app.f12.ecommerce', 'downloading...') ?></span>
+                <span class="info"><?= Yii::t('app.f12.ecommerce', 'show more') ?></span>
+            </button>
         </div>
     </div>
 </div>

@@ -216,6 +216,7 @@ return [
     'New first' => 'Сначала новые',
     'Expensive first' => 'Сначала дороже',
     'Cheaper first' => 'Сначала дешевле',
+    'downloading...' => 'идет загрузка...',
     '' => '',
 
 ];

@@ -22,7 +22,6 @@ class EcommerceAsset extends AssetBundle
     public $js = [
         'jquery.cookie.js',
         'ecommerce.js',
-        'infiniteListView.js',
         'favorites.js',
         'cart.js',
         'zoomer.js'

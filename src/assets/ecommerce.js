@@ -1,25 +1,8 @@
-// index page
-
-function initItemsIndexSwiper() {
-
-    setTimeout(function () {
-        var swiper = new Swiper('.swiper-container', {
-            pagination: '.swiper-pagination',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            spaceBetween: 30,
-            keyboardControl: true,
-        });
-    }, 500);
-}
-
-
 timeout = setTimeout(function () {
 });
 
 $(document).on('change', '#f12-eccomerce-product-filter', function () {
-    submitForm($(this));
+    f12Listview.reload();
 })
 
 $(document).on('change', '#order-delivery_type_id', function () {
@@ -32,9 +15,8 @@ $(document).on('change', '#order-city', function () {
 
 $(document).on('keyup', '#f12-eccomerce-product-filter', function () {
     clearInterval(timeout);
-    form = $(this);
     timeout = setTimeout(function () {
-        submitForm(form);
+        f12Listview.reload();
     }, 1000);
 })
 
@@ -51,13 +33,6 @@ function submitForm(form) {
     })
 
 }
-
-
-$(document).on('click', '.f12-ec-item .swiper-slide', function () {
-    url = $(this).parents('.f12-ec-item').find('a.f12-ec-item-info').attr('href');
-    offPageLeaving();
-    document.location.href = url;
-})
 
 function ecommerceAddressCheck() {
     if ($('#order-delivery_type_id').val() == 0)
@@ -140,3 +115,94 @@ $('.product-previews-block').on('click', 'a', function () {
     product.switchImage($(this));
     return false;
 })
+
+
+f12Listview = {
+    next: function () {
+        data = $('#f12-eccomerce-product-filter').serialize();
+        currentOffset = $('.f12-ec-products > div.row > div').length;
+        data = data + '&FrontendProductFilter[offset]=' + currentOffset;
+        btn = $('#load-more');
+        btn.find('span.downloading').show();
+        btn.find('span.info').hide();
+        $.ajax({
+            url: location.pathname,
+            data: data,
+            success: function (response, status, data2) {
+                total = data2.getResponseHeader('total-products');
+                btn.find('span.downloading').hide();
+                btn.find('span.info').show();
+                $('.f12-ec-products > div.row').append(response);
+                setObserverToProducts();
+                url = location.pathname + '?' + data;
+                history.pushState(data, $('title').html(), url);
+                showedProducts = $('.f12-ec-products > div.row > div').length;
+                if (total == showedProducts)
+                    $('#load-more').hide();
+                else
+                    $('#load-more').show();
+            }
+        })
+    },
+    reload: function () {
+        data = $('#f12-eccomerce-product-filter').serialize();
+        $('.f12-ec-products > div.row').html('');
+        btn = $('#load-more');
+        btn.find('span.downloading').show();
+        btn.find('span.info').hide();
+        $.ajax({
+            url: location.pathname,
+            data: data,
+            success: function (response) {
+                btn.find('span.downloading').hide();
+                btn.find('span.info').show();
+                $('.f12-ec-products > div.row').html(response);
+                setObserverToProducts();
+                url = location.pathname + '?' + data;
+                history.pushState({}, $('title').html(), url);
+                showedProducts = $('.f12-ec-products > div.row > div').length;
+                if (total == showedProducts)
+                    $('#load-more').hide();
+                else
+                    $('#load-more').show();
+            }
+        })
+    }
+}
+
+
+function onEntry(entry) {
+    entry.forEach((event) => {
+        if (event.isIntersecting == true) {
+            if (event.target.className == 'load-more') {
+                f12Listview.next();
+            } else {
+                event.target.classList.add('product-visible');
+            }
+        }
+    });
+}
+
+let observer = new IntersectionObserver(onEntry, {
+    threshold: [0.3]
+});
+
+$(document).on('pjax:complete', function () {
+    setObserverToProducts();
+})
+
+
+function setObserverToProducts() {
+    let loadBtn = document.getElementsByClassName('load-more')[0];
+    if (typeof loadBtn !== "undefined")
+        observer.observe(loadBtn);
+
+    let elements = document.querySelectorAll('.f12-ec-product');
+    for (let elm of elements) {
+        observer.observe(elm);
+    }
+}
+
+setObserverToProducts();
+
+

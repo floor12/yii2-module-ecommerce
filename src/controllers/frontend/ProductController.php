@@ -41,6 +41,16 @@ class ProductController extends Controller
         $model = new FrontendProductFilter();
         $model->load(Yii::$app->request->get());
         $model->prepare();
+        $elements = [];
+        Yii::$app->response->headers->add('Cache-Control', 'no-cache, no-store, must-revalidate');
+        Yii::$app->response->headers->add('Pragma', 'no-cache');
+        Yii::$app->response->headers->add('Expires', 0);
+        Yii::$app->response->headers->add('Total-products', $model->count());
+        if (Yii::$app->request->isAjax) {
+            foreach ($model->getProducts() as $product)
+                $elements[] = $this->renderPartial(Yii::$app->getModule('shop')->viewIndexListItem, ['model' => $product]);
+            return implode(PHP_EOL, $elements);
+        }
         return $this->render(Yii::$app->getModule('shop')->viewIndex, ['model' => $model]);
     }
 

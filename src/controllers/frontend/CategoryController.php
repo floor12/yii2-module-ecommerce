@@ -37,6 +37,7 @@ class CategoryController extends Controller
      */
     public function actionIndex($page, $category_id = 0, $sale = 0)
     {
+        Yii::$app->response->headers->add('Cache-Control', 'no-cache');
         $model = new ItemFrontendFilter(['category_id' => $category_id, 'discount' => $sale]);
         $model->load(Yii::$app->request->get());
 

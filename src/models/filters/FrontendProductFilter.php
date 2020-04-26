@@ -78,15 +78,22 @@ class FrontendProductFilter extends Model
      */
     public $priceMaxValue = 0;
     /**
+     * @var int
+     */
+    public $limit = 9;
+    /**
+     * @var int
+     */
+    public $offset = 0;
+    /**
      * @var array
      */
-    public $sortVariations = [
-
-    ];
+    public $sortVariations = [];
     /**
      * @var ProductQuery
      */
     protected $query;
+
     /**
      * @var array
      */
@@ -107,6 +114,7 @@ class FrontendProductFilter extends Model
         $this->findPrices();
         $this->findParameters();
         $this->findParametersData();
+        $this->limit = Yii::$app->getModule('shop')->itemPerPage;
         $this->pageTitle = $this->category ? $this->category->title : Yii::t('app.f12.ecommerce', 'Catalog');
     }
 
@@ -199,17 +207,20 @@ class FrontendProductFilter extends Model
     public function rules()
     {
         return [
-            [['category_id', 'sort'], 'integer'],
+            [['category_id', 'sort', 'limit', 'offset'], 'integer'],
             [['priceMinValue', 'priceMaxValue'], 'double'],
             ['values', 'safe']
         ];
     }
 
     /**
-     * @return ActiveDataProvider
+     * @return ProductQuery
      */
-    public function dataProvider()
+    public function prepareQuery()
     {
+        if (!empty($this->query))
+            return $this->query;
+
         $this->query = Product::find()
             ->distinct()
             ->leftJoin('ec_product_category', 'ec_product_category.product_id=ec_product.id')
@@ -224,15 +235,27 @@ class FrontendProductFilter extends Model
 
         $this->applyValuesToQuery();
 
-        return new ActiveDataProvider([
-            'query' => $this->query,
-            'pagination' => [
-                'class' => Pagination::class,
-                'route' => parse_url(Yii::$app->request->url, PHP_URL_PATH),
-                'defaultPageSize' => Yii::$app->getModule('shop')->itemPerPage,
-                'pageSizeLimit' => [1, 500000]
-            ],
-        ]);
+        return $this->query;
+    }
+
+    /**
+     * @return bool|int|string|null
+     */
+    public function count()
+    {
+        return $this->prepareQuery()->count();
+    }
+
+    /**
+     * @return Product[]
+     */
+    public function getProducts()
+    {
+        $query = clone $this->prepareQuery();
+        return $query
+            ->limit($this->limit)
+            ->offset($this->offset)
+            ->all();
     }
 
     /**
