@@ -51,6 +51,11 @@ class ProductController extends Controller
                 $elements[] = $this->renderPartial(Yii::$app->getModule('shop')->viewIndexListItem, ['model' => $product]);
             return implode(PHP_EOL, $elements);
         }
+
+        if ($model->offset) {
+            $model->limit += $model->offset;
+            $model->offset = 0;
+        }
         return $this->render(Yii::$app->getModule('shop')->viewIndex, ['model' => $model]);
     }
 
