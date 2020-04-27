@@ -30,46 +30,6 @@ use yii\widgets\Pjax;
             ]);
             ?>
 
-            <?= $form->field($model, 'priceMinValue')->label(false)->hiddenInput() ?>
-            <?= $form->field($model, 'priceMaxValue')->label(false)->hiddenInput() ?>
-
-
-            <?= $form->field($model, 'price')
-                ->label(false)
-                ->widget(\floor12\ecommerce\components\PriceSlider::class, [
-                    'lowerValueContainerId' => 'frontendproductfilter-priceminvalue',
-                    'upperValueContainerId' => 'frontendproductfilter-pricemaxvalue',
-                    'pluginOptions' => [
-                        'start' => [$model->priceMinValue, $model->priceMaxValue],
-                        'connect' => true,
-                        'tooltips' => true,
-                        'pips' => [
-                            'mode' => 'steps',
-                            'stepped' => true,
-                            'density' => 4,
-                            'format' > [
-                                'decimals' => 0,
-                            ],
-                        ],
-                        'range' => [
-                            'min' => $model->priceMin,
-                            'max' => $model->priceMax
-                        ]
-                    ]
-                ]);
-            ?>
-
-
-            <?= $form->field($model, "sort")
-                ->label(Yii::t('app.f12.ecommerce', 'Sorting'))
-                ->widget(\yii\bootstrap\ToggleButtonGroup::class, [
-                    'items' => \floor12\ecommerce\models\enum\SortVariations::listData(),
-                    'type' => 'radio',
-                    'options' => ['class' => 'btn-group'],
-                    'labelOptions' => ['class' => 'btn btn-default']
-
-                ]); ?>
-
             <?= $form->field($model, "category_id")
                 ->label(Yii::t('app.f12.ecommerce', 'Categories'))
                 ->widget(\yii\bootstrap\ToggleButtonGroup::class, [
@@ -80,23 +40,77 @@ use yii\widgets\Pjax;
 
                 ]); ?>
 
-            <?php foreach ($model->parameters as $parameterId => $parameter) {
-                if (!empty($model->data[$parameterId]))
-                    echo $form->field($model, "values[{$parameterId}]")
-                        ->label($model->parameters[$parameterId]->title)
-                        ->checkboxButtonGroup($model->data[$parameterId]);
-            } ?>
+            <div class="product-additional-filter">
+                <button type="button" onclick="$(this).parent().toggleClass('open')" aria-label="Показать или скрыть фильтры"
+                        class="filter-toggle btn
+                btn-default
+                btn-block">
+                    <span>Скрыть  фильтры</span>
+                    <span>Показать фильтры</span>
+                </button>
+                <div class="filters">
 
-            <?php if ($model->showDiscountOption): ?>
-                <div data-toggle="buttons">
-                    <label class="btn btn-default btn-sm">
-                        <input type="checkbox"
-                               autocomplete="off" <?= $model->discount ? "checked=checked" : NULL ?>
-                               name="ItemFrontendFilter[discount]"> <?= Yii::t('app.f12.ecommerce', 'only discounted goods') ?>
-                    </label>
+                    <?= $form->field($model, 'priceMinValue')->label(false)->hiddenInput() ?>
+                    <?= $form->field($model, 'priceMaxValue')->label(false)->hiddenInput() ?>
+
+
+                    <?= $form->field($model, 'price')
+                        ->label('Цена')
+                        ->widget(\floor12\ecommerce\components\PriceSlider::class, [
+                            'lowerValueContainerId' => 'frontendproductfilter-priceminvalue',
+                            'upperValueContainerId' => 'frontendproductfilter-pricemaxvalue',
+                            'pluginOptions' => [
+                                'start' => [$model->priceMinValue, $model->priceMaxValue],
+                                'connect' => true,
+                                'tooltips' => true,
+                                'pips' => [
+                                    'mode' => 'steps',
+                                    'stepped' => true,
+                                    'density' => 4,
+                                    'format' > [
+                                        'decimals' => 0,
+                                    ],
+                                ],
+                                'range' => [
+                                    'min' => $model->priceMin,
+                                    'max' => $model->priceMax
+                                ]
+                            ]
+                        ]);
+                    ?>
+
+
+
+                    <?= $form->field($model, "sort")
+                        ->label(Yii::t('app.f12.ecommerce', 'Sorting'))
+                        ->widget(\yii\bootstrap\ToggleButtonGroup::class, [
+                            'items' => \floor12\ecommerce\models\enum\SortVariations::listData(),
+                            'type' => 'radio',
+                            'options' => ['class' => 'btn-group'],
+                            'labelOptions' => ['class' => 'btn btn-default']
+
+                        ]); ?>
+
+
+
+                    <?php foreach ($model->parameters as $parameterId => $parameter) {
+                        if (!empty($model->data[$parameterId]))
+                            echo $form->field($model, "values[{$parameterId}]")
+                                ->label($model->parameters[$parameterId]->title)
+                                ->checkboxButtonGroup($model->data[$parameterId]);
+                    } ?>
+
+                    <?php if ($model->showDiscountOption): ?>
+                        <div data-toggle="buttons">
+                            <label class="btn btn-default btn-sm">
+                                <input type="checkbox"
+                                       autocomplete="off" <?= $model->discount ? "checked=checked" : NULL ?>
+                                       name="ItemFrontendFilter[discount]"> <?= Yii::t('app.f12.ecommerce', 'only discounted goods') ?>
+                            </label>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
-
+            </div>
             <?php ActiveForm::end() ?>
 
         </div>

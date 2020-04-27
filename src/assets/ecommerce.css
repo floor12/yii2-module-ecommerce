@@ -141,7 +141,7 @@ div.cart-shadow-object {
 }
 
 button.fav {
-    color: #f7ece9;
+    color: #ffffff;
     position: absolute;
     z-index: 10;
     font-size: 150%;
@@ -149,7 +149,7 @@ button.fav {
     border: 0;
     padding: 2px;
     margin: 0;
-    background: #ffffff5e;
+    background: #f3e8e72e;
     top: 5px;
     left: 20px;
     height: 36px;
@@ -161,11 +161,12 @@ button.fav {
 
 button.fav:hover,
 button.fav:focus {
-    background: #d5c0b2;
+    background: #f3e8e72e;
 }
 
 button.fav-active {
-    color: #b50129;
+    color: #691c0e;
+    background: #ffffffad;
 }
 
 button.fav svg {
