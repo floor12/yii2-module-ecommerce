@@ -6,7 +6,7 @@
  * Time: 22:21
  *
  * @var $this View
- * @var $model \floor12\ecommerce\models\Order
+ * @var $model \floor12\ecommerce\models\entity\Order
  */
 
 use floor12\phone\PhoneFormatter;
@@ -27,6 +27,5 @@ use yii\web\View;
 
 <p>
     <?= Yii::t('app.f12.ecommerce', 'For order details click') ?>
-    <?= Html::a(Yii::t('app.f12.ecommerce', 'this link'), Yii::$app->urlManager->createAbsoluteUrl(['/shop/admin/order'])) ?>
-    .
+    <?= Html::a(Yii::t('app.f12.ecommerce', 'this link'), Yii::$app->urlManager->createAbsoluteUrl(['/shop/admin/order'])) ?>.
 </p>

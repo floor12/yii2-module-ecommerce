@@ -217,6 +217,8 @@ return [
     'Expensive first' => 'Сначала дороже',
     'Cheaper first' => 'Сначала дешевле',
     'downloading...' => 'идет загрузка...',
+    'Image' => 'Изображение',
+    'New success payment' => 'Новая успешная оплата',
     '' => '',
 
 ];

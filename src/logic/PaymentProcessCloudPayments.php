@@ -10,10 +10,11 @@ namespace floor12\ecommerce\logic;
 
 
 use ErrorException;
+use floor12\ecommerce\models\entity\Payment;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\ecommerce\models\enum\PaymentStatus;
 use floor12\ecommerce\models\enum\PaymentType;
-use floor12\ecommerce\models\entity\Payment;
+use Yii;
 use yii\web\BadRequestHttpException;
 
 class PaymentProcessCloudPayments
@@ -21,7 +22,7 @@ class PaymentProcessCloudPayments
     /**
      * @var Payment
      */
-    protected $_payment;
+    protected $model;
     /**
      * @var array
      */
@@ -29,10 +30,10 @@ class PaymentProcessCloudPayments
 
     public function __construct(Payment $payment, array $params)
     {
-        $this->_payment = $payment;
+        $this->model = $payment;
         $this->params = $params;
 
-        if ($this->_payment->status != PaymentStatus::NEW)
+        if ($this->model->status != PaymentStatus::NEW)
             throw new BadRequestHttpException('This invoice no expects payment');
     }
 
@@ -41,25 +42,39 @@ class PaymentProcessCloudPayments
      */
     public function execute()
     {
-        $this->_payment->status = PaymentStatus::SUCCESS;
-        $this->_payment->payed = time();
-        $this->_payment->comment = json_encode($this->params);
-        $this->_payment->external_id = $this->params['TransactionId'];
+        $this->model->status = PaymentStatus::SUCCESS;
+        $this->model->payed = time();
+        $this->model->comment = json_encode($this->params);
+        $this->model->external_id = $this->params['TransactionId'];
 
-        if (!$this->_payment->save(true, ['status', 'payed', 'comment', 'external_id']))
-            throw new ErrorException('Error with saving payment:' . print_r($this->_payment->errors, true));
+        if (!$this->model->save(true, ['status', 'payed', 'comment', 'external_id']))
+            throw new ErrorException('Error with saving payment:' . print_r($this->model->errors, true));
 
-        $this->_payment->order->status = OrderStatus::PAYED;
-        $this->_payment->order->updated = time();
-        if (!$this->_payment->order->save(true, ['status', 'updated']))
+        $this->model->order->status = OrderStatus::PAYED;
+        $this->model->order->updated = time();
+        if (!$this->model->order->save(true, ['status', 'updated']))
             throw new ErrorException('Error with saving payment');
 
+        $this->sendEmailToAdmins();
         return true;
     }
 
+    protected function sendEmailToAdmins()
+    {
+        Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/admin-new-payment-html.php"],
+                ['model' => $this->model]
+            )
+            ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
+            ->setSubject(Yii::t('app.f12.ecommerce', 'New success payment'))
+            ->setTo(Yii::$app->params['adminEmail'])
+            ->send();
+    }
 
     public function getSign()
     {
-        return md5($this->_payment->id . Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['api_pass']);
+        return md5($this->model->id . Yii::$app->getModule('shop')->payment_params[PaymentType::CLOUDPAYMENTS]['api_pass']);
     }
 }

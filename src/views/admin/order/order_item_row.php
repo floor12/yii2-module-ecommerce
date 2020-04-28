@@ -9,12 +9,19 @@
  * @var $model \floor12\ecommerce\models\entity\OrderItem
  */
 
+use yii\helpers\Html;
+
 ?>
 
 
 <tr>
+    <td class="order-product-image">
+        <?php if (!empty($model->productVariation->product->images))
+            echo Html::img($model->productVariation->product->images[0]->getPreviewWebPath(150)); ?>
+    </td>
     <td>
-        <?= $model->productVariation->product->title ?>
+        <b><?= $model->productVariation->product->article ?></b>
+        <div class="small"><?= $model->productVariation->product->title ?><br></div>
     </td>
     <td>
         <?= implode(', ', $model->productVariation->parameterValues) ?>

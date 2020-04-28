@@ -14,6 +14,8 @@ class Module extends \yii\base\Module
 {
     public $layout = '@app/views/layouts/main';
 
+    public $defaultRoute = '/shop/admin/product/index';
+
     public $userModel = 'app\models\User';
 
     public $exportPath = '@runtime/export';

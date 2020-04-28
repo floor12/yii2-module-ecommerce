@@ -41,7 +41,9 @@ $form = ActiveForm::begin([
             <th><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>
             <th><?= Yii::t('app.f12.ecommerce', 'Sum') ?></th>
         </tr>
-        <?php if ($model->orderItems) foreach ($model->orderItems as $item) echo $this->render('order_item_row', ['model' => $item]) ?>
+        <?php if ($model->orderItems) 
+            foreach ($model->orderItems as $item) 
+                echo $this->render('order_item_row', ['model' => $item]) ?>
         </tbody>
     </table>
     <div class="cart-total">

@@ -433,3 +433,14 @@ div.f12-ec-item-view-description {
     margin: 0 5% 20px 0;
     line-height: 27px;
 }
+
+
+td.order-product-image {
+    width: 100px !important;
+    padding: 0 !important;
+    max-width: 100px;
+}
+
+td.order-product-image img {
+    width: 100%;
+}

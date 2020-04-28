@@ -65,16 +65,18 @@ class TabWidget extends Widget
 
         if ($this->items) {
 
-            foreach ($this->items as $item) {
-                if (strpos($_SERVER['REQUEST_URI'], $item['href']) === 0)
-                    $active_flag = true;
-            }
+//            foreach ($this->items as $item) {
+////                if (strpos($_SERVER['REQUEST_URI'], $item['href']) === 0)
+//                var_dump($_SERVER['REQUEST_URI'] == $item['href']);
+//                if ($_SERVER['REQUEST_URI'] == $item['href'])
+//                    $active_flag = true;
+//            }
 
             foreach ($this->items as $key => $item) {
 
                 if (!isset($item['visible']) || $item['visible']) {
 
-                    if (($active_flag == false && $key == 0) || (strpos($_SERVER['REQUEST_URI'], $item['href']) === 0))
+                    if ($_SERVER['REQUEST_URI'] == $item['href'])
                         $item['active'] = true;
 
                     $nodes[] = $this->render('tabWidget', ['item' => $item, 'linkPostfix' => $this->linkPostfix]);

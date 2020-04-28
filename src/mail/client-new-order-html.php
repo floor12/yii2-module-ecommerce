@@ -6,10 +6,9 @@
  * Time: 22:21
  *
  * @var $this View
- * @var $model \floor12\ecommerce\models\Order
+ * @var $model \floor12\ecommerce\models\entity\Order
  */
 
-use floor12\ecommerce\models\User;
 use yii\web\View;
 
 ?>
