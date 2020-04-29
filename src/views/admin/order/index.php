@@ -17,6 +17,7 @@ use floor12\editmodal\EditModalColumn;
 use floor12\phone\PhoneFormatter;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
 EcommerceAsset::register($this);
@@ -31,6 +32,30 @@ echo TabWidget::widget();
 
 echo Html::tag('br');
 
+$form = ActiveForm::begin([
+    'method' => 'GET',
+    'id' => 'f12-eccomerce-item-filter',
+    'options' => ['class' => 'autosubmit', 'data-container' => '#items'],
+]);
+?>
+
+    <div class="item-filter">
+        <div class="row">
+            <div class="col-md-9">
+                <?= $form->field($model, 'filter')
+                    ->label(false)
+                    ->textInput(['placeholder' => Yii::t('app.f12.ecommerce', 'find order')]) ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'status')
+                    ->label(false)
+                    ->dropDownList(OrderStatus::listData(), ['prompt' => Yii::t('app.f12.ecommerce', 'any status')]) ?>
+            </div>
+        </div>
+    </div>
+<?php
+
+ActiveForm::end();
 Pjax::begin(['id' => 'items']);
 
 echo GridView::widget([
@@ -38,7 +63,20 @@ echo GridView::widget([
     'tableOptions' => ['class' => 'table table-striped'],
     'layout' => "{items}\n{pager}\n{summary}",
     'columns' => [
-        'id',
+        [
+            'attribute' => 'id',
+            'content' => function (Order $model) {
+                $html = Html::tag('b', $model->id);
+                if ($model->comment_admin) {
+                    $icon = \floor12\backup\assets\IconHelper::EXCLAMATION;
+                    $html .= ' ' . Html::tag('span', $icon, [
+                            'title' => $model->comment_admin,
+                            'style' => 'color:orange'
+                        ]);
+                }
+                return $html;
+            },
+        ],
         'created:datetime',
         'fullname',
         [

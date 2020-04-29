@@ -8,10 +8,10 @@ use floor12\ecommerce\models\filters\OrderFilter;
 use floor12\editmodal\DeleteAction;
 use floor12\editmodal\EditModalAction;
 use floor12\editmodal\IndexAction;
+use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use Yii;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -65,12 +65,13 @@ class OrderController extends Controller
             'form' => [
                 'class' => EditModalAction::class,
                 'model' => Order::class,
-                'message' => 'Объект сохранен'
+                'message' => 'Заказ сохранен',
+                'scenario' => Order::SCENARIO_ADMIN
             ],
             'delete' => [
                 'class' => DeleteAction::class,
                 'model' => Order::class,
-                'message' => 'Объект удален'
+                'message' => 'Заказ удален'
             ],
         ];
     }

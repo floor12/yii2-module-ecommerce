@@ -88,13 +88,17 @@ $form = ActiveForm::begin([
 
     <?= $form->field($model, 'address')
         ->label(Yii::t('app.f12.ecommerce', 'Address'))
-        ->textarea(['rows' => 4])
+        ->textarea(['rows' => 2]);
     ?>
 
 
     <?= $form->field($model, 'comment')
-        ->label(Yii::t('app.f12.ecommerce', 'Additional comment'))
-        ->textarea(['rows' => 4])
+        ->textarea(['rows' => 3])
+    ?>
+
+
+    <?= $form->field($model, 'comment_admin')
+        ->textarea(['rows' => 3])
     ?>
 
 

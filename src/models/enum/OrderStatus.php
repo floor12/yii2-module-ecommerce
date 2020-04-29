@@ -18,6 +18,7 @@ class OrderStatus extends BaseEnum
     const PAYED = 3;
     const IN_PROGRESS = 4;
     const DONE = 5;
+    const IN_DELIVERY = 6;
 
     static public $list = [
         self::READY => 'Ready to order',
@@ -26,6 +27,7 @@ class OrderStatus extends BaseEnum
         self::PAYED => 'Payed',
         self::IN_PROGRESS => 'In progress',
         self::DONE => 'Done',
+        self::IN_DELIVERY => 'In delivery',
     ];
 
     public static $messageCategory = 'app.f12.ecommerce';
