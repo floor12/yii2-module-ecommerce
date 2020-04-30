@@ -14,9 +14,12 @@ use yii\helpers\Html;
 ?>
 
 <tr class="<?= !empty($row['message']) ? 'f12-cart-discounted' : NULL ?>">
-
+    <td class="cart-image">
+        <?php if (!empty($model->productVariation->product->images))
+            echo Html::img($model->productVariation->product->images[0]->getPreviewWebPath(150)); ?>
+    </td>
     <td class="cart-item-title">
-        <?= Html::a($model->productVariation->product->title, [
+        <?= Html::a($model->productVariation->product->title . "<div class='article'>{$model->productVariation->product->article}</div>", [
             '/shop/frontend/product/view',
             'id' => $model->productVariation->product->id
         ], [
@@ -25,6 +28,7 @@ use yii\helpers\Html;
 
         <?= !$model->productVariation->getStockBalances()->sum('balance') ? Html::tag('div', 'нет на складе', ['class' =>
             'f12-ec-item-na']) : NULL ?>
+
 
         <div class="cart-item-title-params">
             <?= implode(', ', $model->productVariation->parameterValues) ?>

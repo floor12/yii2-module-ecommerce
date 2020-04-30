@@ -19,6 +19,7 @@ use yii\helpers\Html;
     <table class="table table-striped table-cart">
         <tbody>
         <tr>
+            <th></th>
             <th><?= Yii::t('app.f12.ecommerce', 'Product title') ?></th>
             <th class="text-center"><?= Yii::t('app.f12.ecommerce', 'Quantity') ?></th>
             <th class="text-center"><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>

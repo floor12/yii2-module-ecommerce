@@ -35,7 +35,7 @@ use yii\helpers\Html;
 
         <div class="f12-ec-product-info">
             <div class="f12-ec-product-title">
-                <?= $model->title ?>
+                <?= $model->title ?> <span class="f12-ec-product-list-article"><?= $model->article ?></span>
                 <div class="small">
                     <?php
                     $parameterId = Yii::$app->getModule('shop')->mainParameterId;

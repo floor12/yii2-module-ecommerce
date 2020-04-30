@@ -20,6 +20,13 @@ $this->params['breadcrumbs'][] = $model->title;
 ?>
 
 <div class="f12-ec-item-view">
+
+    <?php if ($model->article): ?>
+        <div class="f12-ec-item-article">
+            Артикул:
+            <span><?= $model->article ?></span>
+        </div>
+    <?php endif; ?>
     <h1><?= $model->title ?></h1>
 
     <div class="row">
