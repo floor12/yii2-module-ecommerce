@@ -7,10 +7,14 @@
  * @var $stockBalances array
  * @var $model \floor12\ecommerce\models\forms\ProductSelectorForm
  * @var $producatVariation \floor12\ecommerce\models\entity\ProductVariation
+ * @var $priceCalculator \floor12\ecommerce\components\PriceCalculator
  *
  */
 
 use kartik\form\ActiveForm;
+
+$priceCalculator = Yii::$app->priceCalculator;
+$priceCalculator->setProduct($product);
 
 $form = ActiveForm::begin([
     'method' => 'GET',
@@ -44,13 +48,14 @@ $form = ActiveForm::begin([
         </button>
 
         <div class="f12-ec-product-view-price">
-            <price class='<?= $product->getPriceOld() ? 'discount' : null ?>'>
-                <?= Yii::$app->formatter->asCurrency($product->price, Yii::$app->getModule('shop')->currency) ?>
+            <price class='<?= $priceCalculator->hasDiscount() ? 'discount' : null ?>'>
+                <?= Yii::$app->formatter->asCurrency($priceCalculator->getCurrentPrice(), Yii::$app->getModule('shop')->currency) ?>
             </price>
-            <?php if ($product->priceOld): ?>
+            <?php if ($priceCalculator->hasDiscount()): ?>
                 <price class="striked">
-                    <?= Yii::$app->formatter->asCurrency($product->priceOld, Yii::$app->getModule('shop')->currency) ?>
+                    <?= Yii::$app->formatter->asCurrency($priceCalculator->getOldPrice(), Yii::$app->getModule('shop')->currency) ?>
                 </price>
+                <div class="discount-in-percent">-<?= $priceCalculator->getDiscountInPercent() ?>%</div>
             <?php endif; ?>
         </div>
 

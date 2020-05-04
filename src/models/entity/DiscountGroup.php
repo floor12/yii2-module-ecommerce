@@ -58,8 +58,8 @@ class DiscountGroup extends ActiveRecord
             'title' => Yii::t('app.f12.ecommerce', 'Title'),
             'description' => Yii::t('app.f12.ecommerce', 'Description'),
             'status' => Yii::t('app.f12.ecommerce', 'Disable'),
-            'discount_price_id' => Yii::t('app.f12.ecommerce', 'Discount Price ID'),
-            'discount_percent' => Yii::t('app.f12.ecommerce', 'Discount Percent'),
+            'discount_price_id' => Yii::t('app.f12.ecommerce', 'Discount price ID'),
+            'discount_percent' => Yii::t('app.f12.ecommerce', 'Discount percent'),
             'item_quantity' => Yii::t('app.f12.ecommerce', 'Product Quantity'),
         ];
     }

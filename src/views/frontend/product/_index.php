@@ -7,17 +7,21 @@
  *
  * @var $this \yii\web\View
  * @var $model \floor12\ecommerce\models\entity\Product
- *
+ * @var $priceCalculator \floor12\ecommerce\components\PriceCalculator
  */
 
 use floor12\ecommerce\components\FavWidget;
 use yii\helpers\Html;
 
-
+$priceCalculator = Yii::$app->priceCalculator;
+$priceCalculator->setProduct($model);
 ?>
 
 <div class="col-md-4">
     <?= FavWidget::widget(['id' => $model->id]) ?>
+    <?php if ($priceCalculator->hasDiscount()): ?>
+        <div class="discount-in-percent">-<?= $priceCalculator->getDiscountInPercent() ?>%</div>
+    <?php endif; ?>
     <a class="f12-ec-product" href="<?= \yii\helpers\Url::toRoute(['/shop/frontend/product/view', 'id' => $model->id]) ?>">
         <?php if ($model->images) { ?>
             <div class="f12-ec-product-image-wrapper">
@@ -47,14 +51,16 @@ use yii\helpers\Html;
                 </div>
             </div>
             <div class="f12-ec-product-price">
-                <price class='<?= $model->getPriceOld() ? 'discount' : null ?>'><?= Yii::$app->formatter->asCurrency($model->price,
-                        Yii::$app->getModule('shop')->currency)
-                    ?></price>
-                <?php if ($model->priceOld): ?>
+
+                <price class='<?= $priceCalculator->hasDiscount() ? 'discount' : null ?>'>
+                    <?= Yii::$app->formatter->asCurrency($priceCalculator->getCurrentPrice(), Yii::$app->getModule('shop')->currency) ?>
+                </price>
+                <?php if ($priceCalculator->hasDiscount()): ?>
                     <price class="striked">
-                        <?= Yii::$app->formatter->asCurrency($model->priceOld, Yii::$app->getModule('shop')->currency) ?>
+                        <?= Yii::$app->formatter->asCurrency($priceCalculator->getOldPrice(), Yii::$app->getModule('shop')->currency) ?>
                     </price>
                 <?php endif; ?>
+
             </div>
         </div>
     </a>

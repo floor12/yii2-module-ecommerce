@@ -37,7 +37,8 @@ use yii\helpers\Html;
         </tbody>
     </table>
     <div class="cart-total">
-        <?php if (!empty($model->orderItems)) echo Yii::t('app.f12.ecommerce', 'Total') . ': ' . Html::tag('span', $model->total) ?>
+        <?php if (!empty($model->orderItems))
+            echo Yii::t('app.f12.ecommerce', 'Total') . ': ' . Html::tag('span', $model->total) . Yii::$app->getModule('shop')->currency ?>
     </div>
 
     <?php

@@ -41,6 +41,7 @@ $form = ActiveForm::begin([
             <table class="table table-striped table-bordered table-cart">
                 <tbody>
                 <tr>
+                    <th></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Product title') ?></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Quantity') ?></th>
                     <th><?= Yii::t('app.f12.ecommerce', 'Price') ?></th>

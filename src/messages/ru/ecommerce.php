@@ -167,7 +167,7 @@ return [
     'Create group' => 'Добавить группу',
     'Title' => 'Название',
     'Product Quantity' => 'Кол-во единиц',
-    'Discount Price ID' => 'Номер цены для скидки',
+    'Discount price ID' => 'Номер цены для скидки',
     'Description' => 'Описание',
     'Create discount group' => 'Создание группы скидок',
     'Discount group updating' => 'Редактирование группы скидок',
@@ -222,6 +222,8 @@ return [
     'In delivery' => 'Доставка',
     'find order' => 'поиск по заказам',
     'Admin comment' => 'Кооментарий администратора',
+    'in percents' => 'В процентах',
+    'Discount percent' => 'Значение в процентах',
     '' => '',
 
 ];

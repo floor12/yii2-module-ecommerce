@@ -3,6 +3,7 @@
 namespace floor12\ecommerce\models\query;
 
 use floor12\ecommerce\models\entity\DiscountGroup;
+use floor12\ecommerce\models\enum\Status;
 use yii\db\ActiveQuery;
 
 /**
@@ -12,10 +13,13 @@ use yii\db\ActiveQuery;
  */
 class DiscountGroupQuery extends ActiveQuery
 {
-    /*public function active()
+    /**
+     * @return DiscountGroupQuery
+     */
+    public function active()
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere(['status' => Status::ACTIVE]);
+    }
 
     /**
      * {@inheritdoc}

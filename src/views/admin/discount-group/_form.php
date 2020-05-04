@@ -34,17 +34,25 @@ $form = ActiveForm::begin([
     <?= $form->field($model, 'description') ?>
 
     <div class="row">
-        <div class="col-md-4">
+
+        <div class="col-md-3">
             <?= $form->field($model, 'item_quantity') ?>
         </div>
 
-        <div class="col-md-4">
-            <?= $form->field($model, 'discount_price_id')->dropDownList(PriceType::listData()) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'discount_price_id')->dropDownList(
+                PriceType::listData(), ['prompt' => Yii::t('app.f12.ecommerce', 'in percents')]
+            ) ?>
         </div>
 
-        <div class="col-md-4" style="padding-top: 30px;">
+        <div class="col-md-3">
+            <?= $form->field($model, 'discount_percent') ?>
+        </div>
+
+        <div class="col-md-3" style="padding-top: 30px;">
             <?= $form->field($model, 'status')->checkbox() ?>
         </div>
+
     </div>
 </div>
 <div class="modal-footer">

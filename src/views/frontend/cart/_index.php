@@ -47,6 +47,12 @@ use yii\helpers\Html;
         <price>
             <?= Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency) ?>
         </price>
+        <?php if ($model->full_price != $model->price): ?>
+            <price class="striked">
+                <?= Yii::$app->formatter->asCurrency($model->full_price, Yii::$app->getModule('shop')->currency) ?>
+            </price>
+            <div class="discount-in-percent">-<?= $model->discount_percent ?>%</div>
+        <?php endif; ?>
     </td>
     <td class="text-center">
         <price>

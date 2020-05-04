@@ -186,8 +186,22 @@ div.f12-ecommerce-address-section {
 }
 
 
-.model-body table.table-cart {
+.modal-body table.table-cart {
     margin-top: -15px;
+}
+
+table.table-cart price.striked {
+    display: block;
+    font-size: 80%;
+    text-decoration: line-through;
+    color: #4c4c4c;
+}
+
+table.table-cart div.discount-in-percent {
+    top: auto;
+    right: auto;
+    margin: -36px 0 0 -27px;
+    transform: rotate(0);
 }
 
 div.param {

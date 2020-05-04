@@ -9,10 +9,12 @@
 namespace floor12\ecommerce\models\forms;
 
 
+use floor12\ecommerce\components\CookieCart;
+use floor12\ecommerce\components\PriceCalculator;
 use floor12\ecommerce\models\DiscountGroup;
 use floor12\ecommerce\models\entity\OrderItem;
-use floor12\ecommerce\models\entity\ProductVariation;
 use floor12\ecommerce\models\Item;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 
@@ -29,78 +31,29 @@ class CartForm extends Model
      */
     public function init()
     {
-        foreach ($_COOKIE as $name => $quantity) {
+        $cookieCart = new CookieCart();
+        /** @var PriceCalculator $priceCalculator */
+        $priceCalculator = Yii::$app->priceCalculator;
+        $priceCalculator->setMode(PriceCalculator::MODE_CART);
+        foreach ($cookieCart->getProductVariations() as $productVariation) {
+            $priceCalculator->setProductVariation($productVariation);
+            $quantity = $cookieCart->getProductVariationQuantity($productVariation->id);
+            $sum = $priceCalculator->getCurrentPrice() * $quantity;
+            $this->orderItems[] = new OrderItem([
+                'product_variation_id' => $productVariation->id,
+                'quantity' => $quantity,
+                'price' => $priceCalculator->getCurrentPrice(),
+                'full_price' => $priceCalculator->hasDiscount() ? $priceCalculator->getOldPrice() : $priceCalculator->getCurrentPrice(),
+                'discount_percent' => $priceCalculator->getDiscountInPercent(),
+                'discount_group_id' => $priceCalculator->getDiscountGroupId(),
+                'sum' => $sum,
+            ]);
 
-            if ($quantity < 0)
-                $quantity = -1 * $quantity;
-
-            if (preg_match('/cart-(\d+)/', $name, $matches)) {
-                $productVariation = ProductVariation::findOne($matches[1]);
-                if (!$productVariation)
-                    continue;
-
-                $this->orderItems[] = new OrderItem([
-                    'product_variation_id' => $productVariation->id,
-                    'quantity' => $quantity,
-                    'price' => $productVariation->price_0,
-                    'sum' => $productVariation->price_0 * $quantity,
-                ]);
-
-                $this->total = $this->total + $productVariation->price_0 * $quantity;
-            }
+            $this->total = $this->total + $sum;
         }
+
     }
 
-    /**
-     * @param Item $productVariation
-     * @param int $quantity
-     */
-    public function processDiscount(ProductVariation $productVariation, int $quantity)
-    {
-        if ($quantity < 0)
-            $quantity = -1 * $quantity;
-
-        if (!empty($productVariation->discounts))
-            foreach ($productVariation->discounts as $discount) {
-                if (empty($this->discount_items[$discount->id])) {
-                    $this->discount_items[$discount->id]['discount_group'] = $discount;
-                    $this->discount_items[$discount->id]['quantity'] = $quantity;
-                } else
-                    $this->discount_items[$discount->id]['quantity'] = $this->discount_items[$discount->id]['quantity'] + $quantity;
-                $this->discount_items[$discount->id]['active'] = $this->checkDiscountStatus($discount, $this->discount_items[$discount->id]['quantity']);
-                if ($this->discount_items[$discount->id]['active'])
-                    $this->messages[$discount->id] = $discount->description;
-            }
-    }
-
-    /**
-     * @param DiscountGroup $group
-     * @param int $quantity
-     * @return bool
-     */
-    public function checkDiscountStatus(DiscountGroup $group, int $quantity)
-    {
-        if ($group->item_quantity > 0 && $quantity >= $group->item_quantity)
-            return true;
-        return false;
-    }
-
-    /**
-     * @param Item $productVariation
-     * @return int
-     */
-    public function getPrice(ProductVariation $productVariation)
-    {
-        if (!empty($productVariation->discounts))
-            foreach ($productVariation->discounts as $discount)
-                if (!empty($this->discount_items[$discount->id]) && $this->discount_items[$discount->id]['active'] == true) {
-                    if ($discount->discount_price_id) {
-                        return $productVariation->{"price" . ++$discount->discount_price_id};
-                    }
-                }
-
-        return $productVariation->price_current;
-    }
 
     /**
      *  epmty cart
@@ -121,4 +74,5 @@ class CartForm extends Model
 //                    unset($this->orderItems[$key]);
 //            }
     }
+
 }

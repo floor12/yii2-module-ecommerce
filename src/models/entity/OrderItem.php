@@ -15,7 +15,10 @@ use yii\db\ActiveRecord;
  * @property int $product_variation_id Item identificator
  * @property int $created Created
  * @property int $order_id Order identificator
- * @property float $price Item price
+ * @property float $price Product current price
+ * @property float $full_price Product full price
+ * @property integer $discount_group_id Discount group id
+ * @property integer $discount_percent Discount in percent
  * @property int $order_status Order status
  * @property int $quantity Quantity of product
  * @property float|null $sum Total sum
@@ -39,9 +42,9 @@ class OrderItem extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'product_variation_id', 'created', 'order_id', 'order_status', 'quantity'], 'integer'],
+            [['user_id', 'product_variation_id', 'created', 'order_id', 'order_status', 'quantity', 'discount_group_id', 'discount_percent'], 'integer'],
             [['product_variation_id', 'created', 'order_id', 'price', 'quantity'], 'required'],
-            [['price', 'sum'], 'number'],
+            [['price', 'sum', 'full_price'], 'number'],
             [['product_variation_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductVariation::class, 'targetAttribute' => ['product_variation_id' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['order_id' => 'id']],
         ];

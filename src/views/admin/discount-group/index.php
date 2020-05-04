@@ -50,9 +50,13 @@ echo GridView::widget([
         'id',
         'title',
         [
+            'header' => 'Скидка',
             'attribute' => 'discount_price_id',
             'content' => function (DiscountGroup $model) {
-                return PriceType::getLabel($model->discount_price_id);
+                if ($model->discount_price_id)
+                    return PriceType::getLabel($model->discount_price_id);
+                else
+                    return $model->discount_percent . '%';
             }
         ],
         'item_quantity',
