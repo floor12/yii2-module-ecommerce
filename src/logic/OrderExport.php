@@ -11,7 +11,7 @@ namespace floor12\ecommerce\logic;
 use Codeception\Util\XmlBuilder;
 use floor12\ecommerce\models\enum\OrderStatus;
 use Yii;
-use floor12\ecommerce\models\Order;
+use floor12\ecommerce\models\entity\Order;
 use yii\web\BadRequestHttpException;
 use floor12\ecommerce\models\enum\PaymentType;
 
@@ -72,7 +72,7 @@ class OrderExport
              ->amounts
                 ->attr('currency',Yii::$app->getModule('shop')->currency)
                 ->items
-                    ->val($this->_order->items_cost)
+                    ->val($this->_order->products_cost)
                     ->parent()
                  ->delivery
                     ->val($this->_order->delivery_cost)
@@ -103,16 +103,16 @@ class OrderExport
                 $xml
                     ->item
                         ->id
-                            ->val($item->item->id)
+                            ->val($item->productVariation->id)
                             ->parent()
                         ->external_id
-                            ->val($item->item->external_id)
+                            ->val($item->productVariation->external_id)
                             ->parent()
                         ->title
-                            ->val($item->item->title)
+                            ->val($item->productVariation->product->title)
                             ->parent()
                         ->price
-                            ->val($item->item->price_current)
+                            ->val($item->price)
                             ->parent()
                         ->quantity
                             ->val($item->quantity)
