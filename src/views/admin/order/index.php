@@ -99,7 +99,17 @@ echo GridView::widget([
         [
             'attribute' => 'status',
             'content' => function (Order $model) {
-                return OrderStatus::getLabel($model->status);
+                $content = OrderStatus::getLabel($model->status);
+                if ($model->status == OrderStatus::PAYMENT_EXPECTS)
+                    $content .= Html::a(Yii::t('app.f12.ecommerce', 'Payment page'),
+                        [
+                            '/shop/frontend/cart/pay',
+                            'order_id' => $model->id
+                        ], [
+                            'class' => 'btn btn-xs btn-default',
+                            'target' => '_blank'
+                        ]);
+                return $content;
             },
         ],
         [
