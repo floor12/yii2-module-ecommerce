@@ -224,6 +224,6 @@ return [
     'Admin comment' => 'Кооментарий администратора',
     'in percents' => 'В процентах',
     'Discount percent' => 'Значение в процентах',
-    '' => '',
+    'Canceled' => 'Отменен',
 
 ];
