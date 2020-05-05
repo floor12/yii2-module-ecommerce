@@ -111,7 +111,7 @@ class PriceCalculator
     {
         if ($this->hasDiscount())
             return $this->activeDiscountGroup->id;
-        return false;
+        return null;
     }
 
 }

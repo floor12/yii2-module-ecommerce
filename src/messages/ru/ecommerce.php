@@ -226,5 +226,6 @@ return [
     'Discount percent' => 'Значение в процентах',
     'Canceled' => 'Отменен',
     'Payment page' => 'Страница оплаты',
+    'Link to the payment page.' => 'Ссылка на страницу оплаты.',
 
 ];
