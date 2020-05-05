@@ -183,7 +183,7 @@ function onEntry(entry) {
     });
 }
 
-let observer = new IntersectionObserver(onEntry, {
+let productObserver = new IntersectionObserver(onEntry, {
     threshold: [0.3]
 });
 
@@ -195,11 +195,11 @@ $(document).on('pjax:complete', function () {
 function setObserverToProducts() {
     let loadBtn = document.getElementsByClassName('load-more')[0];
     if (typeof loadBtn !== "undefined")
-        observer.observe(loadBtn);
+        productObserver.observe(loadBtn);
 
     let elements = document.querySelectorAll('.f12-ec-product');
     for (let elm of elements) {
-        observer.observe(elm);
+        productObserver.observe(elm);
     }
 }
 
