@@ -15,6 +15,7 @@ use floor12\ecommerce\models\entity\Order;
 use floor12\ecommerce\models\enum\OrderStatus;
 use floor12\editmodal\EditModalColumn;
 use floor12\phone\PhoneFormatter;
+use kartik\date\DatePicker;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -26,6 +27,11 @@ $this->title = Yii::t('app.f12.ecommerce', 'Orders');
 $this->params['breadcrumbs'][] = Yii::t('app.f12.ecommerce', 'Store administration');
 $this->params['breadcrumbs'][] = $this->title;
 
+echo Html::button(\floor12\files\assets\IconHelper::FILE_EXCEL . '&nbsp;&nbsp;Выгрузить в excel', [
+    'class' => 'btn btn-primary btn-sm pull-right',
+    'onclick' => 'f12ecommerce.generateOrdersReport()'
+]);
+
 echo Html::tag('h1', Yii::t('app.f12.ecommerce', 'Shop'));
 
 echo TabWidget::widget();
@@ -34,19 +40,30 @@ echo Html::tag('br');
 
 $form = ActiveForm::begin([
     'method' => 'GET',
-    'id' => 'f12-eccomerce-item-filter',
+    'id' => 'f12-eccomerce-order-filter',
+    'enableClientValidation' => false,
     'options' => ['class' => 'autosubmit', 'data-container' => '#items'],
 ]);
 ?>
 
     <div class="item-filter">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <?= $form->field($model, 'filter')
                     ->label(false)
                     ->textInput(['placeholder' => Yii::t('app.f12.ecommerce', 'find order')]) ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <?= $form->field($model, 'date_start')
+                    ->label(false)
+                    ->widget(DatePicker::class, ['pickerButton' => false, 'options' => ['placeholder' => 'от']]) ?>
+            </div>
+            <div class="col-md-2">
+                <?= $form->field($model, 'date_end')
+                    ->label(false)
+                    ->widget(DatePicker::class, ['pickerButton' => false, 'options' => ['placeholder' => 'до']]) ?>
+            </div>
+            <div class="col-md-2">
                 <?= $form->field($model, 'status')
                     ->label(false)
                     ->dropDownList(OrderStatus::listData(), ['prompt' => Yii::t('app.f12.ecommerce', 'any status')]) ?>
@@ -101,14 +118,14 @@ echo GridView::widget([
             'content' => function (Order $model) {
                 $content = OrderStatus::getLabel($model->status);
                 if ($model->status == OrderStatus::PAYMENT_EXPECTS)
-                    $content .= Html::a(Yii::t('app.f12.ecommerce', 'Payment page'),
-                        [
-                            '/shop/frontend/cart/pay',
-                            'order_id' => $model->id
-                        ], [
-                            'class' => 'btn btn-xs btn-default',
-                            'target' => '_blank'
-                        ]);
+                    $content .= '<br>' . Html::a(Yii::t('app.f12.ecommerce', 'Payment page'),
+                            [
+                                '/shop/frontend/cart/pay',
+                                'order_id' => $model->id
+                            ], [
+                                'class' => 'btn btn-xs btn-default',
+                                'target' => '_blank'
+                            ]);
                 return $content;
             },
         ],

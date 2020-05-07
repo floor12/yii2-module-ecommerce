@@ -14,6 +14,11 @@ class OrderFilter extends Model
 {
     public $filter;
     public $status;
+    public $date_start;
+    public $date_end;
+    protected $date_start_timestamp;
+    protected $date_end_timestamp;
+
 
     /**
      * {@inheritdoc}
@@ -22,17 +27,28 @@ class OrderFilter extends Model
     {
         return [
             ['filter', 'string'],
-            ['status', 'integer']
+            ['status', 'integer'],
+            [['date_start', 'date_end'], 'string'],
         ];
     }
 
-    /**
-     * @return ActiveDataProvider
-     */
-    public function dataProvider()
+    protected function getQuery()
     {
+        if (!$this->validate())
+            return false;
+
+        if ($this->date_end) {
+            $this->date_end_timestamp = strtotime("{$this->date_end} 23:59:59");
+        }
+
+        if ($this->date_start) {
+            $this->date_start_timestamp = strtotime("{$this->date_start} 00:00:00");
+        }
+
         $query = Order::find()
             ->andFilterWhere(['status' => $this->status])
+            ->andFilterWhere(['>=', 'created', $this->date_start_timestamp])
+            ->andFilterWhere(['<=', 'created', $this->date_end_timestamp])
             ->andFilterWhere(['OR',
                 ['LIKE', 'id', $this->filter],
                 ['LIKE', 'fullname', $this->filter],
@@ -42,15 +58,23 @@ class OrderFilter extends Model
                 ['LIKE', 'comment', $this->filter],
             ]);
 
+        return $query;
+    }
+
+    public function getArray()
+    {
+        return $this->getQuery()->all();
+    }
+
+    /**
+     * @return ActiveDataProvider
+     */
+    public function dataProvider()
+    {
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $this->getQuery(),
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
-
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
 
         return $dataProvider;
     }

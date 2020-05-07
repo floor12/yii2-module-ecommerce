@@ -1,3 +1,12 @@
+f12ecommerce = {
+    generateOrdersReport() {
+        data = $('#f12-eccomerce-order-filter').serialize();
+        url = '/shop/admin/order/report?' + data;
+        window.open(url, '_blank');
+    }
+}
+
+
 timeout = setTimeout(function () {
 });
 

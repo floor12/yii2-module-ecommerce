@@ -45,6 +45,8 @@ class ParameterQuery extends ActiveQuery
      */
     public function byCategoyIds(array $category_ids)
     {
+        if (empty($category_ids))
+            return $this->andWhere('id NOT IN (SELECT parameter_id FROM ec_parameter_category)');
         $ids = implode(',', $category_ids);
         return $this->andWhere(['OR',
             "id IN (SELECT parameter_id FROM ec_parameter_category WHERE category_id IN ({$ids}) )",

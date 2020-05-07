@@ -17,11 +17,14 @@ class ParameterValueQuery extends ActiveQuery
      * @param array $product_variation_ids
      * @return ParameterValueQuery
      */
-    public function byProductVariations(array $product_variation_ids)
+    public function byProductVariations(array $product_variation_ids, $ignoreOnEmpty = false)
     {
+        if ($ignoreOnEmpty && empty($product_variation_ids))
+            return $this;
+
         if (empty($product_variation_ids))
             return $this->andWhere('false');
-        
+
         return $this->leftJoin('ec_parameter_value_product_variation', 'ec_parameter_value.id=ec_parameter_value_product_variation.parameter_value_id')
             ->andWhere(['IN', 'ec_parameter_value_product_variation.product_variation_id', $product_variation_ids]);
     }

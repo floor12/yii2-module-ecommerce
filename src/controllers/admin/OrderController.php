@@ -3,6 +3,7 @@
 namespace floor12\ecommerce\controllers\admin;
 
 
+use floor12\ecommerce\components\OrderReportXls;
 use floor12\ecommerce\models\entity\Order;
 use floor12\ecommerce\models\filters\OrderFilter;
 use floor12\editmodal\DeleteAction;
@@ -50,6 +51,16 @@ class OrderController extends Controller
     public function init()
     {
         $this->layout = Yii::$app->getModule('shop')->layout;
+    }
+
+    public function actionReport()
+    {
+        $model = new OrderFilter();
+        $model->load(Yii::$app->request->get());
+        $reportGenerator = new OrderReportXls($model);
+        $path = $reportGenerator->generateXlsx();
+        Yii::$app->response->sendFile($path);
+        unlink($path);
     }
 
     /**
