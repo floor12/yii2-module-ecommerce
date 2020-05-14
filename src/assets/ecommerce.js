@@ -10,9 +10,9 @@ f12ecommerce = {
 timeout = setTimeout(function () {
 });
 
-$(document).on('change', '#f12-eccomerce-product-filter', function () {
-    f12Listview.reload();
-})
+// $(document).on('change', '#f12-eccomerce-product-filter', function () {
+//     f12Listview.reload();
+// })
 
 $(document).on('change', '#order-delivery_type_id', function () {
     ecommerceAddressCheck();
@@ -22,12 +22,14 @@ $(document).on('change', '#order-city', function () {
     cityReplace();
 })
 
-$(document).on('keyup', '#f12-eccomerce-product-filter', function () {
-    clearInterval(timeout);
-    timeout = setTimeout(function () {
-        f12Listview.reload();
-    }, 1000);
-})
+
+//
+// $(document).on('keyup', '#f12-eccomerce-product-filter', function () {
+//     clearInterval(timeout);
+//     timeout = setTimeout(function () {
+//         f12Listview.reload();
+//     }, 1000);
+// })
 
 function submitForm(form) {
     method = form.attr('method');
@@ -124,94 +126,58 @@ $('.product-previews-block').on('click', 'a', function () {
     product.switchImage($(this));
     return false;
 })
-
-
-f12Listview = {
-    next: function () {
-        data = $('#f12-eccomerce-product-filter').serialize();
-        currentOffset = $('.f12-ec-products > div.row > div').length;
-        data = data + '&FrontendProductFilter[offset]=' + currentOffset;
-        btn = $('#load-more');
-        btn.find('span.downloading').show();
-        btn.find('span.info').hide();
-        $.ajax({
-            url: location.pathname,
-            data: data,
-            success: function (response, status, data2) {
-                total = data2.getResponseHeader('total-products');
-                btn.find('span.downloading').hide();
-                btn.find('span.info').show();
-                $('.f12-ec-products > div.row').append(response);
-                setObserverToProducts();
-                url = location.pathname + '?' + data;
-                history.pushState(data, $('title').html(), url);
-                showedProducts = $('.f12-ec-products > div.row > div').length;
-                if (total == showedProducts)
-                    $('#load-more').hide();
-                else
-                    $('#load-more').show();
-            }
-        })
-    },
-    reload: function () {
-        data = $('#f12-eccomerce-product-filter').serialize();
-        $('.f12-ec-products > div.row').html('');
-        btn = $('#load-more');
-        btn.find('span.downloading').show();
-        btn.find('span.info').hide();
-        $.ajax({
-            url: location.pathname,
-            data: data,
-            success: function (response) {
-                btn.find('span.downloading').hide();
-                btn.find('span.info').show();
-                $('.f12-ec-products > div.row').html(response);
-                setObserverToProducts();
-                url = location.pathname + '?' + data;
-                history.pushState({}, $('title').html(), url);
-                showedProducts = $('.f12-ec-products > div.row > div').length;
-                if (total == showedProducts)
-                    $('#load-more').hide();
-                else
-                    $('#load-more').show();
-            }
-        })
-    }
-}
-
-
-function onEntry(entry) {
-    entry.forEach((event) => {
-        if (event.isIntersecting == true) {
-            if (event.target.className == 'load-more') {
-                f12Listview.next();
-            } else {
-                event.target.classList.add('product-visible');
-            }
-        }
-    });
-}
-
-let productObserver = new IntersectionObserver(onEntry, {
-    threshold: [0.3]
-});
-
-$(document).on('pjax:complete', function () {
-    setObserverToProducts();
-})
-
-
-function setObserverToProducts() {
-    let loadBtn = document.getElementsByClassName('load-more')[0];
-    if (typeof loadBtn !== "undefined")
-        productObserver.observe(loadBtn);
-
-    let elements = document.querySelectorAll('.f12-ec-product');
-    for (let elm of elements) {
-        productObserver.observe(elm);
-    }
-}
-
-setObserverToProducts();
-
+//
+//
+// f12Listview = {
+//     next: function () {
+//         data = $('#f12-eccomerce-product-filter').serialize();
+//         currentOffset = $('.f12-ec-products > div.row > div').length;
+//         data = data + '&FrontendProductFilter[offset]=' + currentOffset;
+//         btn = $('#load-more');
+//         btn.find('span.downloading').show();
+//         btn.find('span.info').hide();
+//         $.ajax({
+//             url: location.pathname,
+//             data: data,
+//             success: function (response, status, data2) {
+//                 total = data2.getResponseHeader('total-products');
+//                 btn.find('span.downloading').hide();
+//                 btn.find('span.info').show();
+//                 $('.f12-ec-products > div.row').append(response);
+//                 setObserverToProducts();
+//                 url = location.pathname + '?' + data;
+//                 history.pushState(data, $('title').html(), url);
+//                 showedProducts = $('.f12-ec-products > div.row > div').length;
+//                 if (total == showedProducts)
+//                     $('#load-more').hide();
+//                 else
+//                     $('#load-more').show();
+//             }
+//         })
+//     },
+//     reload: function () {
+//         data = $('#f12-eccomerce-product-filter').serialize();
+//         $('.f12-ec-products > div.row').html('');
+//         btn = $('#load-more');
+//         btn.find('span.downloading').show();
+//         btn.find('span.info').hide();
+//         $.ajax({
+//             url: location.pathname,
+//             data: data,
+//             success: function (response) {
+//                 btn.find('span.downloading').hide();
+//                 btn.find('span.info').show();
+//                 $('.f12-ec-products > div.row').html(response);
+//                 setObserverToProducts();
+//                 url = location.pathname + '?' + data;
+//                 history.pushState({}, $('title').html(), url);
+//                 showedProducts = $('.f12-ec-products > div.row > div').length;
+//                 if (total == showedProducts)
+//                     $('#load-more').hide();
+//                 else
+//                     $('#load-more').show();
+//             }
+//         })
+//     }
+// }
 

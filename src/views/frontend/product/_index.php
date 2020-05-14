@@ -52,13 +52,13 @@ $priceCalculator->setProduct($model);
             </div>
             <div class="f12-ec-product-price">
 
-                <price class='<?= $priceCalculator->hasDiscount() ? 'discount' : null ?>'>
+                <div class='price <?= $priceCalculator->hasDiscount() ? 'discount' : null ?>'>
                     <?= Yii::$app->formatter->asCurrency($priceCalculator->getCurrentPrice(), Yii::$app->getModule('shop')->currency) ?>
-                </price>
+                </div>
                 <?php if ($priceCalculator->hasDiscount()): ?>
-                    <price class="striked">
+                    <div class="price striked">
                         <?= Yii::$app->formatter->asCurrency($priceCalculator->getOldPrice(), Yii::$app->getModule('shop')->currency) ?>
-                    </price>
+                    </div>
                 <?php endif; ?>
 
             </div>
