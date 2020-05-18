@@ -42,7 +42,7 @@ class VueFrontendProductFilter extends Model
      */
     public $offset = 0;
     /** @var array */
-    public $values = [];
+    public $parameterValuesSelected = [];
     /**
      * @var array
      */
@@ -70,7 +70,7 @@ class VueFrontendProductFilter extends Model
     {
         return [
             [['price_max', 'category_id', 'price_min', 'sort', 'limit', 'offset'], 'integer'],
-            ['values', 'safe']
+            ['parameterValuesSelected', 'safe']
         ];
     }
 
@@ -81,7 +81,6 @@ class VueFrontendProductFilter extends Model
     {
         if (!empty($this->query))
             return $this->query;
-
         $this->query = Product::find()
             ->distinct()
             ->leftJoin('ec_product_category', 'ec_product_category.product_id=ec_product.id')
@@ -92,7 +91,7 @@ class VueFrontendProductFilter extends Model
             ->andFilterWhere(['>=', 'ec_product_variation.price_0', $this->price_min])
             ->andFilterWhere(['<=', 'ec_product_variation.price_0', $this->price_max])
             ->orderBy($this->sortExpressions[$this->sort]);
-        if ($this->category_id)
+        if (is_numeric($this->category_id))
             $this->query->category(Category::findOne($this->category_id));
 
         $this->applyValuesToQuery();
@@ -112,14 +111,14 @@ class VueFrontendProductFilter extends Model
     {
         $expression = new Expression('MIN(ec_product_variation.price_0)');
         $query = clone $this->prepareQuery();
-        return $query->select($expression)->scalar();
+        return \intval($query->select($expression)->scalar());
     }
 
     public function priceMax()
     {
         $expression = new Expression('MAX(ec_product_variation.price_0)');
         $query = clone $this->prepareQuery();
-        return $query->select($expression)->scalar();
+        return \intval($query->select($expression)->scalar());
     }
 
     /**
@@ -139,12 +138,12 @@ class VueFrontendProductFilter extends Model
      */
     protected function applyValuesToQuery()
     {
-        if (empty($this->values))
+        if (empty($this->parameterValuesSelected))
             return;
         $values = [];
-        $this->values = json_decode($this->values, true);
-        foreach ($this->values as $parameterId => $parameterValues) {
-
+        foreach ($this->parameterValuesSelected as $parameterId => $parameterValues) {
+//            var_dump($parameterValuesAsString);die();
+//            $parameterValues = explode(',', $parameterValuesAsString);
             if (empty($parameterValues))
                 continue;
             foreach ($parameterValues as $parameterValue) {
@@ -152,7 +151,7 @@ class VueFrontendProductFilter extends Model
                     $values[] = $parameterValue;
             }
         }
-
+      
         if ($values)
             $this->query
                 ->leftJoin('ec_parameter_value_product_variation', 'ec_parameter_value_product_variation.product_variation_id = ec_product_variation.id')

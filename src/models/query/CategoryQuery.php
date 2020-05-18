@@ -3,8 +3,8 @@
 namespace floor12\ecommerce\models\query;
 
 use floor12\ecommerce\models\entity\Category;
-use yii\db\ActiveQuery;
 use floor12\ecommerce\models\enum\Status;
+use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\floor12\ecommerce\models\entity\Category]].
@@ -29,6 +29,18 @@ class CategoryQuery extends ActiveQuery
     public function active()
     {
         return $this->andWhere(['status' => Status::ACTIVE]);
+    }
+
+    /**
+     * @return false|string
+     */
+    public function asJson()
+    {
+        return json_encode($this->select(['id', 'title'])
+            ->active()
+            ->orderBy('sort')
+            ->asArray()
+            ->all());
     }
 
     /**
