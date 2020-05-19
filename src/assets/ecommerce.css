@@ -47,6 +47,7 @@ div.f12-ec-product-image-wrapper {
     height: 0;
     padding-bottom: 149%;
     position: relative;
+    background: #eee;
 }
 
 div.f12-ec-product-image-wrapper img {
