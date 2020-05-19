@@ -23,7 +23,7 @@ $priceCalculator->setProduct($model);
         <div class="discount-in-percent">-<?= $priceCalculator->getDiscountInPercent() ?>%</div>
     <?php endif; ?>
     <a class="f12-ec-product" href="<?= \yii\helpers\Url::toRoute(['/shop/frontend/product/view', 'id' => $model->id]) ?>">
-        <?php if ($model->images) { ?>
+        <?php if ($model->images && is_file($model->images[0]->getRootPath())) { ?>
             <div class="f12-ec-product-image-wrapper">
                 <picture>
                     <source type="image/webp"
@@ -32,7 +32,7 @@ $priceCalculator->setProduct($model);
                     <source type="image/jpeg"
                             srcset="<?= $model->images[0]->getPreviewWebPath(350) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700) ?> 2x">
                     <img src="<?= $model->images[0]->getPreviewWebPath(350) ?>"
-                         alt="<?= $model->title ?>, изображение №<?= ++$key ?>">
+                         alt="Изображение товара <?= $model->title ?>>
                 </picture>
             </div>
         <?php } ?>
