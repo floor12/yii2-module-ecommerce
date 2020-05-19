@@ -32,7 +32,7 @@ $priceCalculator->setProduct($model);
                     <source type="image/jpeg"
                             srcset="<?= $model->images[0]->getPreviewWebPath(350) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700) ?> 2x">
                     <img src="<?= $model->images[0]->getPreviewWebPath(350) ?>"
-                         alt="Изображение товара <?= $model->title ?>>
+                         alt="Изображение товара <?= $model->title ?>">
                 </picture>
             </div>
         <?php } ?>
