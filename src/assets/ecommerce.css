@@ -82,16 +82,16 @@ div.f12-ec-product-price {
     text-align: right;
 }
 
-div.f12-ec-product-price price {
+price {
     display: block;
 }
 
-div.f12-ec-product-price price.discount {
+price.discount {
     color: #b20000;
     font-weight: 600;
 }
 
-div.f12-ec-product-price price.striked {
+price.striked {
     text-decoration: line-through;
 }
 
@@ -128,7 +128,7 @@ table.item-options {
 }
 
 table.item-options span,
-table.table-cart span {
+div.cart-content span {
     min-width: 100px;
     display: block;
     float: left;
@@ -187,21 +187,52 @@ div.f12-ecommerce-address-section {
 }
 
 
-.modal-body table.table-cart {
-    margin-top: -15px;
+div.cart-content article {
+    display: flex;
+    margin: 0 0 5px 0;
+    border-bottom: 1px #ccc solid;
+    padding-bottom: 5px;
+    width: 100%;
 }
 
-table.table-cart price.striked {
+@media (min-width: 768px) {
+    div.cart-content article {
+        max-width: 50%
+    }
+}
+
+div.cart-content article img {
+    width: 100%;
+    max-width: 150px;
+}
+
+div.cart-content price.striked {
     display: block;
     font-size: 80%;
     text-decoration: line-through;
     color: #4c4c4c;
 }
 
-table.table-cart div.discount-in-percent {
+div.cart-product-data {
+    padding: 0 20px;
+    flex: 1;
+}
+
+div.cart-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+    .modal-body div.cart-content {
+        padding: 20px;
+    }
+}
+
+div.cart-content div.discount-in-percent {
     top: auto;
     right: auto;
-    margin: -36px 0 0 -27px;
+    margin: -36px 0 0 73px;
     transform: rotate(0);
 }
 
@@ -217,14 +248,13 @@ div.param:last-child {
     vertical-align: middle;
 }
 
-td.cart-item-title {
-    font-weight: 500;
+div.cart-item-title a {
+    font-weight: 600;
 }
 
-td.cart-image {
-    width: 50px !important;
-    height: 10px;
-    padding: 0 !important;
+
+div.cart-item-price {
+    font-size: 180%;
 }
 
 td.cart-image img {
@@ -254,10 +284,9 @@ p.f12-discount-info {
 
 div.cart-total {
     font-weight: 500;
-    font-size: 110%;
-    float: right;
-    margin: 0 12px 20px;
-    text-align: right;
+    font-size: 120%;
+    margin: 20px 12px 0px;
+    text-align: center;
 }
 
 div.cart-total span {
@@ -265,10 +294,19 @@ div.cart-total span {
 }
 
 
-table.table-cart input {
+div.cart-content div.cart-item-count {
+    margin: 10px 0;
+}
+
+div.cart-content input {
     max-width: 90px;
     display: inline;
     text-align: right;
+    border: 1px #ccc solid;
+    text-align: center;
+    padding: 3px;
+    margin: 0 0 0 10px;
+    font-weight: 500;
 }
 
 @media (min-width: 992px) {
@@ -437,7 +475,6 @@ div.product-previews-block a.active {
 
 div.f12-ec-product-view-price {
     font-size: 30px;
-    float: right;
     margin: 20px 0 30px 0;
 }
 

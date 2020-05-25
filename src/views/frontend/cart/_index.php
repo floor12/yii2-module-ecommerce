@@ -13,59 +13,57 @@ use yii\helpers\Html;
 
 ?>
 
-<tr class="<?= !empty($row['message']) ? 'f12-cart-discounted' : NULL ?>">
-    <td class="cart-image">
+<article class="<?= !empty($row['message']) ? 'f12-cart-discounted' : NULL ?>">
+    <div class="cart-image">
         <?php if (!empty($model->productVariation->product->images))
-            echo Html::img($model->productVariation->product->images[0]->getPreviewWebPath(150)); ?>
-    </td>
-    <td class="cart-item-title">
-        <?= Html::a($model->productVariation->product->title . "<div class='article'>{$model->productVariation->product->article}</div>", [
-            '/shop/frontend/product/view',
-            'id' => $model->productVariation->product->id
-        ], [
-            'target' => '_blank'
-        ]) ?>
+            echo Html::img($model->productVariation->product->images[0]->getPreviewWebPath(300)); ?>
+    </div>
+    <div class="cart-product-data">
+        <div class="cart-item-title">
+            <?= Html::a($model->productVariation->product->title, [
+                '/shop/frontend/product/view',
+                'id' => $model->productVariation->product->id
+            ], [
+                'target' => '_blank'
+            ]) ?>
 
-        <?= !$model->productVariation->getStockBalances()->sum('balance') ? Html::tag('div', 'нет на складе', ['class' =>
-            'f12-ec-item-na']) : NULL ?>
+            <?= !$model->productVariation->getStockBalances()->sum('balance') ? Html::tag('div', 'нет на складе', ['class' =>
+                'f12-ec-item-na']) : NULL ?>
 
-
-        <div class="cart-item-title-params">
-            <?= implode(', ', $model->productVariation->parameterValues) ?>
+            <div class="cart-item-title-params">
+                <?= $model->productVariation->product->article ? "Артикул: {$model->productVariation->product->article}<br>" : NULL ?>
+                <?= implode(', ', $model->productVariation->parameterValues) ?>
+            </div>
         </div>
-    </td>
-    <td class="text-center">
-        <input name="Order[<?= $model->product_variation_id ?>][count]"
-               value='<?= $model->quantity ?>'
-               type="number"
-               data-id="<?= $model->product_variation_id ?>"
-               data-weight="<?= $model->productVariation->product->weight_delivery ?>"
-               class="form-control cart-counter">
-    </td>
+        <div class="cart-item-count">
+            Кол-во: <input name="Order[<?= $model->product_variation_id ?>][count]"
+                           value='<?= $model->quantity ?>'
+                           type="number"
+                           disabled="<?= !$editable ? 'disabled' : NULL ?>"
+                           data-id="<?= $model->product_variation_id ?>"
+                           data-weight="<?= $model->productVariation->product->weight_delivery ?>"
+                           class="cart-counter">
+        </div>
 
-    <td class="text-center">
-        <price>
-            <?= Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency) ?>
-        </price>
-        <?php if ($model->full_price != $model->price): ?>
-            <price class="striked">
-                <?= Yii::$app->formatter->asCurrency($model->full_price, Yii::$app->getModule('shop')->currency) ?>
+        <div class="cart-item-price">
+            <price>
+                <?= Yii::$app->formatter->asCurrency($model->price, Yii::$app->getModule('shop')->currency) ?>
             </price>
-            <div class="discount-in-percent">-<?= $model->discount_percent ?>%</div>
+            <?php if ($model->full_price != $model->price): ?>
+                <price class="striked">
+                    <?= Yii::$app->formatter->asCurrency($model->full_price, Yii::$app->getModule('shop')->currency) ?>
+                </price>
+                <div class="discount-in-percent">-<?= $model->discount_percent ?>%</div>
+            <?php endif; ?>
+        </div>
+        <?php if ($editable): ?>
+            <div class="pull-right">
+                <?= Html::tag('a', \floor12\editmodal\IconHelper::TRASH, [
+                    'class' => 'btn btn-default cart-delete',
+                    'title' => 'Удалить из корзины',
+                    'data-id' => $model->productVariation->id
+                ]); ?>
+            </div>
         <?php endif; ?>
-    </td>
-    <td class="text-center">
-        <price>
-            <?= Yii::$app->formatter->asCurrency($model->sum, Yii::$app->getModule('shop')->currency) ?>
-        </price>
-    </td>
-    <?php if ($editable): ?>
-        <td class="text-right">
-            <?= Html::tag('a', \floor12\editmodal\IconHelper::TRASH, [
-                'class' => 'btn btn-default cart-delete',
-                'title' => 'Удалить из корзины',
-                'data-id' => $model->productVariation->id
-            ]); ?>
-        </td>
-    <?php endif; ?>
-</tr>
+    </div>
+</article>
