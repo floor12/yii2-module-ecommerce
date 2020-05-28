@@ -5,7 +5,9 @@ namespace floor12\ecommerce\components;
 
 
 use floor12\ecommerce\models\entity\Order;
+use floor12\ecommerce\models\entity\Payment;
 use floor12\ecommerce\models\enum\OrderStatus;
+use floor12\ecommerce\models\enum\PaymentStatus;
 use floor12\ecommerce\models\filters\OrderFilter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -47,6 +49,8 @@ class OrderReportXls
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(12);
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(12);
         $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(40);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
 
         //высота
         $spreadsheet->getActiveSheet()->getRowDimension('2')->setRowHeight(50);
@@ -64,6 +68,8 @@ class OrderReportXls
         $sheet->setCellValue("G2", "Стоимость доставки");
         $sheet->setCellValue("H2", "Всего");
         $sheet->setCellValue("I2", "Статус");
+        $sheet->setCellValue("J2", "Товары");
+        $sheet->setCellValue("K2", "Данные платежа");
 
 
         //форматирование
@@ -94,7 +100,7 @@ class OrderReportXls
         ];
 
 
-        $sheet->getStyle('A2:I2')->applyFromArray($styleArray);
+        $sheet->getStyle('A2:K2')->applyFromArray($styleArray);
 
         $sheet->getStyle('A1')->getFont()->setSize(22)->setBold(true);
         $sheet->getStyle('A1')->getAlignment()->setVertical('center');
@@ -122,10 +128,26 @@ class OrderReportXls
     {
         $cellNum = $key + 3;
 
-        $sheet->getStyle("A{$cellNum}:I{$cellNum}")->getBorders()->getAllBorders()->setBorderStyle
+        $sheet->getStyle("A{$cellNum}:K{$cellNum}")->getBorders()->getAllBorders()->setBorderStyle
         (\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $sheet->getStyle("F{$cellNum}:H{$cellNum}")->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
+        $paymentData = null;
+        if ($payment = Payment::findOne(['status' => PaymentStatus::SUCCESS, 'order_id' => $order->id])) {
+            $data = json_decode($payment->comment, true);
+            $parsedData = [];
+            foreach ($data as $key => $value)
+                $parsedData[] = "{$key}: {$value}";
+        }
+        $paymentData = implode(', ' . PHP_EOL, $parsedData);
+
+        $itemsAsString = null;
+
+        foreach ($order->orderItems as $orderItem) {
+            $itemsAsString .= "{$orderItem->productVariation->product->article} ";
+            $itemsAsString .= implode(', ', $orderItem->productVariation->parameterValues);
+            $itemsAsString .= PHP_EOL;
+        }
 
         $sheet->setCellValue("A{$cellNum}", $order->id);
         $sheet->setCellValue("B{$cellNum}", Yii::$app->formatter->asDateTime($order->created));
@@ -136,6 +158,8 @@ class OrderReportXls
         $sheet->setCellValue("G{$cellNum}", $order->delivery_cost);
         $sheet->setCellValue("H{$cellNum}", $order->total);
         $sheet->setCellValue("I{$cellNum}", OrderStatus::getLabel($order->status));
+        $sheet->setCellValue("J{$cellNum}", $itemsAsString);
+        $sheet->setCellValue("K{$cellNum}", $paymentData);
 
 
 //        $sheet->getStyle("C{$cellNum}")->getAlignment()->setHorizontal('left');
