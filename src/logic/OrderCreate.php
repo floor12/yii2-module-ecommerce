@@ -9,6 +9,7 @@
 namespace floor12\ecommerce\logic;
 
 
+use app\logic\shop\ReduceStock;
 use floor12\ecommerce\models\entity\City;
 use floor12\ecommerce\models\entity\Order;
 use floor12\ecommerce\models\enum\DeliveryType;
@@ -71,6 +72,7 @@ class OrderCreate
             $event->sender->products_weight = 0;
 
             foreach ($event->sender->cart->orderItems as $orderItem) {
+                Yii::createObject(ReduceStock::class, [$orderItem->productVariation->id])->run();
                 $orderItem->order_id = $event->sender->id;
                 $orderItem->created = time();
                 $orderItem->order_status = $event->sender->status;
@@ -95,33 +97,41 @@ class OrderCreate
             if ($this->_model->payment_type_id != PaymentType::RECEIVING)
                 $paymentLink = Yii::$app->urlManager->createAbsoluteUrl(['/shop/frontend/cart/pay', 'order_id' => $this->_model->id]);
 
-            //mail to admin
-            Yii::$app
-                ->mailer
-                ->compose(
-                    ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/admin-new-order-html.php"],
-                    ['model' => $event->sender]
-                )
-                ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
-                ->setSubject(Yii::t('app.f12.ecommerce', 'New order'))
-                ->setTo(Yii::$app->params['adminEmail'])
-                ->send();
+            $this->notifyAdmins();
+            $this->notifyClient();
 
-            //mail to client
-            Yii::$app
-                ->mailer
-                ->compose(
-                    ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/client-new-order-html.php"],
-                    ['model' => $event->sender, 'paymentLink' => $paymentLink]
-                )
-                ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
-                ->setSubject(Yii::t('app.f12.ecommerce', 'Thanks for purchase'))
-                ->setTo($event->sender->email)
-                ->send();
         }, ['city_id' => (int)$this->_model->city]);
 
         return $this->_model->save();
     }
 
+
+    protected function notifyClient()
+    {
+        Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/client-new-order-html.php"],
+                ['model' => $event->sender, 'paymentLink' => $paymentLink]
+            )
+            ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
+            ->setSubject(Yii::t('app.f12.ecommerce', 'Thanks for purchase'))
+            ->setTo($event->sender->email)
+            ->send();
+    }
+
+    protected function notifyAdmins()
+    {
+        Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/admin-new-order-html.php"],
+                ['model' => $event->sender]
+            )
+            ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
+            ->setSubject(Yii::t('app.f12.ecommerce', 'New order'))
+            ->setTo(Yii::$app->params['adminEmail'])
+            ->send();
+    }
 
 }
