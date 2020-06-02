@@ -93,10 +93,6 @@ class OrderCreate
 
             $event->sender->cart->empty();
 
-            $paymentLink = null;
-            if ($this->_model->payment_type_id != PaymentType::RECEIVING)
-                $paymentLink = Yii::$app->urlManager->createAbsoluteUrl(['/shop/frontend/cart/pay', 'order_id' => $this->_model->id]);
-
             $this->notifyAdmins();
             $this->notifyClient();
 
@@ -108,11 +104,15 @@ class OrderCreate
 
     protected function notifyClient()
     {
+        $paymentLink = null;
+        if ($this->_model->payment_type_id != PaymentType::RECEIVING)
+            $paymentLink = Yii::$app->urlManager->createAbsoluteUrl(['/shop/frontend/cart/pay', 'order_id' => $this->_model->id]);
+        
         Yii::$app
             ->mailer
             ->compose(
                 ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/client-new-order-html.php"],
-                ['model' => $event->sender, 'paymentLink' => $paymentLink]
+                ['model' => $this->_model, 'paymentLink' => $paymentLink]
             )
             ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
             ->setSubject(Yii::t('app.f12.ecommerce', 'Thanks for purchase'))
@@ -126,7 +126,7 @@ class OrderCreate
             ->mailer
             ->compose(
                 ['html' => "@vendor/floor12/yii2-module-ecommerce/src/mail/admin-new-order-html.php"],
-                ['model' => $event->sender]
+                ['model' => $this->_model]
             )
             ->setFrom([Yii::$app->params['no-replyEmail'] => Yii::$app->params['no-replyName']])
             ->setSubject(Yii::t('app.f12.ecommerce', 'New order'))
