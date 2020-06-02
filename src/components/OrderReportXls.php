@@ -132,14 +132,15 @@ class OrderReportXls
         (\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         $sheet->getStyle("F{$cellNum}:H{$cellNum}")->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
+        $parsedData = [];
         $paymentData = null;
         if ($payment = Payment::findOne(['status' => PaymentStatus::SUCCESS, 'order_id' => $order->id])) {
             $data = json_decode($payment->comment, true);
-            $parsedData = [];
             foreach ($data as $key => $value)
                 $parsedData[] = "{$key}: {$value}";
         }
-        $paymentData = implode(', ' . PHP_EOL, $parsedData);
+        if (!empty($paymentData))
+            $paymentData = implode(', ' . PHP_EOL, $parsedData);
 
         $itemsAsString = null;
 
