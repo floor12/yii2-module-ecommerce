@@ -18,6 +18,7 @@ use floor12\ecommerce\models\forms\ProductSelectorForm;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 class ProductController extends Controller
 {

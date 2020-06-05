@@ -6,6 +6,7 @@
 use floor12\ecommerce\assets\EcommerceAdminAsset;
 use floor12\ecommerce\components\TabWidget;
 use floor12\ecommerce\models\entity\Parameter;
+use floor12\ecommerce\models\entity\ParameterValue;
 use floor12\editmodal\EditModalHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -62,6 +63,15 @@ echo GridView::widget([
     'tableOptions' => ['class' => 'table table-striped'],
     'columns' => [
         'id',
+        [
+            'content' => function (ParameterValue $model) {
+                if ($model->color_hex)
+                    return Html::tag('div', null, [
+                        'class' => 'attibute-value-color',
+                        'style' => "background-color: {$model->color_hex}"
+                    ]);
+            }
+        ],
         'value',
         'unit',
         'sort',

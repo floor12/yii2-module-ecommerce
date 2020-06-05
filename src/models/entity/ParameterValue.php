@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property string|null $unit Parameter unit of measure
  * @property int $parameter_id Parameter id
  * @property int|null $sort Sort position
+ * @property string|null $color_hex Value color for frontend
  *
  * @property Parameter $parameter
  * @property ProductVariation[] $productVariations
@@ -39,6 +40,7 @@ class ParameterValue extends ActiveRecord
             [['value', 'parameter_id'], 'required'],
             [['parameter_id', 'sort'], 'integer'],
             [['value', 'unit'], 'string', 'max' => 255],
+            [['color_hex'], 'string', 'max' => 7],
             [['parameter_id'], 'exist', 'skipOnError' => true, 'targetClass' => Parameter::class, 'targetAttribute' => ['parameter_id' => 'id']],
         ];
     }
@@ -54,6 +56,7 @@ class ParameterValue extends ActiveRecord
             'unit' => Yii::t('app.f12.ecommerce', 'Unit of measure'),
             'parameter_id' => Yii::t('app.f12.ecommerce', 'Parameter'),
             'sort' => Yii::t('app.f12.ecommerce', 'Order'),
+            'color_hex' => Yii::t('app.f12.ecommerce', 'Color'),
         ];
     }
 

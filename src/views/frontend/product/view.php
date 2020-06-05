@@ -14,7 +14,9 @@ use floor12\ecommerce\components\ParameterSelectorWidget;
 use floor12\ecommerce\components\ProductStockBalanceWidget;
 use frontend\components\ImageHelper;
 
-$this->params['breadcrumbs'][] = $model->categories[0]->title;
+$this->params['breadcrumbs']['/catalog.html'] = 'Каталог';
+if (Yii::$app->request->referrer)
+    $this->params['breadcrumbs'][Yii::$app->request->referrer] = $model->categories[0]->title;
 $this->params['breadcrumbs'][] = $model->title;
 
 ?>

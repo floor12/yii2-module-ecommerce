@@ -105,7 +105,7 @@ product = {
     parameterSelectorWidgetUpdate: function (id) {
         data = $('#f12-eccomerce-cart-form').serialize();
         $.ajax({
-            url: '/shop/frontend/product/parameter-selector-widget?id=' + id,
+            url: '/shop/frontend/product/parameter-selector-widget',
             data: data,
             success: function (resonse) {
                 $('#f12-eccomerce-cart-form').replaceWith(resonse);

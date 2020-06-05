@@ -524,6 +524,11 @@ span.f12-ec-product-list-article {
     margin: 0 0 0 10px;
 }
 
+div.attibute-value-color {
+    width: 20px;
+    height: 20px;
+}
+
 td.order-product-image {
     width: 100px !important;
     padding: 0 !important;
@@ -532,4 +537,8 @@ td.order-product-image {
 
 td.order-product-image img {
     width: 100%;
+}
+
+.sp-dd {
+    display: none !important;
 }

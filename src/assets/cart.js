@@ -36,6 +36,10 @@ var f12shop = {
         if (event.target.nodeName != 'BUTTON')
             clickObject = clickObject.parents('button');
         variationId = $(clickObject).data('id');
+        if (!variationId) {
+            $('.parameters-selector').addClass('alerted');
+            return;
+        }
         btn = $(event.target);
         console.log(variationId);
         this.addToCart(variationId, btn);
@@ -171,9 +175,9 @@ var f12shop = {
             success: function (response) {
                 $('#price-actual').html(response.message);
                 if (response.status == 0) {
-                    $('#addToCartAjaxBtn').removeAttr('disabled').attr('onclick', 'f12shop.addToCart(' + response.option_id + ', $(this)); return false;')
+                    $('#addToCartAjaxBtn').addClass('disabled');
                 } else {
-                    $('#addToCartAjaxBtn').attr('disabled', 'disabled').removeAttr('onclick');
+                    $('#addToCartAjaxBtn').removeClass('disabled');
                 }
                 currentItem = response.gtagData;
             },

@@ -76,14 +76,10 @@ class ParameterSelectorWidget extends Widget
                         'ec_parameter_value.parameter_id' => $parameter->id
                     ])
                     ->orderBy('sort')
-                    ->select('value')
+                    ->select('ec_parameter_value.id, value, color_hex')
                     ->groupBy('ec_parameter_value.id')
-                    ->indexBy('id')
-                    ->column();
-
-                if (sizeof($this->parameterValuesList[$parameter->id]) == 1)
-                    $this->model->parameterValueIds[$parameter->id] = array_key_first($this->parameterValuesList[$parameter->id]);
-
+                    ->asArray()
+                    ->all();
             }
 
         $this->stockBalances = Stock::find()->balancesByProductId($this->product->id, $this->model->parameterValueIds)
