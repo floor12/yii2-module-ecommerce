@@ -37,24 +37,7 @@ $form = ActiveForm::begin([
 
         <h2>Товары в корзине</h2>
 
-        <div class="cart-content">
-            <?php if ($model->cart->orderItems) foreach ($model->cart->orderItems as $orderItem)
-                echo $this->render('_index', [
-                    'model' => $orderItem,
-                    'editable' => false
-                ]) ?>
-        </div>
-        <?php if ($model->cart->messages)
-            foreach ($model->cart->messages as $message)
-                echo Html::tag('p', $message, ['class' => 'f12-discount-info']);
-        ?>
-
-        <div class="cart-total">
-            <?= Yii::t('app.f12.ecommerce', 'Total') ?>:
-            <span>
-                    <?= Yii::$app->formatter->asCurrency($model->cart->total, Yii::$app->getModule('shop')->currency) ?>
-                </span>
-        </div>
+        <?= $this->render('index', ['model' => $model->cart]) ?>
 
         <div class="clearfix"></div>
 

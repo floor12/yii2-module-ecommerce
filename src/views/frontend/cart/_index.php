@@ -7,6 +7,7 @@
  *
  * @var $this \yii\web\View
  * @var $model \floor12\ecommerce\models\entity\OrderItem
+ * @var $editable boolean
  */
 
 use yii\helpers\Html;
@@ -39,7 +40,7 @@ use yii\helpers\Html;
             Кол-во: <input name="Order[<?= $model->product_variation_id ?>][count]"
                            value='<?= $model->quantity ?>'
                            type="number"
-                           disabled="<?= !$editable ? 'disabled' : NULL ?>"
+                <?= $editable ? NULL : 'disabled="disabled"' ?>
                            data-id="<?= $model->product_variation_id ?>"
                            data-weight="<?= $model->productVariation->product->weight_delivery ?>"
                            class="cart-counter">

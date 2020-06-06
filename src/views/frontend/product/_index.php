@@ -23,17 +23,30 @@ $priceCalculator->setProduct($model);
         <div class="discount-in-percent">-<?= $priceCalculator->getDiscountInPercent() ?>%</div>
     <?php endif; ?>
     <a class="f12-ec-product" href="<?= \yii\helpers\Url::toRoute(['/shop/frontend/product/view', 'id' => $model->id]) ?>">
-        <?php if ($model->images && is_file($model->images[0]->getRootPath())) { ?>
+        <?php if ($model->images) { ?>
             <div class="f12-ec-product-image-wrapper">
-                <picture>
-                    <source type="image/webp"
-                            srcset="<?= $model->images[0]->getPreviewWebPath(350, 0, 1) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700, 0, 1) ?>
+                <?php if (is_file($model->images[0]->getRootPath())): ?>
+                    <picture>
+                        <source type="image/webp"
+                                srcset="<?= $model->images[0]->getPreviewWebPath(350, 0, 1) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700, 0, 1) ?>
                                     2x">
-                    <source type="image/jpeg"
-                            srcset="<?= $model->images[0]->getPreviewWebPath(350) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700) ?> 2x">
-                    <img src="<?= $model->images[0]->getPreviewWebPath(350) ?>"
-                         alt="Изображение товара <?= $model->title ?>">
-                </picture>
+                        <source type="image/jpeg"
+                                srcset="<?= $model->images[0]->getPreviewWebPath(350) ?> 1x, <?= $model->images[0]->getPreviewWebPath(700) ?> 2x">
+                        <img src="<?= $model->images[0]->getPreviewWebPath(350) ?>"
+                             alt="Изображение товара <?= $model->title ?>">
+                    </picture>
+                <?php endif; ?>
+                <?php if (is_file($model->images[0]->getRootPath())): ?>
+                    <picture>
+                        <source type="image/webp"
+                                srcset="<?= $model->images[1]->getPreviewWebPath(350, 0, 1) ?> 1x, <?= $model->images[1]->getPreviewWebPath(700, 0, 1) ?>
+                                    2x">
+                        <source type="image/jpeg"
+                                srcset="<?= $model->images[1]->getPreviewWebPath(350) ?> 1x, <?= $model->images[1]->getPreviewWebPath(700) ?> 2x">
+                        <img src="<?= $model->images[1]->getPreviewWebPath(350) ?>"
+                             alt="Изображение товара <?= $model->title ?>">
+                    </picture>
+                <?php endif; ?>
             </div>
         <?php } ?>
 

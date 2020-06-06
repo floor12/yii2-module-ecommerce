@@ -39,7 +39,7 @@ class CartForm extends Model
             $priceCalculator->setProductVariation($productVariation);
             $quantity = $cookieCart->getProductVariationQuantity($productVariation->id);
             $sum = $priceCalculator->getCurrentPrice() * $quantity;
-            $this->orderItems[] = new OrderItem([
+            $this->orderItems[$productVariation->id] = new OrderItem([
                 'product_variation_id' => $productVariation->id,
                 'quantity' => $quantity,
                 'price' => $priceCalculator->getCurrentPrice(),
@@ -51,7 +51,7 @@ class CartForm extends Model
 
             $this->total = $this->total + $sum;
         }
-
+        ksort($this->orderItems);
     }
 
 

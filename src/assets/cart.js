@@ -13,6 +13,17 @@ var f12shop = {
         showForm('/shop/frontend/cart', {}, {}, true);
     },
 
+    updateCartItems: function () {
+        $.pjax.reload({
+                'url': '/shop/frontend/cart',
+                'container': '#cart-content',
+                'replace': 'false',
+                'push': 'false',
+                'timeout': 10000,
+            }
+        );
+    },
+
     updateCartCount: function () {
         res = document.cookie.match(/cart-/ig);
 
@@ -88,8 +99,8 @@ var f12shop = {
     removeItemFromCart: function (id) {
         name = "cart-" + id;
         $.removeCookie(name, {expires: 31, path: '/'});
-        this.showCart();
-        this.updateCartCount();
+        f12shop.updateCartItems();
+        f12shop.updateCartCount();
 
     },
     removeFromCart: function (id, btn) {
@@ -108,7 +119,7 @@ var f12shop = {
             if (parent.length) {
                 block = $(this).parents('tr');
                 block.fadeOut(300, function () {
-                    showCart();
+                    f12shop.updateCartItems();
                 });
 
                 // $('#items s.cart[data-key="' + id + '"]').removeClass('btn-primary').addClass('btn-default');
@@ -160,7 +171,7 @@ var f12shop = {
             $.cookie(name, quantity, {expires: 31, path: '/'});
         }
         f12shop.updateCartCount();
-        f12shop.showCart();
+        f12shop.updateCartItems();
 
 
     },

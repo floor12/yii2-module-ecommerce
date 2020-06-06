@@ -39,7 +39,7 @@ class CartController extends Controller
     public function actionIndex()
     {
         $model = new CartForm();
-        return $this->renderAjax('index', ['model' => $model]);
+        return $this->renderAjax('modal', ['model' => $model]);
     }
 
     /**

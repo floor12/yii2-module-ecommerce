@@ -28,12 +28,14 @@ $form = ActiveForm::begin([
 
 <div class="row">
     <div class="col-sm-6 parameters-selector">
-        <p class="info">
-            Уточните, пожалуйста, параметры товара.
-        </p>
-        <?php
-        foreach ($parameters as $parameter) { ?>
 
+        <p class="info">Уточните, пожалуйста, параметры товара.</p>
+
+        <button type="button" class="btn btn-defaul btn-block btn-sm" data-toggle="modal" data-target="#sizesModal">
+            Таблица размеров
+        </button>
+        
+        <?php foreach ($parameters as $parameter) { ?>
             <div class="form-group">
                 <label class="control-label"
                        for="productselectorform-parametervalueids-<?= $parameter->id ?>"><?= $parameter->title ?></label>
@@ -53,13 +55,9 @@ $form = ActiveForm::begin([
                 </div>
             </div>
         <? } ?>
+
     </div>
     <div class="col-sm-6">
-        <button onclick="f12shop.addVariationToCart(event); return false;"
-            <?= $producatVariation ? "class='f12-ec-product-view-cart' data-id={$producatVariation->id}" : "class='f12-ec-product-view-cart disabled'" ?>>
-            <?= \floor12\editmodal\IconHelper::PLUS ?> <?= Yii::t('app.f12.ecommerce', 'add to cart') ?>
-        </button>
-
         <div class="f12-ec-product-view-price">
             <price class='<?= $priceCalculator->hasDiscount() ? 'discount' : null ?>'>
                 <?= Yii::$app->formatter->asCurrency($priceCalculator->getCurrentPrice(), Yii::$app->getModule('shop')->currency) ?>
@@ -71,6 +69,11 @@ $form = ActiveForm::begin([
                 <div class="discount-in-percent">-<?= $priceCalculator->getDiscountInPercent() ?>%</div>
             <?php endif; ?>
         </div>
+
+        <button onclick="f12shop.addVariationToCart(event); return false;"
+            <?= $producatVariation ? "class='f12-ec-product-view-cart' data-id={$producatVariation->id}" : "class='f12-ec-product-view-cart disabled'" ?>>
+            <?= \floor12\editmodal\IconHelper::PLUS ?> <?= Yii::t('app.f12.ecommerce', 'add to cart') ?>
+        </button>
 
     </div>
 </div>

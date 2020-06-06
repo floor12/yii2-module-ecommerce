@@ -44,7 +44,6 @@ $this->params['breadcrumbs'][] = $model->title;
                 'product' => $model
             ]) ?>
 
-
         </div>
 
         <div class="col-md-6 col-md-pull-6 product-image-block">
