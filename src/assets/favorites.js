@@ -63,17 +63,17 @@ $(document).on('click', 'button.fav', function () {
         $(this).attr('title', 'Добавить в избранное')
         $.removeCookie(name, {expires: 31, path: '/'});
         updateFavCount();
-
-
         parent = $(this).parents('.modal-body');
+        console.log(parent);
         if (parent.length) {
-            block = $(this).parents('div.f12-ec-item');
+            block = $(this).parent().find('.f12-ec-product');
+            console.log(block);
             block.fadeOut(300, function () {
                 block.parent().remove();
             });
             $('#items div[data-key="' + id + '"]').find('button.fav').removeClass('fav-active');
 
-            if (parent.find('div.f12-ec-item').length == 1)
+            if (parent.find('.f12-ec-product').length == 1)
                 cancelModalEditSilent();
         }
 
@@ -109,10 +109,7 @@ $(document).on('click', 'button.fav', function () {
             });
         } else
             updateFavCount();
-
-
     }
-
 })
 
 updateFavCount();
