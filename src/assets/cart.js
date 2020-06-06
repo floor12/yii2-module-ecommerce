@@ -17,8 +17,8 @@ var f12shop = {
         $.pjax.reload({
                 'url': '/shop/frontend/cart',
                 'container': '#cart-content',
-                'replace': 'false',
-                'push': 'false',
+                'replace': false,
+                'push': false,
                 'timeout': 10000,
             }
         );
@@ -99,8 +99,8 @@ var f12shop = {
     removeItemFromCart: function (id) {
         name = "cart-" + id;
         $.removeCookie(name, {expires: 31, path: '/'});
-        f12shop.updateCartItems();
         f12shop.updateCartCount();
+        f12shop.updateCartItems();
 
     },
     removeFromCart: function (id, btn) {
@@ -232,7 +232,7 @@ $(document).on('click', 'a.cart-delete', function () {
 
     if ($.cookie(name)) {
 
-        if (registerGoogleTagEvents == true)
+        if (typeof (registerGoogleTagEvents) != 'undefined' && registerGoogleTagEvents == true)
             $.ajax({
                 url: '/shop/frontend/cart/product',
                 data: {id: id},
