@@ -95,6 +95,7 @@ var f12shop = {
 
         if (typeof (registerGoogleTagEvents) != 'undefined' && registerGoogleTagEvents == true)
             f12Tag.productAddToCart([currentItem]);
+        this.showCart();
     },
     removeItemFromCart: function (id) {
         name = "cart-" + id;

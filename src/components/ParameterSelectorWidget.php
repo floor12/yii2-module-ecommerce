@@ -80,6 +80,8 @@ class ParameterSelectorWidget extends Widget
                     ->groupBy('ec_parameter_value.id')
                     ->asArray()
                     ->all();
+                if (sizeof($this->parameterValuesList[$parameter->id]) === 1)
+                    $this->model->parameterValueIds[$parameter->id] = $this->parameterValuesList[$parameter->id][0]['id'];
             }
 
         $this->stockBalances = Stock::find()->balancesByProductId($this->product->id, $this->model->parameterValueIds)

@@ -32,8 +32,46 @@ $this->params['breadcrumbs'][] = $model->title;
     <h1><?= $model->title ?></h1>
 
     <div class="row">
+        <div class="col-md-7 product-image-block">
 
-        <div class="col-md-6 col-md-push-6">
+            <div class="product-previews-block">
+                <?php if ($model->images > 1) foreach ($model->images as $key => $image) { ?>
+                    <a href="<?= $image->getPreviewWebPath(1300) ?>" target="_blank"
+                       class="<?= !$key ? 'active' : null ?>"
+                       data-sources="<?= "['{$image->getPreviewWebPath(650)}','{$image->getPreviewWebPath(1300)}','{$image->getPreviewWebPath(650, 0, 1)}','{$image->getPreviewWebPath(1300, 0, 1)}']" ?>">
+                        <picture>
+                            <source type="image/webp"
+                                    srcset="<?= $image->getPreviewWebPath(80, 0, 1) ?> 1x, <?= $image->getPreviewWebPath
+                                    (160, 0, 1) ?>
+                                    2x">
+                            <source type="image/jpeg"
+                                    srcset="<?= $image->getPreviewWebPath(80) ?> 1x, <?= $image->getPreviewWebPath(160) ?>
+                            2x">
+                            <img src="<?= $image->getPreviewWebPath(80) ?>"
+                                 alt="<?= $model->title ?>">
+                        </picture>
+                    </a>
+                <?php } ?>
+            </div>
+
+            <?php if ($model->images): ?>
+                <div id="product-main-image">
+                    <picture>
+                        <source type="image/webp"
+                                srcset="<?= $model->images[0]->getPreviewWebPath(650, 0, 1) ?> 1x, <?= $model->images[0]->getPreviewWebPath
+                                (1300, 0, 1) ?>
+                                    2x">
+                        <source type="image/jpeg"
+                                srcset="<?= $model->images[0]->getPreviewWebPath(650) ?> 1x, <?= $model->images[0]->getPreviewWebPath(1300) ?>
+                            2x">
+                        <img src="<?= $model->images[0]->getPreviewWebPath(650) ?>"
+                             alt="<?= $model->title ?>" class="zoomer">
+                    </picture>
+                </div>
+            <?php endif; ?>
+
+        </div>
+        <div class="col-md-5">
 
             <div class="f12-ec-item-view-description">
                 <?= $model->description ?>
@@ -45,47 +83,6 @@ $this->params['breadcrumbs'][] = $model->title;
             ]) ?>
 
         </div>
-
-        <div class="col-md-6 col-md-pull-6 product-image-block">
-
-            <div class="product-previews-block">
-                <?php if ($model->images > 1) foreach ($model->images as $key => $image) { ?>
-                    <a href="<?= $image->getPreviewWebPath(1000) ?>" target="_blank"
-                       class="<?= !$key ? 'active' : null ?>"
-                       data-sources="<?= "['{$image->getPreviewWebPath(500)}','{$image->getPreviewWebPath(1000)}','{$image->getPreviewWebPath(500, 0, 1)}','{$image->getPreviewWebPath(1000, 0, 1)}']" ?>">
-                        <picture>
-                            <source type="image/webp"
-                                    srcset="<?= $image->getPreviewWebPath(60, 0, 1) ?> 1x, <?= $image->getPreviewWebPath
-                                    (120, 0, 1) ?>
-                                    2x">
-                            <source type="image/jpeg"
-                                    srcset="<?= $image->getPreviewWebPath(60) ?> 1x, <?= $image->getPreviewWebPath(120) ?>
-                            2x">
-                            <img src="<?= $image->getPreviewWebPath(60) ?>"
-                                 alt="<?= $model->title ?>">
-                        </picture>
-                    </a>
-                <?php } ?>
-            </div>
-
-            <?php if ($model->images): ?>
-                <div id="product-main-image">
-                    <picture>
-                        <source type="image/webp"
-                                srcset="<?= $model->images[0]->getPreviewWebPath(500, 0, 1) ?> 1x, <?= $model->images[0]->getPreviewWebPath
-                                (1000, 0, 1) ?>
-                                    2x">
-                        <source type="image/jpeg"
-                                srcset="<?= $model->images[0]->getPreviewWebPath(500) ?> 1x, <?= $model->images[0]->getPreviewWebPath(1000) ?>
-                            2x">
-                        <img src="<?= $model->images[0]->getPreviewWebPath(500) ?>"
-                             alt="<?= $model->title ?>" class="zoomer">
-                    </picture>
-                </div>
-            <?php endif; ?>
-
-        </div>
-
     </div>
 
 </div>
