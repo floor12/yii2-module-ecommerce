@@ -27,6 +27,7 @@ class CategoryController extends Controller
     public function init()
     {
         $this->layout = Yii::$app->getModule('shop')->layout;
+        parent::init();
     }
 
     /**
